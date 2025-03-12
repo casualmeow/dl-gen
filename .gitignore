@@ -10,7 +10,10 @@ target
 /.project
 /.settings
 /RUNNING_PID
-.metals 
+.metals
+*.db
+*.log
+
 # Frontend rules 
 # Logs
 logs
