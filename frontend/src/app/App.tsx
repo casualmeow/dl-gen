@@ -1,5 +1,5 @@
-import './App.css'
-import { DragAndDrop } from './features/uploadFile'
+import '../App.css'
+import { DragAndDrop } from '../features/uploadFile'
 
 function App() {
 
