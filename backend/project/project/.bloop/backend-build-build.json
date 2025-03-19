@@ -1,17 +1,16 @@
 {
     "version": "1.4.0",
     "project": {
-        "name": "backend-build",
-        "directory": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project",
-        "workspaceDir": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project",
+        "name": "backend-build-build",
+        "directory": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project",
+        "workspaceDir": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project",
         "sources": [
-            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\src\\main\\scala",
-            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\src\\main\\scala-2.12",
-            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\src\\main\\scala-2",
-            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\src\\main\\java",
-            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\src\\main\\scala-sbt-1.0",
-            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\target\\scala-2.12\\sbt-1.0\\src_managed\\main",
-            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\Dependencies.scala"
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project\\src\\main\\scala",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project\\src\\main\\scala-2.12",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project\\src\\main\\scala-2",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project\\src\\main\\java",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project\\src\\main\\scala-sbt-1.0",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project\\target\\scala-2.12\\sbt-1.0\\src_managed\\main"
         ],
         "dependencies": [
             
@@ -20,11 +19,9 @@
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-sbt\\sbt\\1.10.10\\sbt-1.10.10.jar",
             "C:\\Users\\Disto\\.sbt\\boot\\scala-2.12.20\\lib\\scala-library.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\ch\\epfl\\scala\\sbt-bloop_2.12_1.0\\2.0.8\\sbt-bloop_2.12_1.0-2.0.8.jar",
-            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\sbt-assembly_2.12_1.0\\2.1.5\\sbt-assembly_2.12_1.0-2.1.5.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-sbt\\main_2.12\\1.10.10\\main_2.12-1.10.10.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-sbt\\io_2.12\\1.10.4\\io_2.12-1.10.4.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\ch\\epfl\\scala\\bloop-config_2.12\\2.3.1\\bloop-config_2.12-2.3.1.jar",
-            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\jarjarabrams\\jarjar-abrams-core_2.12\\1.13.1\\jarjar-abrams-core_2.12-1.13.1.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-sbt\\logic_2.12\\1.10.10\\logic_2.12-1.10.10.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-sbt\\actions_2.12\\1.10.10\\actions_2.12-1.10.10.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-sbt\\main-settings_2.12\\1.10.10\\main-settings_2.12-1.10.10.jar",
@@ -48,8 +45,6 @@
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\swoval\\file-tree-views\\2.1.12\\file-tree-views-2.1.12.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\github\\plokhotnyuk\\jsoniter-scala\\jsoniter-scala-core_2.12\\2.13.5.2\\jsoniter-scala-core_2.12-2.13.5.2.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\lihaoyi\\unroll-annotation_2.12\\0.1.12\\unroll-annotation_2.12-0.1.12.jar",
-            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\jarjar\\jarjar\\1.13.1\\jarjar-1.13.1.jar",
-            "C:\\Users\\Disto\\.sbt\\boot\\scala-2.12.20\\lib\\scala-reflect.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-sbt\\util-relation_2.12\\1.10.10\\util-relation_2.12-1.10.10.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-sbt\\completion_2.12\\1.10.10\\completion_2.12-1.10.10.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-sbt\\task-system_2.12\\1.10.10\\task-system_2.12-1.10.10.jar",
@@ -74,6 +69,7 @@
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\jline\\jline-terminal-jni\\3.27.1\\jline-terminal-jni-3.27.1.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\jline\\jline-native\\3.27.1\\jline-native-3.27.1.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\lmax\\disruptor\\3.4.2\\disruptor-3.4.2.jar",
+            "C:\\Users\\Disto\\.sbt\\boot\\scala-2.12.20\\lib\\scala-reflect.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\checkerframework\\checker-qual\\3.4.1\\checker-qual-3.4.1.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\google\\errorprone\\error_prone_annotations\\2.4.0\\error_prone_annotations-2.4.0.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\modules\\scala-collection-compat_2.12\\2.12.0\\scala-collection-compat_2.12-2.12.0.jar",
@@ -82,9 +78,6 @@
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\github\\mwiede\\jsch\\0.2.23\\jsch-0.2.23.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\gigahorse-apache-http_2.12\\0.7.0\\gigahorse-apache-http_2.12-0.7.0.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-sbt\\ivy\\ivy\\2.3.0-sbt-77cc781d727b367d3761f097d89f5a4762771d41\\ivy-2.3.0-sbt-77cc781d727b367d3761f097d89f5a4762771d41.jar",
-            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\ow2\\asm\\asm\\9.6\\asm-9.6.jar",
-            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\ow2\\asm\\asm-commons\\9.6\\asm-commons-9.6.jar",
-            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\apache\\commons\\commons-lang3\\3.8.1\\commons-lang3-3.8.1.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\jline\\jline-reader\\3.27.1\\jline-reader-3.27.1.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\jline\\jline-builtins\\3.27.1\\jline-builtins-3.27.1.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-sbt\\test-agent\\1.10.10\\test-agent-1.10.10.jar",
@@ -102,7 +95,6 @@
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\fusesource\\jansi\\jansi\\2.4.1\\jansi-2.4.1.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\gigahorse-core_2.12\\0.7.0\\gigahorse-core_2.12-0.7.0.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\shaded-apache-httpasyncclient\\0.7.0\\shaded-apache-httpasyncclient-0.7.0.jar",
-            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\ow2\\asm\\asm-tree\\9.6\\asm-tree-9.6.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\jline\\jline-style\\3.27.1\\jline-style-3.27.1.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-sbt\\zinc-persist-core-assembly\\1.10.8\\zinc-persist-core-assembly-1.10.8.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-sbt\\sbinary_2.12\\0.5.1\\sbinary_2.12-0.5.1.jar",
@@ -112,11 +104,11 @@
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\reactivestreams\\reactive-streams\\1.0.3\\reactive-streams-1.0.3.jar",
             "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\config\\1.4.2\\config-1.4.2.jar"
         ],
-        "out": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\.bloop\\backend-build",
-        "classesDir": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\.bloop\\backend-build\\scala-2.12\\sbt-1.0\\classes",
+        "out": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project\\.bloop\\backend-build-build",
+        "classesDir": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project\\.bloop\\backend-build-build\\scala-2.12\\sbt-1.0\\classes",
         "resources": [
-            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\src\\main\\resources",
-            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\target\\scala-2.12\\sbt-1.0\\resource_managed\\main"
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project\\src\\main\\resources",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project\\target\\scala-2.12\\sbt-1.0\\resource_managed\\main"
         ],
         "scala": {
             "organization": "org.scala-lang",
@@ -124,6 +116,7 @@
             "version": "2.12.20",
             "options": [
                 "-deprecation",
+                "-Wconf:cat=unused-nowarn:s",
                 "-Wconf:cat=unused-nowarn:s",
                 "-Wconf:cat=unused-nowarn:s",
                 "-Xsource:3"
@@ -155,8 +148,8 @@
                 "import _root_.sbt._",
                 "import _root_.sbt.Keys._",
                 "import _root_.sbt.nio.Keys._",
-                "import _root_.sbt.ScriptedPlugin.autoImport._, _root_.sbt.plugins.JUnitXmlReportPlugin.autoImport._, _root_.sbt.plugins.MiniDependencyTreePlugin.autoImport._, _root_.bloop.integrations.sbt.BloopPlugin.autoImport._, _root_.sbtassembly.AssemblyPlugin.autoImport._",
-                "import _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.ScriptedPlugin, _root_.sbt.plugins.SbtPlugin, _root_.sbt.plugins.SemanticdbPlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.sbt.plugins.Giter8TemplatePlugin, _root_.sbt.plugins.MiniDependencyTreePlugin, _root_.bloop.integrations.sbt.BloopPlugin, _root_.sbtassembly.AssemblyPlugin"
+                "import _root_.sbt.ScriptedPlugin.autoImport._, _root_.sbt.plugins.JUnitXmlReportPlugin.autoImport._, _root_.sbt.plugins.MiniDependencyTreePlugin.autoImport._, _root_.bloop.integrations.sbt.BloopPlugin.autoImport._",
+                "import _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.ScriptedPlugin, _root_.sbt.plugins.SbtPlugin, _root_.sbt.plugins.SemanticdbPlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.sbt.plugins.Giter8TemplatePlugin, _root_.sbt.plugins.MiniDependencyTreePlugin, _root_.bloop.integrations.sbt.BloopPlugin"
             ]
         },
         "test": {
@@ -223,7 +216,7 @@
             "config": {
                 "home": "C:\\Program Files\\Java\\jdk-23",
                 "options": [
-                    "-Duser.dir=C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project"
+                    "-Duser.dir=C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project"
                 ]
             },
             "mainClass": [
@@ -232,24 +225,16 @@
             "runtimeConfig": {
                 "home": "C:\\Program Files\\Java\\jdk-23",
                 "options": [
-                    "-Duser.dir=C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project"
+                    "-Duser.dir=C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project"
                 ]
             },
             "classpath": [
-                "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\.bloop\\backend-build\\scala-2.12\\sbt-1.0\\classes",
+                "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\project\\project\\.bloop\\backend-build-build\\scala-2.12\\sbt-1.0\\classes",
                 "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\ch\\epfl\\scala\\sbt-bloop_2.12_1.0\\2.0.8\\sbt-bloop_2.12_1.0-2.0.8.jar",
-                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\sbt-assembly_2.12_1.0\\2.1.5\\sbt-assembly_2.12_1.0-2.1.5.jar",
                 "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\ch\\epfl\\scala\\bloop-config_2.12\\2.3.1\\bloop-config_2.12-2.3.1.jar",
-                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\jarjarabrams\\jarjar-abrams-core_2.12\\1.13.1\\jarjar-abrams-core_2.12-1.13.1.jar",
                 "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\github\\plokhotnyuk\\jsoniter-scala\\jsoniter-scala-core_2.12\\2.13.5.2\\jsoniter-scala-core_2.12-2.13.5.2.jar",
                 "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\lihaoyi\\unroll-annotation_2.12\\0.1.12\\unroll-annotation_2.12-0.1.12.jar",
-                "C:\\Users\\Disto\\.sbt\\boot\\scala-2.12.20\\lib\\scala-library.jar",
-                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\jarjar\\jarjar\\1.13.1\\jarjar-1.13.1.jar",
-                "C:\\Users\\Disto\\.sbt\\boot\\scala-2.12.20\\lib\\scala-reflect.jar",
-                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\ow2\\asm\\asm\\9.6\\asm-9.6.jar",
-                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\ow2\\asm\\asm-commons\\9.6\\asm-commons-9.6.jar",
-                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\apache\\commons\\commons-lang3\\3.8.1\\commons-lang3-3.8.1.jar",
-                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\ow2\\asm\\asm-tree\\9.6\\asm-tree-9.6.jar"
+                "C:\\Users\\Disto\\.sbt\\boot\\scala-2.12.20\\lib\\scala-library.jar"
             ]
         },
         "resolution": {
@@ -272,23 +257,6 @@
                     ]
                 },
                 {
-                    "organization": "com.eed3si9n",
-                    "name": "sbt-assembly",
-                    "version": "2.1.5",
-                    "configurations": "default",
-                    "artifacts": [
-                        {
-                            "name": "sbt-assembly",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\sbt-assembly_2.12_1.0\\2.1.5\\sbt-assembly_2.12_1.0-2.1.5.jar"
-                        },
-                        {
-                            "name": "sbt-assembly",
-                            "classifier": "sources",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\sbt-assembly_2.12_1.0\\2.1.5\\sbt-assembly_2.12_1.0-2.1.5-sources.jar"
-                        }
-                    ]
-                },
-                {
                     "organization": "ch.epfl.scala",
                     "name": "bloop-config_2.12",
                     "version": "2.3.1",
@@ -302,23 +270,6 @@
                             "name": "bloop-config_2.12",
                             "classifier": "sources",
                             "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\ch\\epfl\\scala\\bloop-config_2.12\\2.3.1\\bloop-config_2.12-2.3.1-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization": "com.eed3si9n.jarjarabrams",
-                    "name": "jarjar-abrams-core_2.12",
-                    "version": "1.13.1",
-                    "configurations": "default",
-                    "artifacts": [
-                        {
-                            "name": "jarjar-abrams-core_2.12",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\jarjarabrams\\jarjar-abrams-core_2.12\\1.13.1\\jarjar-abrams-core_2.12-1.13.1.jar"
-                        },
-                        {
-                            "name": "jarjar-abrams-core_2.12",
-                            "classifier": "sources",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\jarjarabrams\\jarjar-abrams-core_2.12\\1.13.1\\jarjar-abrams-core_2.12-1.13.1-sources.jar"
                         }
                     ]
                 },
@@ -370,108 +321,6 @@
                             "name": "scala-library",
                             "classifier": "sources",
                             "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.12.20\\scala-library-2.12.20-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization": "com.eed3si9n.jarjar",
-                    "name": "jarjar",
-                    "version": "1.13.1",
-                    "configurations": "default",
-                    "artifacts": [
-                        {
-                            "name": "jarjar",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\jarjar\\jarjar\\1.13.1\\jarjar-1.13.1.jar"
-                        },
-                        {
-                            "name": "jarjar",
-                            "classifier": "sources",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\eed3si9n\\jarjar\\jarjar\\1.13.1\\jarjar-1.13.1-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization": "org.scala-lang",
-                    "name": "scala-reflect",
-                    "version": "2.12.20",
-                    "configurations": "default",
-                    "artifacts": [
-                        {
-                            "name": "scala-reflect",
-                            "path": "C:\\Users\\Disto\\.sbt\\boot\\scala-2.12.20\\lib\\scala-reflect.jar"
-                        },
-                        {
-                            "name": "scala-reflect",
-                            "classifier": "sources",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-reflect\\2.12.20\\scala-reflect-2.12.20-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization": "org.ow2.asm",
-                    "name": "asm",
-                    "version": "9.6",
-                    "configurations": "default",
-                    "artifacts": [
-                        {
-                            "name": "asm",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\ow2\\asm\\asm\\9.6\\asm-9.6.jar"
-                        },
-                        {
-                            "name": "asm",
-                            "classifier": "sources",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\ow2\\asm\\asm\\9.6\\asm-9.6-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization": "org.ow2.asm",
-                    "name": "asm-commons",
-                    "version": "9.6",
-                    "configurations": "default",
-                    "artifacts": [
-                        {
-                            "name": "asm-commons",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\ow2\\asm\\asm-commons\\9.6\\asm-commons-9.6.jar"
-                        },
-                        {
-                            "name": "asm-commons",
-                            "classifier": "sources",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\ow2\\asm\\asm-commons\\9.6\\asm-commons-9.6-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization": "org.apache.commons",
-                    "name": "commons-lang3",
-                    "version": "3.8.1",
-                    "configurations": "default",
-                    "artifacts": [
-                        {
-                            "name": "commons-lang3",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\apache\\commons\\commons-lang3\\3.8.1\\commons-lang3-3.8.1.jar"
-                        },
-                        {
-                            "name": "commons-lang3",
-                            "classifier": "sources",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\apache\\commons\\commons-lang3\\3.8.1\\commons-lang3-3.8.1-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization": "org.ow2.asm",
-                    "name": "asm-tree",
-                    "version": "9.6",
-                    "configurations": "default",
-                    "artifacts": [
-                        {
-                            "name": "asm-tree",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\ow2\\asm\\asm-tree\\9.6\\asm-tree-9.6.jar"
-                        },
-                        {
-                            "name": "asm-tree",
-                            "classifier": "sources",
-                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\ow2\\asm\\asm-tree\\9.6\\asm-tree-9.6-sources.jar"
                         }
                     ]
                 },
@@ -1288,6 +1137,23 @@
                             "name": "disruptor",
                             "classifier": "sources",
                             "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\lmax\\disruptor\\3.4.2\\disruptor-3.4.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-reflect",
+                    "version": "2.12.20",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-reflect",
+                            "path": "C:\\Users\\Disto\\.sbt\\boot\\scala-2.12.20\\lib\\scala-reflect.jar"
+                        },
+                        {
+                            "name": "scala-reflect",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-reflect\\2.12.20\\scala-reflect-2.12.20-sources.jar"
                         }
                     ]
                 },

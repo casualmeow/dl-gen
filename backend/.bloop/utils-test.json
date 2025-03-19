@@ -1,0 +1,172 @@
+{
+    "version": "1.4.0",
+    "project": {
+        "name": "utils-test",
+        "directory": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\utils",
+        "workspaceDir": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend",
+        "sources": [
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\utils\\src\\test\\scala",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\utils\\src\\test\\scala-2.13",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\utils\\src\\test\\scala-2",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\utils\\src\\test\\java",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\utils\\target\\scala-2.13\\src_managed\\test"
+        ],
+        "dependencies": [
+            "utils"
+        ],
+        "classpath": [
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\.bloop\\utils\\scala-2.13\\classes",
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.12\\scala-library-2.13.12.jar"
+        ],
+        "out": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\.bloop\\utils",
+        "classesDir": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\.bloop\\utils\\scala-2.13\\test-classes",
+        "resources": [
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\utils\\src\\test\\resources",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\utils\\target\\scala-2.13\\resource_managed\\test"
+        ],
+        "scala": {
+            "organization": "org.scala-lang",
+            "name": "scala-compiler",
+            "version": "2.13.12",
+            "options": [
+                
+            ],
+            "jars": [
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.12\\scala-library-2.13.12.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-compiler\\2.13.12\\scala-compiler-2.13.12.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-reflect\\2.13.12\\scala-reflect-2.13.12.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\io\\github\\java-diff-utils\\java-diff-utils\\4.12\\java-diff-utils-4.12.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\jline\\jline\\3.22.0\\jline-3.22.0.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\net\\java\\dev\\jna\\jna\\5.13.0\\jna-5.13.0.jar"
+            ],
+            "setup": {
+                "order": "mixed",
+                "addLibraryToBootClasspath": false,
+                "addCompilerToClasspath": false,
+                "addExtraJarsToClasspath": false,
+                "manageBootClasspath": false,
+                "filterLibraryFromClasspath": false
+            },
+            "bridgeJars": [
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala2-sbt-bridge\\2.13.12\\scala2-sbt-bridge-2.13.12.jar"
+            ]
+        },
+        "java": {
+            "options": [
+                
+            ]
+        },
+        "test": {
+            "frameworks": [
+                {
+                    "names": [
+                        "org.scalacheck.ScalaCheckFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.specs2.runner.Specs2Framework",
+                        "org.specs2.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.specs.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.scalatest.tools.Framework",
+                        "org.scalatest.tools.ScalaTestFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "com.novocode.junit.JUnitFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "munit.Framework"
+                    ]
+                },
+                {
+                    "names": [
+                        "zio.test.sbt.ZTestFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "weaver.framework.CatsEffect"
+                    ]
+                },
+                {
+                    "names": [
+                        "hedgehog.sbt.Framework"
+                    ]
+                }
+            ],
+            "options": {
+                "excludes": [
+                    
+                ],
+                "arguments": [
+                    
+                ]
+            }
+        },
+        "platform": {
+            "name": "jvm",
+            "config": {
+                "home": "C:\\Program Files\\Java\\jdk-23",
+                "options": [
+                    "-Duser.dir=C:\\Users\\Disto\\Downloads\\dl-gen\\backend"
+                ]
+            },
+            "mainClass": [
+                
+            ]
+        },
+        "resolution": {
+            "modules": [
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-library",
+                    "version": "2.13.12",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-library",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.12\\scala-library-2.13.12.jar"
+                        },
+                        {
+                            "name": "scala-library",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.12\\scala-library-2.13.12-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-library",
+                    "version": "2.13.12",
+                    "configurations": "optional",
+                    "artifacts": [
+                        {
+                            "name": "scala-library",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.12\\scala-library-2.13.12.jar"
+                        },
+                        {
+                            "name": "scala-library",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.12\\scala-library-2.13.12-sources.jar"
+                        }
+                    ]
+                }
+            ]
+        },
+        "tags": [
+            "test"
+        ]
+    }
+}

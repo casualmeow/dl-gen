@@ -1,0 +1,429 @@
+{
+    "version": "1.4.0",
+    "project": {
+        "name": "backend",
+        "directory": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend",
+        "workspaceDir": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend",
+        "sources": [
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\src\\main\\scala",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\src\\main\\scala-2.13",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\src\\main\\scala-2",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\src\\main\\java",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\target\\scala-2.13\\src_managed\\main"
+        ],
+        "dependencies": [
+            "app",
+            "utils"
+        ],
+        "classpath": [
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.12\\scala-library-2.13.12.jar",
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-actor-typed_2.13\\2.8.5\\akka-actor-typed_2.13-2.8.5.jar",
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-stream_2.13\\2.8.5\\akka-stream_2.13-2.8.5.jar",
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-http_2.13\\10.5.3\\akka-http_2.13-10.5.3.jar",
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-actor_2.13\\2.8.5\\akka-actor_2.13-2.8.5.jar",
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-slf4j_2.13\\2.8.5\\akka-slf4j_2.13-2.8.5.jar",
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\slf4j\\slf4j-api\\1.7.36\\slf4j-api-1.7.36.jar",
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-protobuf-v3_2.13\\2.8.5\\akka-protobuf-v3_2.13-2.8.5.jar",
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\reactivestreams\\reactive-streams\\1.0.4\\reactive-streams-1.0.4.jar",
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\ssl-config-core_2.13\\0.6.1\\ssl-config-core_2.13-0.6.1.jar",
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-http-core_2.13\\10.5.3\\akka-http-core_2.13-10.5.3.jar",
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\config\\1.4.2\\config-1.4.2.jar",
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\modules\\scala-java8-compat_2.13\\1.0.0\\scala-java8-compat_2.13-1.0.0.jar",
+            "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-parsing_2.13\\10.5.3\\akka-parsing_2.13-10.5.3.jar"
+        ],
+        "out": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\.bloop\\backend",
+        "classesDir": "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\.bloop\\backend\\scala-2.13\\classes",
+        "resources": [
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\src\\main\\resources",
+            "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\target\\scala-2.13\\resource_managed\\main"
+        ],
+        "scala": {
+            "organization": "org.scala-lang",
+            "name": "scala-compiler",
+            "version": "2.13.12",
+            "options": [
+                
+            ],
+            "jars": [
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.12\\scala-library-2.13.12.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-compiler\\2.13.12\\scala-compiler-2.13.12.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-reflect\\2.13.12\\scala-reflect-2.13.12.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\io\\github\\java-diff-utils\\java-diff-utils\\4.12\\java-diff-utils-4.12.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\jline\\jline\\3.22.0\\jline-3.22.0.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\net\\java\\dev\\jna\\jna\\5.13.0\\jna-5.13.0.jar"
+            ],
+            "setup": {
+                "order": "mixed",
+                "addLibraryToBootClasspath": false,
+                "addCompilerToClasspath": false,
+                "addExtraJarsToClasspath": false,
+                "manageBootClasspath": false,
+                "filterLibraryFromClasspath": false
+            },
+            "bridgeJars": [
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala2-sbt-bridge\\2.13.12\\scala2-sbt-bridge-2.13.12.jar"
+            ]
+        },
+        "java": {
+            "options": [
+                
+            ]
+        },
+        "test": {
+            "frameworks": [
+                {
+                    "names": [
+                        "org.scalacheck.ScalaCheckFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.specs2.runner.Specs2Framework",
+                        "org.specs2.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.specs.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.scalatest.tools.Framework",
+                        "org.scalatest.tools.ScalaTestFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "com.novocode.junit.JUnitFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "munit.Framework"
+                    ]
+                },
+                {
+                    "names": [
+                        "zio.test.sbt.ZTestFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "weaver.framework.CatsEffect"
+                    ]
+                },
+                {
+                    "names": [
+                        "hedgehog.sbt.Framework"
+                    ]
+                }
+            ],
+            "options": {
+                "excludes": [
+                    
+                ],
+                "arguments": [
+                    
+                ]
+            }
+        },
+        "platform": {
+            "name": "jvm",
+            "config": {
+                "home": "C:\\Program Files\\Java\\jdk-23",
+                "options": [
+                    "-Duser.dir=C:\\Users\\Disto\\Downloads\\dl-gen\\backend"
+                ]
+            },
+            "mainClass": [
+                
+            ],
+            "runtimeConfig": {
+                "home": "C:\\Program Files\\Java\\jdk-23",
+                "options": [
+                    "-Duser.dir=C:\\Users\\Disto\\Downloads\\dl-gen\\backend"
+                ]
+            },
+            "classpath": [
+                "C:\\Users\\Disto\\Downloads\\dl-gen\\backend\\.bloop\\backend\\scala-2.13\\classes",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.12\\scala-library-2.13.12.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-actor-typed_2.13\\2.8.5\\akka-actor-typed_2.13-2.8.5.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-stream_2.13\\2.8.5\\akka-stream_2.13-2.8.5.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-http_2.13\\10.5.3\\akka-http_2.13-10.5.3.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-actor_2.13\\2.8.5\\akka-actor_2.13-2.8.5.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-slf4j_2.13\\2.8.5\\akka-slf4j_2.13-2.8.5.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\slf4j\\slf4j-api\\1.7.36\\slf4j-api-1.7.36.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-protobuf-v3_2.13\\2.8.5\\akka-protobuf-v3_2.13-2.8.5.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\reactivestreams\\reactive-streams\\1.0.4\\reactive-streams-1.0.4.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\ssl-config-core_2.13\\0.6.1\\ssl-config-core_2.13-0.6.1.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-http-core_2.13\\10.5.3\\akka-http-core_2.13-10.5.3.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\config\\1.4.2\\config-1.4.2.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\modules\\scala-java8-compat_2.13\\1.0.0\\scala-java8-compat_2.13-1.0.0.jar",
+                "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-parsing_2.13\\10.5.3\\akka-parsing_2.13-10.5.3.jar"
+            ]
+        },
+        "resolution": {
+            "modules": [
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-library",
+                    "version": "2.13.12",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-library",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.12\\scala-library-2.13.12.jar"
+                        },
+                        {
+                            "name": "scala-library",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.12\\scala-library-2.13.12-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe.akka",
+                    "name": "akka-actor-typed_2.13",
+                    "version": "2.8.5",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "akka-actor-typed_2.13",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-actor-typed_2.13\\2.8.5\\akka-actor-typed_2.13-2.8.5.jar"
+                        },
+                        {
+                            "name": "akka-actor-typed_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-actor-typed_2.13\\2.8.5\\akka-actor-typed_2.13-2.8.5-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe.akka",
+                    "name": "akka-stream_2.13",
+                    "version": "2.8.5",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "akka-stream_2.13",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-stream_2.13\\2.8.5\\akka-stream_2.13-2.8.5.jar"
+                        },
+                        {
+                            "name": "akka-stream_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-stream_2.13\\2.8.5\\akka-stream_2.13-2.8.5-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe.akka",
+                    "name": "akka-http_2.13",
+                    "version": "10.5.3",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "akka-http_2.13",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-http_2.13\\10.5.3\\akka-http_2.13-10.5.3.jar"
+                        },
+                        {
+                            "name": "akka-http_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-http_2.13\\10.5.3\\akka-http_2.13-10.5.3-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe.akka",
+                    "name": "akka-actor_2.13",
+                    "version": "2.8.5",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "akka-actor_2.13",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-actor_2.13\\2.8.5\\akka-actor_2.13-2.8.5.jar"
+                        },
+                        {
+                            "name": "akka-actor_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-actor_2.13\\2.8.5\\akka-actor_2.13-2.8.5-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe.akka",
+                    "name": "akka-slf4j_2.13",
+                    "version": "2.8.5",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "akka-slf4j_2.13",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-slf4j_2.13\\2.8.5\\akka-slf4j_2.13-2.8.5.jar"
+                        },
+                        {
+                            "name": "akka-slf4j_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-slf4j_2.13\\2.8.5\\akka-slf4j_2.13-2.8.5-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.slf4j",
+                    "name": "slf4j-api",
+                    "version": "1.7.36",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "slf4j-api",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\slf4j\\slf4j-api\\1.7.36\\slf4j-api-1.7.36.jar"
+                        },
+                        {
+                            "name": "slf4j-api",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\slf4j\\slf4j-api\\1.7.36\\slf4j-api-1.7.36-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe.akka",
+                    "name": "akka-protobuf-v3_2.13",
+                    "version": "2.8.5",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "akka-protobuf-v3_2.13",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-protobuf-v3_2.13\\2.8.5\\akka-protobuf-v3_2.13-2.8.5.jar"
+                        },
+                        {
+                            "name": "akka-protobuf-v3_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-protobuf-v3_2.13\\2.8.5\\akka-protobuf-v3_2.13-2.8.5-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.reactivestreams",
+                    "name": "reactive-streams",
+                    "version": "1.0.4",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "reactive-streams",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\reactivestreams\\reactive-streams\\1.0.4\\reactive-streams-1.0.4.jar"
+                        },
+                        {
+                            "name": "reactive-streams",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\reactivestreams\\reactive-streams\\1.0.4\\reactive-streams-1.0.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe",
+                    "name": "ssl-config-core_2.13",
+                    "version": "0.6.1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "ssl-config-core_2.13",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\ssl-config-core_2.13\\0.6.1\\ssl-config-core_2.13-0.6.1.jar"
+                        },
+                        {
+                            "name": "ssl-config-core_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\ssl-config-core_2.13\\0.6.1\\ssl-config-core_2.13-0.6.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe.akka",
+                    "name": "akka-http-core_2.13",
+                    "version": "10.5.3",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "akka-http-core_2.13",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-http-core_2.13\\10.5.3\\akka-http-core_2.13-10.5.3.jar"
+                        },
+                        {
+                            "name": "akka-http-core_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-http-core_2.13\\10.5.3\\akka-http-core_2.13-10.5.3-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe",
+                    "name": "config",
+                    "version": "1.4.2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "config",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\config\\1.4.2\\config-1.4.2.jar"
+                        },
+                        {
+                            "name": "config",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\config\\1.4.2\\config-1.4.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang.modules",
+                    "name": "scala-java8-compat_2.13",
+                    "version": "1.0.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-java8-compat_2.13",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\modules\\scala-java8-compat_2.13\\1.0.0\\scala-java8-compat_2.13-1.0.0.jar"
+                        },
+                        {
+                            "name": "scala-java8-compat_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\modules\\scala-java8-compat_2.13\\1.0.0\\scala-java8-compat_2.13-1.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe.akka",
+                    "name": "akka-parsing_2.13",
+                    "version": "10.5.3",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "akka-parsing_2.13",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-parsing_2.13\\10.5.3\\akka-parsing_2.13-10.5.3.jar"
+                        },
+                        {
+                            "name": "akka-parsing_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\com\\typesafe\\akka\\akka-parsing_2.13\\10.5.3\\akka-parsing_2.13-10.5.3-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-library",
+                    "version": "2.13.12",
+                    "configurations": "optional",
+                    "artifacts": [
+                        {
+                            "name": "scala-library",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.12\\scala-library-2.13.12.jar"
+                        },
+                        {
+                            "name": "scala-library",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\Disto\\AppData\\Local\\Coursier\\Cache\\v1\\https\\repo1.maven.org\\maven2\\org\\scala-lang\\scala-library\\2.13.12\\scala-library-2.13.12-sources.jar"
+                        }
+                    ]
+                }
+            ]
+        },
+        "tags": [
+            "library"
+        ]
+    }
+}
