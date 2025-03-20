@@ -5,8 +5,8 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
 import akka.stream.Materializer
 
-import scala.concurrent.ExecutionContextExecutor
-import scala.io.StdIn
+import scala.concurrent.{Await, ExecutionContextExecutor}
+import scala.concurrent.duration.Duration
 
 object Main {
 
@@ -25,9 +25,6 @@ object Main {
     val bindingFuture = Http().newServerAt("0.0.0.0", 8080).bind(route)
 
     println("Server online at http://localhost:8080/\nPress RETURN to stop...")
-    StdIn.readLine() 
-    bindingFuture
-      .flatMap(_.unbind())
-      .onComplete(_ => system.terminate())
+    Await.result(system.whenTerminated, Duration.Inf)
   }
 }
