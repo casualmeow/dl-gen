@@ -7,6 +7,7 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
+      "@/*": ["src/*"],
       "entities/*": ["entities/*"],
 		  "pages/*": ["pages/*"],
   		"shared/*": ["shared/*"]  

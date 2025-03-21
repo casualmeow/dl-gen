@@ -23,6 +23,7 @@
     //shadcn indeed
     "baseUrl": ".",
     "paths": {
+      "@/*": ["src/*"],
 			"entities/*": ["entities/*"],
 			"pages/*": ["pages/*"],
 			"shared/*": ["shared/*"]  
