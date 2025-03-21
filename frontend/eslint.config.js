@@ -3,6 +3,7 @@ import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
+import css from "@eslint/css"
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -25,4 +26,14 @@ export default tseslint.config(
       ],
     },
   },
+  { // probably will be decomposed into other file
+    files: ["**/*.css"],
+    plugins: {
+      css,
+    },
+    language: "css/css",
+    rules: {
+      "css/no-duplicate-imports": "error",
+    },
+  }
 )
