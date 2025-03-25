@@ -6,66 +6,86 @@ import akka.http.scaladsl.model.{StatusCodes, Uri}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.Materializer
-
-import scala.concurrent.{Await, ExecutionContextExecutor, Future}
+import akka.stream.scaladsl.FileIO
+import java.io.File
+import scala.concurrent.{Await, ExecutionContext, ExecutionContextExecutor, Future}
 import scala.concurrent.duration.Duration
 
 object Main {
-
+  val adminHash = java.util.UUID.randomUUID().toString().take(12)
   def main(args: Array[String]): Unit = {
     implicit val system: ActorSystem = ActorSystem("my-akka-http-system")
     implicit val materializer: Materializer = Materializer(system)
     implicit val ec: ExecutionContextExecutor = system.dispatcher
+    println(s" [ADMIN HASH]: $adminHash")
 
+    val authorizedIps = scala.collection.concurrent.TrieMap.empty[String, Boolean]
+    
     val route: Route =
       concat(
-        path("hello") {
+        path("ping") {
           get {
-            complete("Hello, Akka HTTP!")
+            complete("pong")
           }
         },
-        path("api" / "upload") {
+        path("upload") {
           post {
-            // For example, you might accept multi-part form data
             entity(as[akka.http.scaladsl.model.Multipart.FormData]) { formData =>
-              // 1) Process the incoming form data (PDF, etc.)
-              val futureHash: Future[String] = processUploadedPDF(formData)
+              val futureHash: Future[String] = storePdf(formData)
 
-              // 2) Once done, redirect to /edit/<hash>
               onSuccess(futureHash) { hash =>
                 redirect(Uri(s"/edit/$hash"), StatusCodes.SeeOther)
               }
             }
           }
         },
-        // GET /edit/<hash> to show the "edit" page
-        path("edit" / Segment) { hash =>
-          get {
-            complete(s"You are on the edit page for hash = $hash")
+        path("authorize-admin"){
+          post{
+            entity(as[String]) { providedHash =>
+              extractClientIP{ ip =>
+              val ipAddress = ip.toOption.map(_.getHostAddress).getOrElse("")
+                if (providedHash == adminHash) {
+                  authorizedIps.put(ipAddress, true)
+                  complete("Your IP is now authorized for /admin access.")
+                } else {
+                  complete(StatusCodes.Unauthorized, "Invalid hash.")
+                }
+              }
+            }
           }
         }
+        path("files" / Segment) { hash =>
+          get {
+            val pdfFile = new File(s"/app/pdfs$hash.pdf")
+            if (pdfFile.exists()) {
+              getFromFile(pdfFile)
+            } else {
+              complete(StatusCodes.NotFound, "PDF not found.")
+            }
+          }
+        }   
       )
 
     val binding = Http().newServerAt("0.0.0.0", 8080).bind(route)
     println("Server online at http://localhost:8080/")
-
-    // Block until system terminates
     Await.result(system.whenTerminated, Duration.Inf)
   }
 
-  /**
-   * Example function that processes an uploaded PDF from form data,
-   * then returns a Future hash string.
-   */
-  def processUploadedPDF(
-    formData: akka.http.scaladsl.model.Multipart.FormData
-  )(implicit ec: ExecutionContextExecutor): Future[String] = {
+  def storePdf(formData: akka.http.scaladsl.model.Multipart.FormData)(implicit ec: ExecutionContext, materializer: Materializer): Future[String] = {
+    val hash = java.util.UUID.randomUUID().toString.take(8)
+    val pdfDirectory = "/app/pdfs"
+    val outFile = new File(s"$pdfDirectory/$hash.pdf")
 
-    // Parse the form data, store the PDF, etc.
-    // For example, you might do something like:
-    // formData.parts.runFoldAsync(...) { ... }
+    formData.parts
+      .runFoldAsync(false) { case (done, part) =>
+        if (part.filename.isDefined) {
+        val fileSink = FileIO.toPath(outFile.toPath)
+        part.entity.dataBytes.runWith(fileSink).map(_ => done)
+      } else {
+        Future.successful(done)
+      }
+    }
+    .map { _ => hash }
+}
 
-    // For now, pretend we return a random hash after “processing”
-    Future.successful(java.util.UUID.randomUUID().toString.take(8))
-  }
 }

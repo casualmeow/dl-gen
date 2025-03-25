@@ -6,6 +6,8 @@ services:
       - "8080:8080"
     networks:
       - app_network
+    volumes:
+      - pdfdata:/app/pdfs
 
   frontend:
     build: ./frontend
@@ -19,3 +21,6 @@ services:
 
 networks:
   app_network:
+
+volumes:
+  pdfdata:

@@ -1,1 +1,1 @@
-export * from './ui/document-edit';
+export * from './ui/edit-page';

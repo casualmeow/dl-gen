@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { uploadFile } from '../api/uploadFile';
-
+import { redirect } from 'react-router';
 const DragAndDrop = () => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
@@ -12,7 +12,7 @@ const DragAndDrop = () => {
       ) {
         uploadFile(file)
           .then((data) => {
-            console.log('File uploaded successfully:', data);
+            redirect(data.replace('/api', ''));
           })
           .catch((error) => {
             console.error('File upload error:', error);
