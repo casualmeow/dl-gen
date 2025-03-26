@@ -10,3 +10,9 @@ node no-docker-start.js
 ./merge-gitignore.bat
 ```
 > by that script user can merge .gitgnore from frontend and backend to root folder 
+
+#### DEPRECATED
+```sh
+node admin-auth.js
+```
+> while starting backend you can see the hash key. if you start the script and enter that hash key you will get access to the /admin/ endpoint

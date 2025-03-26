@@ -1,13 +1,11 @@
+import { RouterProvider } from 'react-router'
 import '../App.css'
-import { DragAndDrop } from '../features/uploadFile'
+import { appRouter } from './routes/appRouter'
 
 function App() {
 
   return (
-    <>
-       <h1>upload file:</h1>
-       <DragAndDrop />
-    </>
+    <RouterProvider router={appRouter} />
   )
 }
 
