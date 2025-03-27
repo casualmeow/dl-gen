@@ -8,7 +8,7 @@ import css from "@eslint/css"
 export default tseslint.config(
   { ignores: ['dist'] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended, 'eslint-config-prettier'],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: "latest",

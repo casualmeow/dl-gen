@@ -1,8 +1,10 @@
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { uploadFile } from '../api/uploadFile';
-import { redirect } from 'react-router';
+import { useNavigate } from 'react-router';
+
 const DragAndDrop = () => {
+  const navigate = useNavigate();
   const onDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
       if (
@@ -12,7 +14,7 @@ const DragAndDrop = () => {
       ) {
         uploadFile(file)
           .then((data) => {
-            redirect(data.replace('/api', ''));
+            navigate(data.replace('/api', ''));
           })
           .catch((error) => {
             console.error('File upload error:', error);
@@ -21,7 +23,7 @@ const DragAndDrop = () => {
         console.error('Invalid file type:', file.type);
       }
     });
-  }, []);
+  }, [navigate]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -36,9 +38,7 @@ const DragAndDrop = () => {
     <div
       {...getRootProps()}
       style={{
-        border: '2px solid #cccccc',
-        borderRadius: '5px',
-        padding: '20px',
+        paddingTop: '20px',
         textAlign: 'center',
         cursor: 'pointer'
       }}
