@@ -39,8 +39,18 @@ export const PdfCanvas = ({ structure, onSelect }: Props) => {
   return (
     <div className="relative flex-1 bg-white overflow-auto border">
       <div className="absolute left-4 top-4 z-10 flex gap-2 bg-gray-100 p-2 rounded shadow">
-        <button className="px-2 py-1 bg-white rounded border" onClick={() => setZoom((z) => z + 0.1)}>+</button>
-        <button className="px-2 py-1 bg-white rounded border" onClick={() => setZoom((z) => z - 0.1)}>-</button>
+        <button
+          className="px-2 py-1 bg-white rounded border"
+          onClick={() => setZoom((z) => z + 0.1)}
+        >
+          +
+        </button>
+        <button
+          className="px-2 py-1 bg-white rounded border"
+          onClick={() => setZoom((z) => z - 0.1)}
+        >
+          -
+        </button>
         <span>{Math.round(zoom * 100)}%</span>
       </div>
 

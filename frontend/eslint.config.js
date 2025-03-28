@@ -1,17 +1,21 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
-import css from "@eslint/css"
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import tseslint from 'typescript-eslint';
+import css from '@eslint/css';
 
 export default tseslint.config(
   { ignores: ['dist'] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended, 'eslint-config-prettier'],
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommended,
+      'eslint-config-prettier',
+    ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
-      ecmaVersion: "latest",
+      ecmaVersion: 'latest',
       globals: globals.browser,
     },
     plugins: {
@@ -26,14 +30,15 @@ export default tseslint.config(
       ],
     },
   },
-  { // probably will be decomposed into other file
-    files: ["**/*.css"],
+  {
+    // probably will be decomposed into other file
+    files: ['**/*.css'],
     plugins: {
       css,
     },
-    language: "css/css",
+    language: 'css/css',
     rules: {
-      "css/no-duplicate-imports": "error",
+      'css/no-duplicate-imports': 'error',
     },
   }
-)
+);

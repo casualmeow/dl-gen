@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { EditPage } from 'pages/document-edit';
-import { }
 
 export const appRouter = createBrowserRouter([
   {
@@ -12,4 +11,3 @@ export const appRouter = createBrowserRouter([
     element: <EditPage />,
   },
 ]);
-

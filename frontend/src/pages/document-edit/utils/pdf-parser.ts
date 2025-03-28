@@ -45,4 +45,4 @@ export const parsePdfStructure = async (pdfBytes: ArrayBuffer) => {
   };
 };
 
-export type PdfStructure = Awaited<ReturnType<typeof parsePdfStructure>>; 
+export type PdfStructure = Awaited<ReturnType<typeof parsePdfStructure>>;

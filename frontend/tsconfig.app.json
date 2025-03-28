@@ -24,10 +24,10 @@
     "baseUrl": "src",
     "paths": {
       "@/*": ["src/*"],
-			"entities/*": ["entities/*"],
-			"pages/*": ["pages/*"],
-			"shared/*": ["shared/*"]  
-		}
+      "entities/*": ["entities/*"],
+      "pages/*": ["pages/*"],
+      "shared/*": ["shared/*"]
+    }
   },
   "include": ["src"]
 }

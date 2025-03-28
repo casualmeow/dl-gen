@@ -9,8 +9,8 @@
     "paths": {
       "@/*": ["src/*"],
       "entities/*": ["entities/*"],
-		  "pages/*": ["pages/*"],
-  		"shared/*": ["shared/*"]  
+      "pages/*": ["pages/*"],
+      "shared/*": ["shared/*"]
     },
     "types": ["node", "vite/client"]
   }

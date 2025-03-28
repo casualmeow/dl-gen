@@ -1,1 +1,1 @@
-export { SwitchTheme } from "./ui/swtichTheme"
+export { SwitchTheme } from './ui/swtichTheme';
