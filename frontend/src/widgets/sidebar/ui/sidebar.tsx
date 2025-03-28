@@ -2,20 +2,52 @@ import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
-    SidebarGroup,
+    SidebarMenu,
     SidebarHeader,
-  } from "entities/components/ui/sidebar"
+    SidebarMenuItem
+  } from "entities/components"
+import { Settings, Briefcase } from "lucide-react"
+import { useSidebarView } from "../model/useSidebarView";
+import { useNavigate } from "react-router";
+
+type MenuItem = {
+  icon: React.ReactNode;
+  label: string;
+  onClick?: () => void;
+}
+
+export const AppSidebar = () => {
+  const { setView } = useSidebarView();
+  const navigate = useNavigate();
   
-  export function AppSidebar() {
-    return (
-      <Sidebar>
+  const menuItems: MenuItem[] = [
+    {
+      icon: <Briefcase />,
+      label: "My works",
+      onClick: () => navigate("/")
+    },
+    {
+      icon: <Settings />,
+      label: "Settings",
+      onClick: () => setView("settings")
+    }
+  ];
+  
+  return (
+    <Sidebar>
+      <SidebarContent>
         <SidebarHeader />
-        <SidebarContent>
-          <SidebarGroup />
-          <SidebarGroup />
-        </SidebarContent>
-        <SidebarFooter />
-      </Sidebar>
-    )
-  }
+        <SidebarMenu>
+          {menuItems.map((item, index) => (
+            <SidebarMenuItem key={index} onClick={item.onClick}>
+              {item.icon}
+              <span>{item.label}</span>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarContent>
+      <SidebarFooter />
+    </Sidebar>
+  )
+}
   
