@@ -1,55 +1,48 @@
-'use client';
-
 import { useParams } from 'react-router';
-import { useEffect, useRef, useState } from 'react';
-import { Bold, Italic, Underline } from 'lucide-react';
-import { Toggle } from 'entities/components/ui/toggle'; // TODO: змінити на власний компонент
-import { PdfCanvas } from './pdf-canvas';
-import { PdfTreeInspector } from './pdf-tree-inspector';
+import { useEffect, useState } from 'react';
 import { usePdfStructure } from '../model/pdf-structure';
+import { PdfTreeInspector } from './pdf-tree-inspector';
+import { PdfCanvas } from './pdf-canvas';
+import { ObjectInspector } from './object-inspector';
+import { PdfEditorToolbar } from './editor-toolbar';
 
 export const EditPage = () => {
-  const { fileId } = useParams(); // з URL /edit/:fileId
-  const canvasRef = useRef<HTMLDivElement>(null);
-  const [selectedText, setSelectedText] = useState<HTMLElement | null>(null);
+  const { fileId } = useParams();
+  const { structure, load, selected, setSelected } = usePdfStructure();
+
+  const [selectedTextEl, setSelectedTextEl] = useState<HTMLElement | null>(null);
 
   const handleStyle = (style: 'bold' | 'italic' | 'underline') => {
-    if (selectedText) {
-      selectedText.style.fontWeight = style === 'bold' ? 'bold' : selectedText.style.fontWeight;
-      selectedText.style.fontStyle = style === 'italic' ? 'italic' : selectedText.style.fontStyle;
-      selectedText.style.textDecoration =
-        style === 'underline' ? 'underline' : selectedText.style.textDecoration;
+    if (selectedTextEl) {
+      if (style === 'bold') selectedTextEl.style.fontWeight = 'bold';
+      if (style === 'italic') selectedTextEl.style.fontStyle = 'italic';
+      if (style === 'underline') selectedTextEl.style.textDecoration = 'underline';
     }
   };
 
   useEffect(() => {
-    const dummyText = document.createElement('div');
-    dummyText.innerText = 'Це тестовий текст';
-    dummyText.className = 'absolute left-20 top-20 text-[16px] cursor-pointer';
-    dummyText.contentEditable = 'true';
-    dummyText.onclick = () => setSelectedText(dummyText);
-    canvasRef.current?.appendChild(dummyText);
-  }, []);
+    if (!fileId) return;
+    fetch(`/file/${fileId}.pdf`)
+      .then((res) => res.arrayBuffer())
+      .then(load);
+  }, [fileId]);
 
   return (
-    <div className="relative w-full h-screen flex flex-col">
-      {/* Toolbar/  // decompose */}
-      <div className="w-full p-2 bg-gray-100 border-b shadow flex items-center gap-2">
-        <Toggle onClick={() => handleStyle('bold')}>
-          <Bold className="w-4 h-4" />
-        </Toggle>
-        <Toggle onClick={() => handleStyle('italic')}>
-          <Italic className="w-4 h-4" />
-        </Toggle>
-        <Toggle onClick={() => handleStyle('underline')}>
-          <Underline className="w-4 h-4" />
-        </Toggle>
+    <div className="flex flex-col h-screen w-full">
+      <PdfEditorToolbar onStyle={handleStyle} />
+
+      <div className="flex flex-1 overflow-hidden">
+        <PdfTreeInspector structure={structure} onSelect={setSelected} />
+        <PdfCanvas
+          structure={structure}
+          onSelect={(obj, el) => {
+            setSelected(obj);
+            setSelectedTextEl(el);
+          }}
+        />
       </div>
 
-      {/* PDF Viewer */}
-      <div className="flex-1 relative overflow-auto" ref={canvasRef}>
-        {/* Тут буде рендер PDF та оверлеї */}
-      </div>
+      <ObjectInspector selected={selected ?? {}} />
     </div>
   );
-};
+}

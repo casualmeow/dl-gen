@@ -2,7 +2,7 @@ import Cookies from "js-cookie"
 import { SidebarProvider, SidebarTrigger } from "entities/components"
 import { AppSidebar } from "widgets/sidebar/ui/sidebar"
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout() {
     
     const defaultOpen = Cookies.get("sidebar_state") === "true"
 
@@ -11,7 +11,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <AppSidebar />
       <main>
         <SidebarTrigger />
-        {children}
       </main>
     </SidebarProvider>
   )

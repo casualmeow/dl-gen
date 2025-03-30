@@ -1,11 +1,11 @@
 import { NavigationPages } from 'widgets/navPages';
-import { Sidebar } from 'shared/ui/sidebar';
+import { Layout } from 'widgets/sidebar';
 
 export function WorksPage() {
   return (
-    <div>
-      <h1>Works</h1>
+    <>
+      <Layout />
       <NavigationPages />
-    </div>
+    </>
   );
 }
