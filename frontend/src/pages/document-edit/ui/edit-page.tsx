@@ -45,4 +45,4 @@ export const EditPage = () => {
       <ObjectInspector selected={selected ?? {}} />
     </div>
   );
-}
+};

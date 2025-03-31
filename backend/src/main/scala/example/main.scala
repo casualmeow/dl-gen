@@ -39,21 +39,6 @@ object Main {
             }
           }
         },
-        path("authorize-admin"){
-          post{
-            entity(as[String]) { providedHash =>
-              extractClientIP{ ip =>
-              val ipAddress = ip.toOption.map(_.getHostAddress).getOrElse("")
-                if (providedHash == adminHash) {
-                  authorizedIps.put(ipAddress, true)
-                  complete("Your IP is now authorized for /admin access.")
-                } else {
-                  complete(StatusCodes.Unauthorized, "Invalid hash.")
-                }
-              }
-            }
-          }
-        }
         path("files" / Segment) { hash =>
           get {
             val pdfFile = new File(s"/app/pdfs$hash.pdf")

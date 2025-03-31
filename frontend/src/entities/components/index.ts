@@ -64,7 +64,8 @@ export {
   CardContent,
 } from './ui/card';
 export { Avatar, AvatarImage, AvatarFallback } from './ui/avatar';
-export {  DropdownMenu,
+export {
+  DropdownMenu,
   DropdownMenuPortal,
   DropdownMenuTrigger,
   DropdownMenuContent,
@@ -78,4 +79,14 @@ export {  DropdownMenu,
   DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubTrigger,
-  DropdownMenuSubContent } from './ui/dropdown-menu';
+  DropdownMenuSubContent,
+} from './ui/dropdown-menu';
+export {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+} from './ui/breadcrumb';

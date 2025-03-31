@@ -1,11 +1,13 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft } from 'lucide-react';
 
 type BackButtonProps = {
-    onClick: () => void;
-}
+  onClick: () => void;
+};
 
 export const BackButton = ({ onClick }: BackButtonProps) => {
-    return <button onClick={onClick} className="text-sm">
-        <ArrowLeft />
+  return (
+    <button onClick={onClick} className="text-sm">
+      <ArrowLeft />
     </button>
-}
+  );
+};

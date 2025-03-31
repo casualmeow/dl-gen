@@ -1,21 +1,12 @@
-import { cn } from "shared/lib/utils"
-import { Button } from "entities/components"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "entities/components"
-import { Input } from "entities/components"
-import { Label } from "entities/components"
-import { useAuth } from "entities/user/api/auth"
-import { useState } from "react"
+import { cn } from 'shared/lib/utils';
+import { Button } from 'entities/components';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'entities/components';
+import { Input } from 'entities/components';
+import { Label } from 'entities/components';
+import { useAuth } from 'entities/user/api/auth';
+import { useState } from 'react';
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
   const { login, error, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,13 +16,11 @@ export function LoginForm({
     await login(email, password);
   };
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
-          </CardDescription>
+          <CardDescription>Enter your email below to login to your account</CardDescription>
         </CardHeader>
         <CardContent>
           <form>
@@ -57,10 +46,10 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input 
-                  id="password" 
-                  type="password" 
-                  required 
+                <Input
+                  id="password"
+                  type="password"
+                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -73,7 +62,7 @@ export function LoginForm({
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
+              Don&apos;t have an account?{' '}
               <a href="#" className="underline underline-offset-4">
                 Sign up
               </a>
@@ -82,5 +71,5 @@ export function LoginForm({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

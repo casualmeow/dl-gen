@@ -1,11 +1,9 @@
-import { LoginForm } from "./login-form"
+import { LoginForm } from './login-form';
 import { useAuth } from 'entities/user/api/auth';
-import { useNavigate } from "react-router";
-import { useEffect } from "react";
-
+import { useNavigate } from 'react-router';
+import { useEffect } from 'react';
 
 export function LoginPage() {
-
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -21,5 +19,5 @@ export function LoginPage() {
         <LoginForm />
       </div>
     </div>
-  )
+  );
 }

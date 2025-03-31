@@ -1,10 +1,9 @@
-import Cookies from "js-cookie"
-import { SidebarProvider, SidebarTrigger } from "entities/components"
-import { AppSidebar } from "widgets/sidebar/ui/sidebar"
+import Cookies from 'js-cookie';
+import { SidebarProvider, SidebarTrigger } from 'entities/components';
+import { AppSidebar } from 'widgets/sidebar/ui/sidebar';
 
 export default function Layout() {
-    
-    const defaultOpen = Cookies.get("sidebar_state") === "true"
+  const defaultOpen = Cookies.get('sidebar_state') === 'true';
 
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
@@ -13,5 +12,5 @@ export default function Layout() {
         <SidebarTrigger />
       </main>
     </SidebarProvider>
-  )
+  );
 }

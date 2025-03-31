@@ -40,14 +40,14 @@ export const fetchUser = async (token: string): Promise<User> => {
       // Temporarily set the token for this request
       localStorage.setItem('auth_token', token);
     }
-    
+
     const user = await getCurrentUser();
-    
+
     // Clean up if we temporarily set the token
     if (!currentToken && token) {
       localStorage.removeItem('auth_token');
     }
-    
+
     if (!user) {
       throw new Error('Failed to fetch user data');
     }
@@ -102,15 +102,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!newToken) {
         throw new Error('Authentication failed: No token received');
       }
-      
+
       // Store token first so it can be used for the user data request
       localStorage.setItem('auth_token', newToken);
       setToken(newToken);
-      
+
       // Fetch user data with the new token
       const userData = await fetchUser(newToken);
       setUser(userData);
-      
+
       return true;
     } catch (err) {
       // Clean up any token that might have been set
@@ -154,11 +154,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     logout,
     error,
   };
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 // Hook to use authentication in components
