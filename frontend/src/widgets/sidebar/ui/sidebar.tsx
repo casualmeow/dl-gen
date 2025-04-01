@@ -9,11 +9,13 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
 } from 'entities/components';
-import { Settings, Ellipsis, Briefcase, BookOpenText, BookDashed, LogIn } from 'lucide-react';
-import { useSidebarView } from '../model/useSidebarView';
+import { Briefcase, BookOpenText, BookDashed } from 'lucide-react';
+import { SidebarViewProvider, useSidebarView } from '../model/useSidebarView';
 import { useNavigate } from 'react-router';
 import { NavUser } from './navUser';
 import { useAuth } from 'entities/user';
+import { UnauthorizedUserHeader } from './unathorized';
+import { SidebarSettings } from './settings';
 
 type MenuItem = {
   icon: React.ComponentType<{ size?: number }>;
@@ -22,7 +24,15 @@ type MenuItem = {
 };
 
 export const AppSidebar = () => {
-  const { setView } = useSidebarView();
+  return (
+    <SidebarViewProvider>
+      <AppSidebarContent />
+    </SidebarViewProvider>
+  );
+};
+
+const AppSidebarContent = () => {
+  const { view, setView } = useSidebarView();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
 
@@ -63,33 +73,28 @@ export const AppSidebar = () => {
               }}
             />
           ) : (
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href="/login" className="flex items-center gap-3">
-                    <LogIn size={18} />
-                    <span>Log in</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
+            <UnauthorizedUserHeader />
           )}
         </SidebarHeader>
-        <SidebarMenu>
-          <SidebarGroup>
-            <SidebarGroupLabel>Sections</SidebarGroupLabel>
-            {menuItems.map((item) => (
-              <SidebarMenuItem key={item.label}>
-                <SidebarMenuButton asChild>
-                  <a href={item.url} className="flex items-center gap-3">
-                    <item.icon size={18} />
-                    <span>{item.label}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarGroup>
-        </SidebarMenu>
+        {view === 'settings' ? (
+          <SidebarSettings showBack={true} onBack={() => setView('main')} />
+        ) : (
+          <SidebarMenu>
+            <SidebarGroup>
+              <SidebarGroupLabel>Sections</SidebarGroupLabel>
+              {menuItems.map((item) => (
+                <SidebarMenuItem key={item.label}>
+                  <SidebarMenuButton asChild>
+                    <a href={item.url} className="flex items-center gap-3">
+                      <item.icon size={18} />
+                      <span>{item.label}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarGroup>
+          </SidebarMenu>
+        )}
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>

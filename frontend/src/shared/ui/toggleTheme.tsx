@@ -12,10 +12,10 @@ export function ModeToggle() {
         checked={theme === 'dark'}
         onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
       />
-      <Label htmlFor="theme-toggle">
+      {/* <Label htmlFor="theme-toggle">
         {theme === 'dark' ? <Moon className="size-4" /> : <Sun className="size-4" />}
         Toggle theme
-      </Label>
+      </Label> */}
     </>
   );
 }

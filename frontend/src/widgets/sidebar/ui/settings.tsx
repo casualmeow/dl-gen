@@ -9,17 +9,13 @@ type SidebarSettingsProps = {
 
 export const SidebarSettings = ({ showBack, onBack }: SidebarSettingsProps) => {
   return (
-    <>
+    <div className='p-2'>
       {showBack && <BackButton onClick={onBack} />}
-      <span>Back</span>
       <SidebarGroup>
         <SidebarMenuItem>
           <ModeToggle />
         </SidebarMenuItem>
-        <SidebarMenuItem>
-          <span>Theme</span>
-        </SidebarMenuItem>
       </SidebarGroup>
-    </>
+    </div>
   );
 };
