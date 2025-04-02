@@ -14,7 +14,7 @@
     "components": "entities/components",
     "utils": "shared/lib/utils",
     "ui": "entities/components/ui",
-    "lib": "entities/lib",
+    "lib": "shared/lib/utils",
     "hooks": "entities/hooks"
   },
   "iconLibrary": "lucide"
