@@ -11,7 +11,6 @@ import {
 } from 'entities/components';
 import { Briefcase, BookOpenText, BookDashed } from 'lucide-react';
 import { SidebarViewProvider, useSidebarView } from '../model/useSidebarView';
-import { useNavigate } from 'react-router';
 import { NavUser } from './navUser';
 import { useAuth } from 'entities/user';
 import { UnauthorizedUserHeader } from './unathorized';
@@ -33,7 +32,6 @@ export const AppSidebar = () => {
 
 const AppSidebarContent = () => {
   const { view, setView } = useSidebarView();
-  const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
 
   const menuItems: MenuItem[] = [
@@ -63,7 +61,7 @@ const AppSidebarContent = () => {
   return (
     <Sidebar>
       <SidebarContent>
-        <SidebarHeader>
+        <SidebarHeader className='pt-5'>
           {isAuthenticated ? (
             <NavUser
               user={{
@@ -80,7 +78,7 @@ const AppSidebarContent = () => {
           <SidebarSettings showBack={true} onBack={() => setView('main')} />
         ) : (
           <SidebarMenu>
-            <SidebarGroup>
+            <SidebarGroup className="pt-0">
               <SidebarGroupLabel>Sections</SidebarGroupLabel>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.label}>

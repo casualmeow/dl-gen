@@ -149,6 +149,19 @@ async def protected_resource(current_user: User = Depends(get_current_active_use
         "user_info": current_user
     }
 
+# File upload endpoint
+@app.post("/api/upload")
+async def upload_file(file: UploadFile = File(...)):
+    try:
+        # Process the uploaded file here
+        # For now, we'll just return a redirect URL
+        return {"redirect": "/edit/abc123"}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
 # Run the application
 if __name__ == "__main__":
     import uvicorn

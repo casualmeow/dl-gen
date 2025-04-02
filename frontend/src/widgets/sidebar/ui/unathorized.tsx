@@ -1,17 +1,6 @@
-import { Ellipsis } from 'lucide-react';
 import { useSidebarView } from '../model/useSidebarView';
-import { redirect, useNavigate } from'react-router';
-import { LogIn, Palette, Languages, Settings } from 'lucide-react';
-import { DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  SidebarHeader,
-  SidebarMenuItem,
- } from 'entities/components';
+import { useNavigate } from'react-router';
+import { Settings } from 'lucide-react';
 import { Button } from 'entities/components';
 
 export function UnauthorizedUserHeader() {

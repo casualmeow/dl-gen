@@ -1,5 +1,4 @@
-import { Moon, Sun } from 'lucide-react';
-import { Switch, Label } from 'entities/components';
+import { Switch } from 'entities/components';
 import { useTheme } from 'entities/theme';
 
 export function ModeToggle() {
