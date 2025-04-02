@@ -10,6 +10,9 @@ import akka.stream.scaladsl.FileIO
 import java.io.File
 import scala.concurrent.{Await, ExecutionContext, ExecutionContextExecutor, Future}
 import scala.concurrent.duration.Duration
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import spray.json.DefaultJsonProtocol._
+
 
 object Main {
   val adminHash = java.util.UUID.randomUUID().toString().take(12)
@@ -17,7 +20,9 @@ object Main {
     implicit val system: ActorSystem = ActorSystem("my-akka-http-system")
     implicit val materializer: Materializer = Materializer(system)
     implicit val ec: ExecutionContextExecutor = system.dispatcher
-    println(s" [ADMIN HASH]: $adminHash")
+
+    case class UploadResponse(url: String)
+    implicit val uploadResponseFormat = jsonFormat1(UploadResponse)
 
     val authorizedIps = scala.collection.concurrent.TrieMap.empty[String, Boolean]
     
@@ -34,14 +39,14 @@ object Main {
               val futureHash: Future[String] = storePdf(formData)
 
               onSuccess(futureHash) { hash =>
-                redirect(Uri(s"/edit/$hash"), StatusCodes.SeeOther)
+                complete(UploadResponse(s"/edit/$hash"))
               }
             }
           }
         },
         path("files" / Segment) { hash =>
           get {
-            val pdfFile = new File(s"/app/pdfs$hash.pdf")
+            val pdfFile = new File(s"/app/pdfs/$hash.pdf")
             if (pdfFile.exists()) {
               getFromFile(pdfFile)
             } else {

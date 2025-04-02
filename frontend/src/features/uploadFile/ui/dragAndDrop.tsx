@@ -5,28 +5,32 @@ import { useNavigate } from 'react-router';
 
 const DragAndDrop = () => {
   const navigate = useNavigate();
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      acceptedFiles.forEach((file) => {
-        if (
-          file.type === 'application/pdf' ||
-          file.type === 'application/msword' ||
-          file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-        ) {
-          uploadFile(file)
-            .then((data) => {
-              navigate(data.replace('/api', ''));
-            })
-            .catch((error) => {
-              console.error('File upload error:', error);
-            });
+
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    for (const file of acceptedFiles) {
+      const isSupported =
+        file.type === 'application/pdf' ||
+        file.type === 'application/msword' ||
+        file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+      if (!isSupported) {
+        console.error('Invalid file type:', file.type);
+        continue;
+      }
+
+      try {
+        const redirectPath = await uploadFile(file);
+        if (redirectPath) {
+          // Navigate to /edit/{hash} or whatever the backend gave
+          navigate(redirectPath);
         } else {
-          console.error('Invalid file type:', file.type);
+          console.error('No redirect path returned from server');
         }
-      });
-    },
-    [navigate],
-  );
+      } catch (error) {
+        console.error('File upload error:', error);
+      }
+    }
+  }, [navigate]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -41,13 +45,19 @@ const DragAndDrop = () => {
     <div
       {...getRootProps()}
       style={{
-        paddingTop: '20px',
+        padding: '20px',
+        border: '2px dashed #ccc',
+        borderRadius: '10px',
         textAlign: 'center',
         cursor: 'pointer',
       }}
     >
       <input {...getInputProps()} />
-      {isDragActive ? <p>Drop the files here ...</p> : <p>Drag or drop .word/.pdf files here</p>}
+      <p>
+        {isDragActive
+          ? 'Drop the file here...'
+          : 'Drag and drop a .pdf or .doc/.docx file here, or click to select'}
+      </p>
     </div>
   );
 };

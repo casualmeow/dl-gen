@@ -5,9 +5,13 @@ import { PdfTreeInspector } from './pdf-tree-inspector';
 import { PdfCanvas } from './pdf-canvas';
 import { ObjectInspector } from './object-inspector';
 import { PdfEditorToolbar } from './editor-toolbar';
+import { AppSidebar } from 'widgets/sidebar';
+import AppSidebarProvider from 'widgets/sidebar/ui/provider';
+import { AppHeader } from 'widgets/header';
 
 export const EditPage = () => {
   const { fileId } = useParams();
+
   const { structure, load, selected, setSelected } = usePdfStructure();
 
   const [selectedTextEl, setSelectedTextEl] = useState<HTMLElement | null>(null);
@@ -22,27 +26,34 @@ export const EditPage = () => {
 
   useEffect(() => {
     if (!fileId) return;
-    fetch(`/file/${fileId}.pdf`)
+    fetch(`/api/files/${fileId}.pdf`)
       .then((res) => res.arrayBuffer())
       .then(load);
   }, [fileId]);
 
   return (
-    <div className="flex flex-col h-screen w-full">
-      <PdfEditorToolbar onStyle={handleStyle} />
+    // <div className="flex flex-col h-screen w-full">
+    //   <PdfEditorToolbar onStyle={handleStyle} />
 
-      <div className="flex flex-1 overflow-hidden">
-        <PdfTreeInspector structure={structure} onSelect={setSelected} />
-        <PdfCanvas
-          structure={structure}
-          onSelect={(obj, el) => {
-            setSelected(obj);
-            setSelectedTextEl(el);
-          }}
-        />
-      </div>
+    //   <div className="flex flex-1 overflow-hidden">
+    //     <PdfTreeInspector structure={structure} onSelect={setSelected} />
+    //     <PdfCanvas
+    //       structure={structure}
+    //       onSelect={(obj, el) => {
+    //         setSelected(obj);
+    //         setSelectedTextEl(el);
+    //       }}
+    //     />
+    //   </div>
 
-      <ObjectInspector selected={selected ?? {}} />
-    </div>
+    //   <ObjectInspector selected={selected ?? {}} />
+    // </div>
+    <AppSidebarProvider>
+      <AppSidebar />
+      <div className="flex flex-col w-full">
+          <AppHeader breadcrumbs={[{ label: 'Your works', href: '/' }, { label: 'editor' }]} />
+          
+        </div>
+    </AppSidebarProvider>
   );
 };
