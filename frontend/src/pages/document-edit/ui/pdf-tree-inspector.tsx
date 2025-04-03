@@ -1,4 +1,4 @@
-import { type PdfStructure } from '../utils/pdf-parser';
+import { type PdfStructure } from '../api/pdf-parser';
 
 export const PdfTreeInspector = ({
   structure,

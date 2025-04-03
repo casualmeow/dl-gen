@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { type PdfStructure } from '../utils/pdf-parser';
+import { type PdfStructure } from '../api/pdf-parser';
 
 interface Props {
   structure: PdfStructure | null;
@@ -28,22 +28,26 @@ export const PdfCanvas = ({ structure, onSelect }: Props) => {
   };
 
   if (!structure) {
-    return <div className="flex-1 flex items-center justify-center">No PDF Loaded</div>;
+    return <div className="flex-1 flex items-center justify-center">
+      <h1 className="text-4xl font-bold mb-4">
+        No PDF Loaded
+        </h1>
+      </div>;
   }
 
   const page = structure.pages[0];
 
   return (
-    <div className="relative flex-1 bg-white overflow-auto border">
-      <div className="absolute left-4 top-4 z-10 flex gap-2 bg-gray-100 p-2 rounded shadow">
+    <div className="relative flex-1 overflow-auto border">
+      <div className="absolute left-4 top-4 z-10 flex gap-2 p-2 rounded shadow">
         <button
-          className="px-2 py-1 bg-white rounded border"
+          className="px-2 py-1 rounded border"
           onClick={() => setZoom((z) => z + 0.1)}
         >
           +
         </button>
         <button
-          className="px-2 py-1 bg-white rounded border"
+          className="px-2 py-1 rounded border"
           onClick={() => setZoom((z) => z - 0.1)}
         >
           -

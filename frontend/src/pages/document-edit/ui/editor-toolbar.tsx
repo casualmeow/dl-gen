@@ -7,7 +7,7 @@ type Props = {
 
 export const PdfEditorToolbar = ({ onStyle }: Props) => {
   return (
-    <div className="w-full p-2 bg-gray-100 border-b shadow flex items-center gap-2">
+    <div className="w-full p-2 border-b shadow flex items-center gap-2">
       <Toggle onClick={() => onStyle('bold')}>
         <Bold className="w-4 h-4" />
       </Toggle>
