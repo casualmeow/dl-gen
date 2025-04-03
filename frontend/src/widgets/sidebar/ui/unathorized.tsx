@@ -1,19 +1,21 @@
 import { useSidebarView } from '../model/useSidebarView';
-import { useNavigate } from'react-router';
+import { useNavigate } from 'react-router';
 import { Settings } from 'lucide-react';
 import { Button } from 'entities/components';
 
 export function UnauthorizedUserHeader() {
-    const navigate = useNavigate();
-    const { setView } = useSidebarView();
+  const navigate = useNavigate();
+  const { setView } = useSidebarView();
 
-    return (
-        <div className='flex items-center justify-between w-full'>
-            <Button variant='outline' onClick={() => navigate('/login')}>Log in</Button>
-            <Button variant='ghost' size='icon' className='h-8 w-8' onClick={() => setView("settings")}>
-                <Settings className='h-4 w-4'/>
-            </Button>
-            {/* <DropdownMenu>
+  return (
+    <div className="flex items-center justify-between w-full">
+      <Button variant="outline" onClick={() => navigate('/login')}>
+        Log in
+      </Button>
+      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setView('settings')}>
+        <Settings className="h-4 w-4" />
+      </Button>
+      {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant='ghost' size='icon' className='h-8 w-8'>
                         <Ellipsis className='h-4 w-4'/>
@@ -38,6 +40,6 @@ export function UnauthorizedUserHeader() {
                     </DropdownMenuGroup>
                 </DropdownMenuContent>
             </DropdownMenu> */}
-        </div>
-    )
+    </div>
+  );
 }

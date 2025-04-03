@@ -6,31 +6,34 @@ import { useNavigate } from 'react-router';
 const DragAndDrop = () => {
   const navigate = useNavigate();
 
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    for (const file of acceptedFiles) {
-      const isSupported =
-        file.type === 'application/pdf' ||
-        file.type === 'application/msword' ||
-        file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      for (const file of acceptedFiles) {
+        const isSupported =
+          file.type === 'application/pdf' ||
+          file.type === 'application/msword' ||
+          file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
-      if (!isSupported) {
-        console.error('Invalid file type:', file.type);
-        continue;
-      }
-
-      try {
-        const redirectPath = await uploadFile(file);
-        if (redirectPath) {
-          // Navigate to /edit/{hash} or whatever the backend gave
-          navigate(redirectPath);
-        } else {
-          console.error('No redirect path returned from server');
+        if (!isSupported) {
+          console.error('Invalid file type:', file.type);
+          continue;
         }
-      } catch (error) {
-        console.error('File upload error:', error);
+
+        try {
+          const redirectPath = await uploadFile(file);
+          if (redirectPath) {
+            // Navigate to /edit/{hash} or whatever the backend gave
+            navigate(redirectPath);
+          } else {
+            console.error('No redirect path returned from server');
+          }
+        } catch (error) {
+          console.error('File upload error:', error);
+        }
       }
-    }
-  }, [navigate]);
+    },
+    [navigate],
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,

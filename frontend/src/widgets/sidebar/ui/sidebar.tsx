@@ -61,7 +61,7 @@ const AppSidebarContent = () => {
   return (
     <Sidebar>
       <SidebarContent>
-        <SidebarHeader className='pt-5'>
+        <SidebarHeader className="pt-5">
           {isAuthenticated ? (
             <NavUser
               user={{

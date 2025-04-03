@@ -28,11 +28,11 @@ export const PdfCanvas = ({ structure, onSelect }: Props) => {
   };
 
   if (!structure) {
-    return <div className="flex-1 flex items-center justify-center">
-      <h1 className="text-4xl font-bold mb-4">
-        No PDF Loaded
-        </h1>
-      </div>;
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        <h1 className="text-4xl font-bold mb-4">No PDF Loaded</h1>
+      </div>
+    );
   }
 
   const page = structure.pages[0];
@@ -40,16 +40,10 @@ export const PdfCanvas = ({ structure, onSelect }: Props) => {
   return (
     <div className="relative flex-1 overflow-auto border">
       <div className="absolute left-4 top-4 z-10 flex gap-2 p-2 rounded shadow">
-        <button
-          className="px-2 py-1 rounded border"
-          onClick={() => setZoom((z) => z + 0.1)}
-        >
+        <button className="px-2 py-1 rounded border" onClick={() => setZoom((z) => z + 0.1)}>
           +
         </button>
-        <button
-          className="px-2 py-1 rounded border"
-          onClick={() => setZoom((z) => z - 0.1)}
-        >
+        <button className="px-2 py-1 rounded border" onClick={() => setZoom((z) => z - 0.1)}>
           -
         </button>
         <span>{Math.round(zoom * 100)}%</span>

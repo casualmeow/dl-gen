@@ -13,9 +13,7 @@ const SidebarViewContext = createContext<{
 export const SidebarViewProvider = ({ children }: { children: React.ReactNode }) => {
   const [view, setView] = useState<SidebarView>('main');
   return (
-    <SidebarViewContext.Provider value={{ view, setView }}>
-      {children}
-    </SidebarViewContext.Provider>
+    <SidebarViewContext.Provider value={{ view, setView }}>{children}</SidebarViewContext.Provider>
   );
 };
 

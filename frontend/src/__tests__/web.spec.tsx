@@ -73,7 +73,7 @@
 //   it('should handle logout process', async () => {
 //     // Mock successful logout
 //     vi.mocked(supabaseApi.signOut).mockResolvedValue(undefined);
-    
+
 //     // Set initial authenticated state
 //     localStorageMock.setItem('auth_token', 'fake-token');
 

@@ -11,12 +11,12 @@ export const BackButton = ({ onClick }: BackButtonProps) => {
     //   <ArrowLeft /><span>Back</span>
     // </button>
     <SidebarMenuItem key="back">
-                        <SidebarMenuButton asChild>
-                    <a onClick={onClick} className="flex items-center gap-3">
-                      <ArrowLeft size={18} />
-                      <span>Back</span>
-                    </a>
-                  </SidebarMenuButton>
+      <SidebarMenuButton asChild>
+        <a onClick={onClick} className="flex items-center gap-3">
+          <ArrowLeft size={18} />
+          <span>Back</span>
+        </a>
+      </SidebarMenuButton>
     </SidebarMenuItem>
   );
 };
