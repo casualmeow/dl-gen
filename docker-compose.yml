@@ -1,5 +1,5 @@
 services:
-  backend:
+  backendv1:
     build: ./backend
     container_name: backend
     ports:
@@ -9,6 +9,14 @@ services:
     volumes:
       - pdfdata:/app/pdfs
 
+  backendv2:
+    build: ./backendv2
+    container_name: backendv2
+    ports:
+      - "8000:8000"
+    networks:
+      - app_network   
+
   frontend:
     build: ./frontend
     container_name: frontend
@@ -17,7 +25,8 @@ services:
     networks:
       - app_network
     depends_on:
-      - backend
+      - backendv1
+      - backendv2
 
 networks:
   app_network:

@@ -28,7 +28,7 @@ import {
               Make changes to your profile here. Click save when you're done.
             </SheetDescription>
           </SheetHeader>
-          <div className="grid gap-4 py-4">
+          <div className="grid gap-4 py-4 px-5">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">
                 Name
@@ -42,6 +42,9 @@ import {
               <Input id="username" value="@peduarte" className="col-span-3" />
             </div>
           </div>
+          <SheetFooter>
+          <Button type="submit" variant="destructive">Reset do default</Button>
+          </SheetFooter>
           <SheetFooter>
             <SheetClose asChild>
               <Button type="submit">Save changes</Button>

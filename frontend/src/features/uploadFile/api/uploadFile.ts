@@ -13,7 +13,6 @@ export const uploadFile = async (file: File): Promise<string> => {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-      // Only accept 2xx responses
       validateStatus: (status) => status >= 200 && status < 300,
     });
 
