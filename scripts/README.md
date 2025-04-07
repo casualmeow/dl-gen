@@ -1,5 +1,5 @@
 ## shell scripts
-
+> NOTE: you need nodejs to run those scripts
 here you can find the next scripts:
 
 ```sh
@@ -11,7 +11,7 @@ node no-docker-start.js
 ```
 > by that script user can merge .gitgnore from frontend and backend to root folder 
 
-#### DEPRECATED
+## DEPRECATED
 ```sh
 node admin-auth.js
 ```
