@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router';
-import { useAuth } from '../../entities/user/api/auth';
+import { useAuth } from 'features/auth';
 import { ReactNode } from 'react';
 
 interface ProtectedRouteProps {

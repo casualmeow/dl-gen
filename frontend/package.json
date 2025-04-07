@@ -14,7 +14,7 @@
     "preview": "vite preview",
     "test:ui": "vitest --ui",
     "test": "vitest",
-    "nginx": "nginx -g 'daemon off;'"
+    "nginx": "nginx -g 'daemon: off'"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.3",

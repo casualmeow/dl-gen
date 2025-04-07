@@ -5,10 +5,10 @@ const platform = os.platform();
 
 if (platform === "win32") {
   console.log("🔧 Running PowerShell script on Windows...");
-  execSync(`powershell -ExecutionPolicy Bypass -File ./apply-folder-patch.ps1`, { stdio: "inherit" });
+  execSync(`powershell -ExecutionPolicy Bypass -File delete-git/apply-folder-patch.ps1`, { stdio: "inherit" });
 } else if (platform === "linux" || platform === "darwin") {
   console.log("🔧 Running Bash script on Linux/macOS...");
-  execSync(`bash ./apply-folder-patch.sh`, { stdio: "inherit" });
+  execSync(`bash delete-git/apply-folder-patch.sh`, { stdio: "inherit" });
 } else {
   console.error("❌ Unsupported OS:", platform);
 }

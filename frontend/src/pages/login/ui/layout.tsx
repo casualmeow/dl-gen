@@ -1,5 +1,5 @@
 import { LoginForm } from './login-form';
-import { useAuth } from 'entities/user/api/auth';
+import { useAuth } from 'features/auth';
 import { useNavigate } from 'react-router';
 import { useEffect } from 'react';
 

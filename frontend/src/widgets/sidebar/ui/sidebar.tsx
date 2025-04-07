@@ -12,7 +12,7 @@ import {
 import { Briefcase, BookOpenText, BookDashed } from 'lucide-react';
 import { SidebarViewProvider, useSidebarView } from '../model/useSidebarView';
 import { NavUser } from './navUser';
-import { useAuth } from 'entities/user';
+import { useAuth } from 'features/auth';
 import { UnauthorizedUserHeader } from './unathorized';
 import { SidebarSettings } from './settings';
 

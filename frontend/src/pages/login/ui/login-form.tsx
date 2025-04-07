@@ -3,7 +3,7 @@ import { Button } from 'entities/components';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'entities/components';
 import { Input } from 'entities/components';
 import { Label } from 'entities/components';
-import { useAuth } from 'entities/user/api/auth';
+import { useAuth } from 'features/auth';
 import { useState } from 'react';
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
