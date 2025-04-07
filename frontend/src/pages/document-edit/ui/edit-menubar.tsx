@@ -14,15 +14,30 @@ import {
     MenubarTrigger,
 
 } from 'entities/components';
-import { useNavigate } from 'react-router';
-import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
+import { useState, useEffect } from 'react';
 import { MetadataSheet } from './metadata-sheet'
 
 
 
 export function EditMenubar() {
   const navigate = useNavigate();
-  const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [currentFile, setCurrentFile] = useState<File | null>(null);
+  
+  // Create a dummy file for the metadata sheet if needed
+  useEffect(() => {
+    const { fileId } = useParams();
+    if (fileId) {
+      fetch(`/api/files/${fileId}`)
+        .then(res => res.blob())
+        .then(blob => {
+          const file = new File([blob], `document-${fileId}.pdf`, { type: 'application/pdf' });
+          setCurrentFile(file);
+        })
+        .catch(err => console.error('Error loading file for metadata:', err));
+    }
+  }, []);
 
   return (
     //     <Menubar>
@@ -112,7 +127,7 @@ export function EditMenubar() {
     //     </Menubar>
     //   )
     <>
-      <MetadataSheet open={isSheetOpen} onOpenChange={setIsSheetOpen} />
+      {currentFile && <MetadataSheet open={isSheetOpen} onOpenChange={setIsSheetOpen} file={currentFile} />}
 
     <Menubar>
       <MenubarMenu>
