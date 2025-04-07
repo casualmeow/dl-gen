@@ -17,6 +17,14 @@ services:
     networks:
       - app_network   
 
+  backendv3:
+    build: ./backendv3
+    container_name: backendv3
+    ports: 
+      - "8001:8001"
+    networks:
+      - app_network   
+
   frontend:
     build: ./frontend
     container_name: frontend
@@ -27,6 +35,7 @@ services:
     depends_on:
       - backendv1
       - backendv2
+      - backendv3
 
 networks:
   app_network:

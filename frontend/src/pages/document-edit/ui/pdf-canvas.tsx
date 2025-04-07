@@ -38,7 +38,7 @@ export const PdfCanvas = ({ structure, onSelect }: Props) => {
   const page = structure.pages[0];
 
   return (
-    <div className="relative flex-1 overflow-auto border">
+    <div className="relative flex overflow-auto border">
       <div className="absolute left-4 top-4 z-10 flex gap-2 p-2 rounded shadow">
         <button className="px-2 py-1 rounded border" onClick={() => setZoom((z) => z + 0.1)}>
           +
@@ -55,7 +55,7 @@ export const PdfCanvas = ({ structure, onSelect }: Props) => {
           return (
             <span
               key={i}
-              className="absolute text-[12px] cursor-move select-none hover:bg-yellow-200"
+              className="absolute text-[12px] cursor-move select-none"
               style={{ left: pos.x, top: pos.y }}
               onMouseDown={() => handleDrag(i)}
               onClick={(e) => onSelect(text, e.currentTarget)}

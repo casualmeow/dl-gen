@@ -12,6 +12,7 @@
     "lint:fix": "npm run lint:js -- --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",
     "preview": "vite preview",
+    "test:ui": "vitest --ui",
     "test": "vitest",
     "nginx": "nginx -g 'daemon off;'"
   },
@@ -54,6 +55,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react-swc": "^3.8.0",
+    "@vitest/ui": "^3.1.1",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-import": "^2.31.0",

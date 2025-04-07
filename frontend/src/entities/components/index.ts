@@ -109,3 +109,15 @@ export {
   MenubarSubTrigger,
   MenubarSubContent,
 } from './ui/menubar';
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog';

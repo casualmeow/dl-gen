@@ -1,5 +1,3 @@
-// metadata-sheet.tsx
-
 import {
     Sheet,
     SheetContent,
@@ -12,6 +10,8 @@ import {
     Input,
     Label,
   } from "entities/components"
+import { parsePdfMetadata } from "entities/file"
+import { EditableField } from "shared/ui/editableField"
   
   type MetadataSheetProps = {
     open: boolean
@@ -19,14 +19,14 @@ import {
   }
   
   export function MetadataSheet({ open, onOpenChange }: MetadataSheetProps) {
+
+    const getMetadata = await parsePdfMetadata(File)
+
     return (
       <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetContent>
           <SheetHeader>
-            <SheetTitle>Edit profile</SheetTitle>
-            <SheetDescription>
-              Make changes to your profile here. Click save when you're done.
-            </SheetDescription>
+            <EditableField value="" />
           </SheetHeader>
           <div className="grid gap-4 py-4 px-5">
             <div className="grid grid-cols-4 items-center gap-4">
@@ -42,9 +42,6 @@ import {
               <Input id="username" value="@peduarte" className="col-span-3" />
             </div>
           </div>
-          <SheetFooter>
-          <Button type="submit" variant="destructive">Reset do default</Button>
-          </SheetFooter>
           <SheetFooter>
             <SheetClose asChild>
               <Button type="submit">Save changes</Button>
