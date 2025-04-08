@@ -2,10 +2,10 @@ import { getDocument } from 'pdfjs-dist';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 
 interface PDFMetadata {
-    getRaw(): string;
-    get(name: string): string;
-    getAll(): string[];
-  }
+  getRaw(): string;
+  get(name: string): string;
+  getAll(): string[];
+}
 
 export interface PDFInfo {
   Title?: string;
@@ -39,9 +39,10 @@ export interface PDFMetadataResult {
 
 export async function parsePdfMetadata(file: File): Promise<PDFMetadataResult> {
   const arrayBuffer = await file.arrayBuffer();
-  const pdf = await getDocument({ data: arrayBuffer }).promise as ExtendedPDFDocumentProxy;
+  const pdf = (await getDocument({ data: arrayBuffer }).promise) as ExtendedPDFDocumentProxy;
 
-  const { info, metadata }: { info: PDFInfo; metadata: PDFMetadata | undefined } = await pdf.getMetadata();
+  const { info, metadata }: { info: PDFInfo; metadata: PDFMetadata | undefined } =
+    await pdf.getMetadata();
 
   const metadataMap: MetadataMap = {};
   const rawMetadataXML = metadata?.getRaw() ?? undefined;
