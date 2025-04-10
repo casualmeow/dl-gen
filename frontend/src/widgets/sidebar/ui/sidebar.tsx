@@ -42,7 +42,7 @@ const AppSidebarContent = () => {
     },
     {
       icon: BookOpenText,
-      label: 'documentation',
+      label: 'Documentation',
       url: '/docs',
     },
     {

@@ -54,13 +54,14 @@ export function EditableField({
             onKeyDown={handleKeyDown}
           />
         ) : (
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex justify-between gap-2">
             <span className="text-muted-foreground truncate">{value}</span>
             {editable && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsEditing(true)}
+                className="w-full justify-start"
               >
                 Edit
               </Button>

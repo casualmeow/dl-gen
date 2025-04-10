@@ -1,5 +1,9 @@
 import { getDocument } from 'pdfjs-dist';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
+import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+import { GlobalWorkerOptions } from 'pdfjs-dist';
+
+GlobalWorkerOptions.workerSrc = workerUrl;  
 
 interface PDFMetadata {
     getRaw(): string;
@@ -52,6 +56,7 @@ export async function parsePdfMetadata(file: File): Promise<PDFMetadataResult> {
       metadataMap[key] = metadata.get(key);
     }
   }
+  console.log('123', metadata)
 
   return {
     info,

@@ -9,6 +9,9 @@ import AppSidebarProvider from 'widgets/sidebar/ui/provider';
 import { AppHeader } from 'widgets/header';
 import { ObjectInspector } from './object-inspector';
 import { EditMenubar } from './edit-menubar';
+import { UploadProvider } from './upload/context';
+import { UploadModal } from './upload/modal';
+import { ToastProvider } from '../api/toast-provider';
 
 export const EditPage = () => {
   const { fileId } = useParams();
@@ -35,38 +38,27 @@ export const EditPage = () => {
   console.log(params);
 
   return (
-    // <div className="flex flex-col h-screen w-full">
-    //   <PdfEditorToolbar onStyle={handleStyle} />
-
-    //   <div className="flex flex-1 overflow-hidden">
-    //     <PdfTreeInspector structure={structure} onSelect={setSelected} />
-    //     <PdfCanvas
-    //       structure={structure}
-    //       onSelect={(obj, el) => {
-    //         setSelected(obj);
-    //         setSelectedTextEl(el);
-    //       }}
-    //     />
-    //   </div>
-
-    //   <ObjectInspector selected={selected ?? {}} />
-    // </div>
     <AppSidebarProvider>
-      <AppSidebar />
-      <div className="flex flex-col w-full">
-        <AppHeader breadcrumbs={[{ label: 'Your works', href: '/' }, { label: 'editor' }]} />
-        <EditMenubar />
-        <PdfEditorToolbar onStyle={handleStyle} />
-        <PdfTreeInspector structure={structure} onSelect={setSelected} />
-        <PdfCanvas
-          structure={structure}
-          onSelect={(obj, el) => {
-            setSelected(obj);
-            setSelectedTextEl(el);
-          }}
-        />
-        <ObjectInspector selected={selected ?? {}} />
-      </div>
+      <UploadProvider>
+        <ToastProvider>
+        <AppSidebar />
+        <div className="flex flex-col w-full">
+          <AppHeader breadcrumbs={[{ label: 'Your works', href: '/' }, { label: 'Editor' }]} />
+          <EditMenubar />
+          <PdfEditorToolbar onStyle={handleStyle} />
+          <PdfTreeInspector structure={structure} onSelect={setSelected} />
+          <PdfCanvas
+            structure={structure}
+            onSelect={(obj, el) => {
+              setSelected(obj);
+              setSelectedTextEl(el);
+            }}
+          />
+          <ObjectInspector selected={selected ?? {}} />
+          <UploadModal />
+        </div>
+        </ToastProvider>
+      </UploadProvider>
     </AppSidebarProvider>
   );
 };

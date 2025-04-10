@@ -18,12 +18,10 @@ import { useState, useEffect } from "react"
   
   export function MetadataSheet({ open, onOpenChange, file }: MetadataSheetProps) {
 
-    const [metadata, setMetadata] = useState<PDFMetadataResult | null>(null)
+    const [_metadata, setMetadata] = useState<PDFMetadataResult | null>(null)
     const [editedData, setEditedData] = useState<Record<string, string>>({})
     
     useEffect(() => {
-      if (!file) return
-  
       parsePdfMetadata(file).then((data) => {
         setMetadata(data)
         setEditedData(data.info ?? {})
@@ -33,18 +31,15 @@ import { useState, useEffect } from "react"
     const handleFieldChange = (key: string, value: string) => {
       setEditedData((prev) => ({ ...prev, [key]: value }))
     }
-  
-    if (!metadata) return null
 
     return (
       <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetContent>
           <SheetHeader>
-            <EditableField label="Title" value={editedData.Title ?? ""} onChange={(v) => handleFieldChange("Title", v)} />
+            <h3 className="text-xl font-semibold">Properties</h3>
           </SheetHeader>
               <div className="grid gap-4 py-4 px-2 overflow-y-auto max-h-[70vh]">
               {Object.entries(editedData).map(([key, value]) => {
-                if (key === "Title") return null 
                 return (
                   <EditableField
                     key={key}

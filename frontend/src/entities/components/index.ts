@@ -121,3 +121,6 @@ export {
   DialogTitle,
   DialogTrigger,
 } from './ui/dialog';
+export { Badge, badgeVariants } from './ui/badge';
+export { Progress } from './ui/progress';
+export { Toaster } from './ui/sonner';
