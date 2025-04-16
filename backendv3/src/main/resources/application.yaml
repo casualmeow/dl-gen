@@ -1,0 +1,12 @@
+ktor:
+  application:
+    modules:
+      - com.example.ApplicationKt.module
+  deployment:
+    port: 8001
+
+jwt:
+  secret: "${JWT_SECRET:secret-key-for-development-only}"
+  issuer: "dl-gen-app"
+  audience: "dl-gen-users"
+  realm: "dl-gen-api"
