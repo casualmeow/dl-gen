@@ -9,11 +9,37 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
+  assetsInclude: ['**/*.worker.mjs'],
   test: {
     globals: true,
     environment: 'jsdom',
   },
-  plugins: [react(), tailwindcss()],
+  server: {
+    middlewareMode: false,
+    fs: {
+      strict: true,
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        assetFileNames: '[name]-[hash].[ext]'
+      }
+    }
+  },
+  plugins: [react(), 
+    tailwindcss(),
+    {
+      name: 'fix-mjs-mime',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          if (req.url?.endsWith('.mjs')) {
+            res.setHeader('Content-Type', 'application/javascript');
+          }
+          next();
+        });
+      }
+  }],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

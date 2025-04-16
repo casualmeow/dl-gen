@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { parsePdfStructure, type PdfStructure } from '../api/pdf-parser';
-import { GlobalWorkerOptions } from 'pdfjs-dist';
-import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+import { initPdfWorker } from 'entities/file';
 
-GlobalWorkerOptions.workerSrc = workerUrl;  
+initPdfWorker();
 
 export const usePdfStructure = () => {
   const [structure, setStructure] = useState<PdfStructure | null>(null);

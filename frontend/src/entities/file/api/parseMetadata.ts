@@ -1,9 +1,8 @@
 import { getDocument } from 'pdfjs-dist';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
-import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-import { GlobalWorkerOptions } from 'pdfjs-dist';
+import { initPdfWorker } from '../lib/initPdfWorker';
 
-GlobalWorkerOptions.workerSrc = workerUrl;  
+initPdfWorker();
 
 interface PDFMetadata {
     getRaw(): string;

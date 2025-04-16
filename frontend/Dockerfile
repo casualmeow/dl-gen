@@ -3,14 +3,16 @@
     WORKDIR /app
     
     COPY package.json package-lock.json ./
-    RUN npm ci  # or npm install --frozen-lockfile if you prefer
+    RUN npm ci
     
     COPY . .
     RUN npm run build
     
     FROM nginx:alpine
     
-    COPY nginx.conf /etc/nginx/conf.d/default.conf
+    COPY nginx/nginx.conf /etc/nginx/nginx.conf
+    
+    COPY nginx/default.conf /etc/nginx/conf.d/default.conf
     
     COPY --from=build /app/dist /usr/share/nginx/html
     
