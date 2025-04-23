@@ -10,7 +10,7 @@ function App() {
       <ThemeProvider>
         <RouterProvider router={appRouter} />
       </ThemeProvider>
-     </AuthProvider>
+    </AuthProvider>
   );
 }
 

@@ -1,69 +1,70 @@
-import { useState } from 'react';
-import { type PdfStructure } from '../api/pdf-parser';
-
+import { cn } from "shared/lib/utils"
 interface Props {
-  structure: PdfStructure | null;
-  onSelect: (obj: Record<string, unknown>, el: HTMLElement) => void;
+  blocks: {
+    id: string;
+    str: string;
+    fontSize: number;
+    fontFamily: string;
+    fontWeight?: 'normal' | 'bold';
+    fontStyle?: 'normal' | 'italic';
+    alignment: 'left' | 'center' | 'right';
+  }[];
+  zoom: number;
+  onUpdate: (id: string, str: string) => void;
+  onSelectTextEl: (el: HTMLElement) => void;
 }
 
-export const PdfCanvas = ({ structure, onSelect }: Props) => {
-  const [zoom, setZoom] = useState(1.0);
-  const [positions, setPositions] = useState<Record<number, { x: number; y: number }>>({});
-
-  const handleDrag = (index: number) => {
-    const onMouseMove = (event: MouseEvent) => {
-      setPositions((prev) => ({
-        ...prev,
-        [index]: { x: event.clientX, y: event.clientY },
-      }));
-    };
-
-    const onMouseUp = () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
-    };
-
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
-  };
-
-  if (!structure) {
+export const PdfCanvas = ({ blocks, zoom, onUpdate, onSelectTextEl }: Props) => {
+  if (!blocks) {
     return (
-      <div className="flex-1 flex items-center justify-center">
-        <h1 className="text-4xl font-bold mb-4">No PDF Loaded</h1>
+      <div className="flex-1 flex items-center justify-center text-muted-foreground">
+        No PDF
       </div>
     );
   }
 
-  const page = structure.pages[0];
+  const pageWidth = 794;
+  const pageHeight = 1123;
 
   return (
-    <div className="relative flex overflow-auto border">
-      <div className="absolute left-4 top-4 z-10 flex gap-2 p-2 rounded shadow">
-        <button className="px-2 py-1 rounded border" onClick={() => setZoom((z) => z + 0.1)}>
-          +
-        </button>
-        <button className="px-2 py-1 rounded border" onClick={() => setZoom((z) => z - 0.1)}>
-          -
-        </button>
-        <span>{Math.round(zoom * 100)}%</span>
-      </div>
-
-      <div className="relative p-10 origin-top-left" style={{ transform: `scale(${zoom})` }}>
-        {page.texts.map((text, i) => {
-          const pos = positions[i] || { x: text.x, y: 800 - text.y };
-          return (
-            <span
-              key={i}
-              className="absolute text-[12px] cursor-move select-none"
-              style={{ left: pos.x, top: pos.y }}
-              onMouseDown={() => handleDrag(i)}
-              onClick={(e) => onSelect(text, e.currentTarget)}
-            >
-              {text.str}
-            </span>
-          );
-        })}
+    <div className="relative flex justify-center overflow-auto w-full bg-background p-4">
+      <div
+        className={cn(
+          "bg-background text-foreground shadow-md border rounded-xl",
+          "transition-colors duration-200"
+        )}
+        style={{
+          transform: `scale(${zoom / 100})`,
+          transformOrigin: 'top left',
+          width: `${pageWidth}px`,
+          minHeight: `${pageHeight}px`,
+          padding: '3rem 2.5rem',
+        }}
+      >
+        {blocks.map((block) => (
+          <div
+            key={block.id}
+            contentEditable
+            suppressContentEditableWarning
+            className={cn(
+              "outline-none whitespace-pre-wrap mb-2",
+              "focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+            )}
+            style={{
+              fontSize: `${block.fontSize}px`,
+              fontFamily: block.fontFamily,
+              fontWeight: block.fontWeight ?? 'normal',
+              fontStyle: block.fontStyle ?? 'normal',
+              textAlign: block.alignment,
+            }}
+            onInput={(e) =>
+              onUpdate(block.id, (e.target as HTMLElement).innerText)
+            }
+            onClick={(e) => onSelectTextEl(e.currentTarget)}
+          >
+            {block.str}
+          </div>
+        ))}
       </div>
     </div>
   );

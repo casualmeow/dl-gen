@@ -1,202 +1,210 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState, useRef, useCallback, useEffect } from "react"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "entities/components"
-import { Card } from "entities/components"
-import { Progress } from "entities/components"
-import { Badge } from "entities/components"
-import { Button } from "entities/components"
-import { Upload, CheckCircle, AlertCircle } from "lucide-react"
-import { cn } from "shared/lib/utils"
-import { useToast } from "../../model/useToast"
-import { useUploadModal } from "./context"
-import { FileItem } from "./item"
+import { useState, useRef, useCallback, useEffect } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from 'entities/components';
+import { Card } from 'entities/components';
+import { Progress } from 'entities/components';
+import { Badge } from 'entities/components';
+import { Button } from 'entities/components';
+import { Upload, CheckCircle, AlertCircle } from 'lucide-react';
+import { cn } from 'shared/lib/utils';
+import { useToast } from '../../model/useToast';
+import { useUploadModal } from './context';
+import { FileItem } from './item';
 
 export function UploadModal() {
-  const { toast } = useToast()
-  const { open, openDropzone } = useUploadModal()
-  const [isDragging, setIsDragging] = useState(false)
-  const [files, setFiles] = useState<File[]>([])
-  const [uploading, setUploading] = useState(false)
-  const [uploadProgress, setUploadProgress] = useState(0)
-  const [uploaded, setUploaded] = useState(false)
-  const [invalidFiles, setInvalidFiles] = useState<string[]>([])
+  const { toast } = useToast();
+  const { open, openDropzone } = useUploadModal();
+  const [isDragging, setIsDragging] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploaded, setUploaded] = useState(false);
+  const [invalidFiles, setInvalidFiles] = useState<string[]>([]);
 
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Accepted file types
   const acceptedFileTypes = [
-    "application/pdf", 
-    "application/msword", // DOC
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // DOCX
-  ]
+    'application/pdf',
+    'application/msword', // DOC
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // DOCX
+  ];
 
-  const acceptedExtensions = [".pdf", ".doc", ".docx"]
+  const acceptedExtensions = ['.pdf', '.doc', '.docx'];
 
   const validateFiles = (filesToValidate: File[]) => {
-    const valid: File[] = []
-    const invalid: string[] = []
+    const valid: File[] = [];
+    const invalid: string[] = [];
 
     filesToValidate.forEach((file) => {
       if (acceptedFileTypes.includes(file.type)) {
-        valid.push(file)
+        valid.push(file);
       } else {
-        invalid.push(file.name)
+        invalid.push(file.name);
       }
-    })
+    });
 
     if (invalid.length > 0) {
-      setInvalidFiles(invalid)
+      setInvalidFiles(invalid);
       toast({
-        title: "Invalid file type",
+        title: 'Invalid file type',
         description: `Only PDF and Word documents are accepted.`,
-        variant: "destructive",
-      })
+        variant: 'destructive',
+      });
     }
 
-    return valid
-  }
+    return valid;
+  };
 
   const handleDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragging(true)
-  }, [])
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  }, []);
 
   const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragging(false)
-  }, [])
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  }, []);
 
   const handleDragOver = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
-      e.preventDefault()
-      e.stopPropagation()
+      e.preventDefault();
+      e.stopPropagation();
       if (!isDragging) {
-        setIsDragging(true)
+        setIsDragging(true);
       }
     },
     [isDragging],
-  )
+  );
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragging(false)
-    setInvalidFiles([])
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    setInvalidFiles([]);
 
-    const droppedFiles = Array.from(e.dataTransfer.files)
-    const validFiles = validateFiles(droppedFiles)
+    const droppedFiles = Array.from(e.dataTransfer.files);
+    const validFiles = validateFiles(droppedFiles);
 
     if (validFiles.length > 0) {
-      setFiles(validFiles)
-      setUploaded(false)
+      setFiles(validFiles);
+      setUploaded(false);
     }
-  }, [])
+  }, []);
 
   const handleFileInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setInvalidFiles([])
+    setInvalidFiles([]);
     if (e.target.files && e.target.files.length > 0) {
-      const selectedFiles = Array.from(e.target.files)
-      const validFiles = validateFiles(selectedFiles)
+      const selectedFiles = Array.from(e.target.files);
+      const validFiles = validateFiles(selectedFiles);
 
       if (validFiles.length > 0) {
-        setFiles(validFiles)
-        setUploaded(false)
+        setFiles(validFiles);
+        setUploaded(false);
       }
     }
-  }, [])
+  }, []);
 
   const openFileDialog = () => {
     if (fileInputRef.current) {
-      fileInputRef.current.click()
+      fileInputRef.current.click();
     }
-  }
+  };
 
   const removeFile = (index: number) => {
-    setFiles(files.filter((_, i) => i !== index))
-  }
+    setFiles(files.filter((_, i) => i !== index));
+  };
 
   // Auto-upload when files are selected
   useEffect(() => {
     if (files.length > 0 && !uploading && !uploaded) {
-      handleUpload()
+      handleUpload();
     }
-  }, [files])
+  }, [files]);
 
   const handleUpload = () => {
-    if (files.length === 0 || uploading || uploaded) return
+    if (files.length === 0 || uploading || uploaded) return;
 
-    setUploading(true)
-    setUploadProgress(0)
+    setUploading(true);
+    setUploadProgress(0);
 
     // Simulate upload progress
     const interval = setInterval(() => {
       setUploadProgress((prev) => {
-        const newProgress = prev + Math.random() * 10
+        const newProgress = prev + Math.random() * 10;
         if (newProgress >= 100) {
-          clearInterval(interval)
-          return 100
+          clearInterval(interval);
+          return 100;
         }
-        return newProgress
-      })
-    }, 300)
+        return newProgress;
+      });
+    }, 300);
 
     // Simulate upload completion
     setTimeout(() => {
-      clearInterval(interval)
-      setUploadProgress(100)
-      setUploading(false)
-      setUploaded(true)
+      clearInterval(interval);
+      setUploadProgress(100);
+      setUploading(false);
+      setUploaded(true);
 
       // Log the uploaded files (in a real app, you'd send these to your server)
       console.log(
-        "Files uploaded:",
+        'Files uploaded:',
         files.map((f) => f.name),
-      )
+      );
 
       toast({
-        title: "Upload complete",
-        description: `Successfully uploaded ${files.length} ${files.length === 1 ? "file" : "files"}`,
-      })
+        title: 'Upload complete',
+        description: `Successfully uploaded ${files.length} ${files.length === 1 ? 'file' : 'files'}`,
+      });
 
       // Close the modal after a short delay
       setTimeout(() => {
-        openDropzone(false)
+        openDropzone(false);
         // Reset state after modal is closed
         setTimeout(() => {
-          setFiles([])
-          setUploaded(false)
-          setUploadProgress(0)
-        }, 300)
-      }, 1500)
-    }, 3000)
-  }
+          setFiles([]);
+          setUploaded(false);
+          setUploadProgress(0);
+        }, 300);
+      }, 1500);
+    }, 3000);
+  };
 
   // Reset state when modal closes
   useEffect(() => {
     if (!open) {
       setTimeout(() => {
         if (!open) {
-          setFiles([])
-          setUploaded(false)
-          setUploadProgress(0)
-          setInvalidFiles([])
-          setIsDragging(false)
+          setFiles([]);
+          setUploaded(false);
+          setUploadProgress(0);
+          setInvalidFiles([]);
+          setIsDragging(false);
         }
-      }, 300)
+      }, 300);
     }
-  }, [open])
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={openDropzone}>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>Upload documents</DialogTitle>
-          <DialogDescription>Drag and drop your PDF or Word documents, or click to browse</DialogDescription>
+          <DialogDescription>
+            Drag and drop your PDF or Word documents, or click to browse
+          </DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
@@ -217,29 +225,33 @@ export function UploadModal() {
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               className={cn(
-                "border-2 border-dashed p-10 transition-all duration-300 text-center cursor-pointer relative overflow-hidden",
-                isDragging ? "border-primary bg-primary/5" : "hover:border-primary/50 hover:bg-muted/50",
+                'border-2 border-dashed p-10 transition-all duration-300 text-center cursor-pointer relative overflow-hidden',
+                isDragging
+                  ? 'border-primary bg-primary/5'
+                  : 'hover:border-primary/50 hover:bg-muted/50',
               )}
             >
               <div className="flex flex-col items-center justify-center space-y-4 relative z-10">
                 <div
                   className={cn(
-                    "w-20 h-20 rounded-full flex items-center justify-center transition-all duration-500 bg-muted",
-                    isDragging && "scale-110 bg-primary/10",
+                    'w-20 h-20 rounded-full flex items-center justify-center transition-all duration-500 bg-muted',
+                    isDragging && 'scale-110 bg-primary/10',
                   )}
                 >
                   <Upload
                     className={cn(
-                      "h-10 w-10 text-muted-foreground transition-all duration-300",
-                      isDragging && "text-primary animate-bounce",
+                      'h-10 w-10 text-muted-foreground transition-all duration-300',
+                      isDragging && 'text-primary animate-bounce',
                     )}
                   />
                 </div>
                 <div className="space-y-2">
                   <p className="text-lg font-medium">
-                    {isDragging ? "Drop documents here" : "Drag documents here or click to browse"}
+                    {isDragging ? 'Drop documents here' : 'Drag documents here or click to browse'}
                   </p>
-                  <p className="text-sm text-muted-foreground">Only PDF and Word documents are accepted</p>
+                  <p className="text-sm text-muted-foreground">
+                    Only PDF and Word documents are accepted
+                  </p>
                   <div className="flex justify-center gap-2 pt-2">
                     {acceptedExtensions.map((ext) => (
                       <Badge key={ext} variant="outline">
@@ -275,7 +287,8 @@ export function UploadModal() {
                     <div className="text-center">
                       <h3 className="text-lg font-medium">Upload complete!</h3>
                       <p className="text-sm text-muted-foreground">
-                        Successfully uploaded {files.length} {files.length === 1 ? "document" : "documents"}
+                        Successfully uploaded {files.length}{' '}
+                        {files.length === 1 ? 'document' : 'documents'}
                       </p>
                     </div>
                   </>
@@ -289,14 +302,24 @@ export function UploadModal() {
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium">Selected documents ({files.length})</p>
                 {!uploading && (
-                  <Button variant="ghost" size="sm" onClick={() => setFiles([])} className="h-8 text-xs">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setFiles([])}
+                    className="h-8 text-xs"
+                  >
                     Clear all
                   </Button>
                 )}
               </div>
               <div className="max-h-48 overflow-y-auto space-y-2 pr-2">
                 {files.map((file, index) => (
-                  <FileItem key={index} file={file} onRemove={() => removeFile(index)} disabled={uploading} />
+                  <FileItem
+                    key={index}
+                    file={file}
+                    onRemove={() => removeFile(index)}
+                    disabled={uploading}
+                  />
                 ))}
               </div>
             </div>
@@ -309,7 +332,7 @@ export function UploadModal() {
                 <div>
                   <p className="text-sm font-medium text-destructive">Invalid file type</p>
                   <p className="text-xs text-muted-foreground">
-                    The following files are not accepted: {invalidFiles.join(", ")}
+                    The following files are not accepted: {invalidFiles.join(', ')}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
                     Only PDF and Word documents (.pdf, .doc, .docx) are allowed.
@@ -331,5 +354,5 @@ export function UploadModal() {
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

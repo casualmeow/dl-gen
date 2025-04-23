@@ -1,24 +1,24 @@
-"use client"
+'use client';
 
-import { createContext, useContext, useState, type ReactNode } from "react"
+import { createContext, useContext, useState, type ReactNode } from 'react';
 
 interface UploadContextType {
-  open: boolean
-  openDropzone: (open: boolean) => void
+  open: boolean;
+  openDropzone: (open: boolean) => void;
 }
 
-const UploadContext = createContext<UploadContextType | undefined>(undefined)
+const UploadContext = createContext<UploadContextType | undefined>(undefined);
 
 export function UploadProvider({ children }: { children: ReactNode }) {
-  const [open, openDropzone] = useState(false)
+  const [open, openDropzone] = useState(false);
 
-  return <UploadContext.Provider value={{ open, openDropzone }}>{children}</UploadContext.Provider>
+  return <UploadContext.Provider value={{ open, openDropzone }}>{children}</UploadContext.Provider>;
 }
 
 export function useUploadModal() {
-  const context = useContext(UploadContext)
+  const context = useContext(UploadContext);
   if (context === undefined) {
-    throw new Error("useUploadModal must be used within an UploadProvider")
+    throw new Error('useUploadModal must be used within an UploadProvider');
   }
-  return context
+  return context;
 }

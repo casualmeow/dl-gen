@@ -1,5 +1,10 @@
-
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from 'entities/components';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from 'entities/components';
 import { Input } from 'entities/components';
 import { Button } from 'entities/components';
 import { useState } from 'react';
