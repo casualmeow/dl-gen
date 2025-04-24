@@ -33,14 +33,23 @@ export interface EditablePdfBlock extends PdfText {
 
 
 export const EditPage = () => {
+  const [inspectorOpen, setInspectorOpen] = useState(false);
   const { fileId } = useParams();
   const { structure, load, setSelected } = usePdfStructure();
   const [selectedTextEl, setSelectedTextEl] = useState<HTMLElement | null>(null);
-
+  const [isInspectorVisible, setIsInspectorVisible] = useState(false);
   const { zoom, setZoom, page, totalPages, wordCount, isSaved } = usePdfEditor();
-
   const [paragraphs, setParagraphs] = useState<PdfText[][]>([]);
   const [blocks, setBlocks] = useState<EditablePdfBlock[]>([]);
+
+  useEffect(() => {
+    if (inspectorOpen) setIsInspectorVisible(true);
+  }, [inspectorOpen]);
+  
+  const handleInspectorClose = () => {
+    setInspectorOpen(false);
+    setTimeout(() => setIsInspectorVisible(false), 300); 
+  };
 
   useEffect(() => {
     if (!fileId) return;
@@ -86,9 +95,16 @@ export const EditPage = () => {
           <div className="grid grid-rows-[auto_auto_auto_1fr_auto] h-screen w-full">
             <AppHeader breadcrumbs={[{ label: 'Your works', href: '/' }, { label: 'Editor' }]} />
             <EditMenubar />
-            <PdfEditorToolbar onStyle={handleStyle} />
+            <PdfEditorToolbar onStyle={handleStyle}  onToggleInspector={() => setInspectorOpen(true)}/>
             <div className="flex flex-row overflow-hidden">
-              <PdfTreeInspector structure={structure} onSelect={setSelected} />
+            {isInspectorVisible && (
+      <PdfTreeInspector
+        structure={structure}
+        onSelect={setSelected}
+        onClose={handleInspectorClose}
+        isClosing={!inspectorOpen}
+      />
+    )}
               <PdfCanvas
                 blocks={blocks}
                 zoom={zoom}

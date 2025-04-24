@@ -4,9 +4,11 @@ import { Button } from 'entities/components';
 
 type Props = {
   onStyle: (style: 'bold' | 'italic' | 'underline') => void;
+  onToggleInspector: () => void;
 };
 
-export const PdfEditorToolbar = ({ onStyle }: Props) => {
+export const PdfEditorToolbar = ({ onStyle, onToggleInspector }: Props) => {
+
   return (
     <div className="w-full p-2 border-b shadow flex justify-between items-center gap-2">
       <div>
@@ -21,7 +23,7 @@ export const PdfEditorToolbar = ({ onStyle }: Props) => {
         </Toggle>
       </div>
       <div>
-        <Button variant="ghost"> 
+        <Button variant="ghost" onClick={onToggleInspector}> 
           <NotebookText />
           Tree inspector
         </Button>

@@ -1,21 +1,46 @@
 import { type PdfStructure } from '../api/pdf-parser';
 import { X } from 'lucide-react'
 import { Button } from 'entities/components';
+import { useState, useEffect } from 'react';
 
 export const PdfTreeInspector = ({
   structure,
   onSelect,
+  onClose,
+  isClosing,
 }: {
   structure: PdfStructure | null;
   onSelect: (obj: Record<string, unknown>) => void;
+  onClose: () => void;
+  isClosing?: boolean;
 }) => {
+  const [isAnimatingIn, setIsAnimatingIn] = useState(false);
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      setIsAnimatingIn(true);
+    });
+  }, []);
   if (!structure) return <div className="w-80 border-r p-2 text-sm">Loading...</div>;
 
   return (
-    <div className="w-80 h-full overflow-auto border-r text-sm bg-muted">
+    <div
+      className={`
+        w-80 h-full overflow-auto border-r p-2 text-sm bg-muted transition-all duration-300 transform
+        ${isClosing ? '-translate-x-full opacity-0' : ''}
+        ${isAnimatingIn && !isClosing ? 'translate-x-0 opacity-100' : 'translate-x-[-100%] opacity-0'}
+      `}
+    >
+      {/* <div
+      className={`
+        w-80 h-full overflow-auto border-r p-2 text-sm bg-muted transition-all duration-300 transform
+        ${isClosing ? 'translate-x-full opacity-0' : ''}
+        ${isAnimatingIn && !isClosing ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'}
+      `}
+    ></div> */}
       <div className="sticky top-0 z-10 bg-muted flex items-center justify-between mb-2 p-2 border-b">
         <span className="font-semibold text-base pl-1">PDF Structure</span>
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" onClick={onClose}>
           <X />
         </Button>
       </div>
