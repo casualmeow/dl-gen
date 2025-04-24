@@ -14,6 +14,8 @@ import { ToastProvider } from '../api/toast-provider';
 import { LowerBar } from './lower-bar';
 import { usePdfEditor } from '../model/usePdfEditor';
 import { v4 as uuidv4 } from 'uuid';
+import type { EditablePdfBlock } from '../model/types';
+
 
 export interface PdfText {
   str: string;
@@ -27,18 +29,13 @@ export interface PdfText {
   fontStyle?: 'normal' | 'italic';
 }
 
-export interface EditablePdfBlock extends PdfText {
-  id: string;
-}
-
-
 export const EditPage = () => {
   const [inspectorOpen, setInspectorOpen] = useState(false);
   const { fileId } = useParams();
-  const { structure, load, setSelected } = usePdfStructure();
+  const { structure, load } = usePdfStructure();
   const [selectedTextEl, setSelectedTextEl] = useState<HTMLElement | null>(null);
   const [isInspectorVisible, setIsInspectorVisible] = useState(false);
-  const { zoom, setZoom, page, totalPages, wordCount, isSaved } = usePdfEditor();
+  const { zoom, setZoom, page, setPage, totalPages, wordCount, isSaved } = usePdfEditor();
   const [paragraphs, setParagraphs] = useState<PdfText[][]>([]);
   const [blocks, setBlocks] = useState<EditablePdfBlock[]>([]);
 
@@ -70,6 +67,7 @@ export const EditPage = () => {
       const initialBlocks: EditablePdfBlock[] = paragraphs.flat().map((block) => ({
         ...block,
         id: uuidv4(),
+        pageNumber: page,
       }));
       setBlocks(initialBlocks);
     }
@@ -100,7 +98,13 @@ export const EditPage = () => {
             {isInspectorVisible && (
       <PdfTreeInspector
         structure={structure}
-        onSelect={setSelected}
+        onSelect={(t) => {
+          setPage(t.pageNumber);
+          setTimeout(() => {
+            const el = document.getElementById(`block-${t.id}`);
+            el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 100);
+        }}
         onClose={handleInspectorClose}
         isClosing={!inspectorOpen}
       />
@@ -108,9 +112,11 @@ export const EditPage = () => {
               <PdfCanvas
                 blocks={blocks}
                 zoom={zoom}
+                pageIndex={page - 1}
                 onUpdate={updateText}
                 onSelectTextEl={setSelectedTextEl}
               />
+
             </div>
             <LowerBar
               zoom={zoom}
@@ -130,29 +136,48 @@ export const EditPage = () => {
 };
 
 
-function groupTextIntoParagraphs(
-  texts: PdfText[],
-  pageHeight: number
-): PdfText[][] {
-  const sorted = [...texts].sort((a, b) => (pageHeight - a.y) - (pageHeight - b.y));
+// function groupTextIntoParagraphs(
+//   texts: PdfText[],
+//   pageHeight: number
+// ): PdfText[][] {
+//   const sorted = [...texts].sort((a, b) => (pageHeight - a.y) - (pageHeight - b.y));
+//   const paragraphs: PdfText[][] = [];
+//   let currentLine: PdfText[] = [];
+//   let lastY: number | null = null;
+
+//   for (const item of sorted) {
+//     const currentY = pageHeight - item.y;
+//     const deltaY = lastY !== null ? Math.abs(currentY - lastY) : 0;
+
+//     if (lastY !== null && (deltaY > item.fontSize * 1.5 || item.lineBreakAfter)) {
+//       paragraphs.push(currentLine);
+//       currentLine = [];
+//     }
+
+//     currentLine.push(item);
+//     lastY = currentY;
+//   }
+
+//   if (currentLine.length > 0) paragraphs.push(currentLine);
+
+//   return paragraphs;
+// }
+function groupTextIntoParagraphs(texts: PdfText[], pageHeight: number): PdfText[][] {
+  const sorted = texts.sort((a, b) => pageHeight - a.y - (pageHeight - b.y));
   const paragraphs: PdfText[][] = [];
-  let currentLine: PdfText[] = [];
-  let lastY: number | null = null;
+  let currentParagraph: PdfText[] = [];
+  let lastY = sorted[0]?.y ?? 0;
 
-  for (const item of sorted) {
-    const currentY = pageHeight - item.y;
-    const deltaY = lastY !== null ? Math.abs(currentY - lastY) : 0;
-
-    if (lastY !== null && (deltaY > item.fontSize * 1.5 || item.lineBreakAfter)) {
-      paragraphs.push(currentLine);
-      currentLine = [];
+  for (const text of sorted) {
+    const deltaY = Math.abs(text.y - lastY);
+    if (deltaY > text.fontSize * 2.0 || text.lineBreakAfter) {
+      if (currentParagraph.length) paragraphs.push(currentParagraph);
+      currentParagraph = [];
     }
-
-    currentLine.push(item);
-    lastY = currentY;
+    currentParagraph.push(text);
+    lastY = text.y;
   }
 
-  if (currentLine.length > 0) paragraphs.push(currentLine);
-
+  if (currentParagraph.length) paragraphs.push(currentParagraph);
   return paragraphs;
 }

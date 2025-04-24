@@ -2,6 +2,7 @@ import { type PdfStructure } from '../api/pdf-parser';
 import { X } from 'lucide-react'
 import { Button } from 'entities/components';
 import { useState, useEffect } from 'react';
+import { EditablePdfBlock } from '../model/types';
 
 export const PdfTreeInspector = ({
   structure,
@@ -10,9 +11,10 @@ export const PdfTreeInspector = ({
   isClosing,
 }: {
   structure: PdfStructure | null;
-  onSelect: (obj: Record<string, unknown>) => void;
+  onSelect: (obj: EditablePdfBlock) => void;
   onClose: () => void;
   isClosing?: boolean;
+  
 }) => {
   const [isAnimatingIn, setIsAnimatingIn] = useState(false);
 
@@ -51,12 +53,14 @@ export const PdfTreeInspector = ({
           <ul className="pl-4">
             {page.texts.map((t, i) => (
               <li
-                key={i}
-                className="text-xs text-muted-foreground cursor-pointer hover:underline"
-                onClick={() => onSelect(t)}
-              >
-                {t.str.slice(0, 40)}...
-              </li>
+              key={i}
+              className="text-xs text-muted-foreground cursor-pointer hover:underline"
+              onClick={() => {
+                onSelect({ ...t, pageNumber: page.number, id: `block-${i}` });
+              }}
+            >
+              {t.str.slice(0, 40)}...
+            </li>
             ))}
           </ul>
         </details>

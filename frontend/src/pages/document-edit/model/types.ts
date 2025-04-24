@@ -1,12 +1,16 @@
-export type EditablePdfText = {
-  id: string;
+export interface EditablePdfText {
   str: string;
   x: number;
   y: number;
   fontSize: number;
   fontFamily: string;
+  alignment: 'left' | 'center' | 'right';
   fontWeight?: 'normal' | 'bold';
   fontStyle?: 'normal' | 'italic';
-  alignment: 'left' | 'center' | 'right';
-  lineBreakAfter: boolean;
-};
+  lineBreakAfter?: boolean;
+}
+
+export interface EditablePdfBlock extends EditablePdfText {
+  id: string;
+  pageNumber: number;
+}

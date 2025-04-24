@@ -1,4 +1,6 @@
-import { cn } from "shared/lib/utils"
+import { useState } from 'react';
+import { cn } from 'shared/lib/utils';
+
 interface Props {
   blocks: {
     id: string;
@@ -8,29 +10,67 @@ interface Props {
     fontWeight?: 'normal' | 'bold';
     fontStyle?: 'normal' | 'italic';
     alignment: 'left' | 'center' | 'right';
+    x: number;
+    y: number;
+    pageNumber: number;
   }[];
   zoom: number;
+  pageIndex: number;
   onUpdate: (id: string, str: string) => void;
   onSelectTextEl: (el: HTMLElement) => void;
 }
 
-export const PdfCanvas = ({ blocks, zoom, onUpdate, onSelectTextEl }: Props) => {
-  if (!blocks) {
-    return (
-      <div className="flex-1 flex items-center justify-center text-muted-foreground">
-        No PDF
-      </div>
-    );
-  }
-
+export const PdfCanvas = ({ blocks, zoom, pageIndex, onUpdate, onSelectTextEl }: Props) => {
   const pageWidth = 794;
   const pageHeight = 1123;
+  const pageBlocks = blocks.filter((b) => b.pageNumber === pageIndex + 1);
+
+  const EditableBlock = ({ block }: { block: Props['blocks'][number] }) => {
+    const [text, setText] = useState(block.str);
+
+    const updateLocalText = (newText: string) => {
+      setText(newText);
+    };
+
+    const saveChanges = () => {
+      onUpdate(block.id, text);
+    };
+
+    return (
+      <div
+        id={`block-${block.id}`}
+        contentEditable
+        suppressContentEditableWarning
+        className={cn(
+          "absolute w-fit text-foreground outline-none whitespace-pre-wrap",
+          "focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+        )}
+        style={{
+          top: `${pageHeight - block.y}px`,
+          left: `${block.x}px`,
+          fontSize: `${block.fontSize}px`,
+          fontFamily: block.fontFamily || 'Times New Roman',
+          fontWeight: block.fontWeight ?? 'normal',
+          fontStyle: block.fontStyle ?? 'normal',
+          textAlign: block.alignment,
+          lineHeight: `${block.fontSize * 1.2}px`,
+        }}
+        onInput={(e) => {
+          updateLocalText((e.target as HTMLDivElement).innerText);
+        }}
+        onBlur={saveChanges}
+        onClick={(e) => onSelectTextEl(e.currentTarget)}
+      >
+        {text}
+      </div>
+    );
+  };
 
   return (
     <div className="relative flex justify-center overflow-auto w-full bg-background p-4">
       <div
         className={cn(
-          "bg-background text-foreground shadow-md border rounded-xl",
+          "bg-background shadow-md border rounded-xl relative",
           "transition-colors duration-200"
         )}
         style={{
@@ -38,32 +78,10 @@ export const PdfCanvas = ({ blocks, zoom, onUpdate, onSelectTextEl }: Props) => 
           transformOrigin: 'top left',
           width: `${pageWidth}px`,
           minHeight: `${pageHeight}px`,
-          padding: '3rem 2.5rem',
         }}
       >
-        {blocks.map((block) => (
-          <div
-            key={block.id}
-            contentEditable
-            suppressContentEditableWarning
-            className={cn(
-              "outline-none whitespace-pre-wrap mb-2",
-              "focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
-            )}
-            style={{
-              fontSize: `${block.fontSize}px`,
-              fontFamily: block.fontFamily,
-              fontWeight: block.fontWeight ?? 'normal',
-              fontStyle: block.fontStyle ?? 'normal',
-              textAlign: block.alignment,
-            }}
-            onInput={(e) =>
-              onUpdate(block.id, (e.target as HTMLElement).innerText)
-            }
-            onClick={(e) => onSelectTextEl(e.currentTarget)}
-          >
-            {block.str}
-          </div>
+        {pageBlocks.map((block) => (
+          <EditableBlock key={block.id} block={block} />
         ))}
       </div>
     </div>
