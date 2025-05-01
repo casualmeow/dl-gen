@@ -40,12 +40,11 @@ export function usePdfEditor() {
     zoom,
     setZoom,
     page,
-    setPage,       
+    setPage,
     totalPages,
     goToPage,
     wordCount,
     isSaved,
     setIsSaved,
   };
-  
 }

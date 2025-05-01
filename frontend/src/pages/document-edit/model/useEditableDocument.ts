@@ -1,13 +1,11 @@
 import { useState, useCallback } from 'react';
-import type { EditablePdfBlock } from './types'; 
+import type { EditablePdfBlock } from 'features/pdfEditor';
 
 export function useEditableDocument(initialText: EditablePdfBlock[]) {
   const [document, setDocument] = useState<EditablePdfBlock[]>(initialText);
 
   const updateText = useCallback((id: string, str: string) => {
-    setDocument((prev) =>
-      prev.map((block) => (block.id === id ? { ...block, str } : block))
-    );
+    setDocument((prev) => prev.map((block) => (block.id === id ? { ...block, str } : block)));
   }, []);
 
   const applyStyle = useCallback((id: string, style: 'bold' | 'italic') => {
@@ -19,8 +17,8 @@ export function useEditableDocument(initialText: EditablePdfBlock[]) {
               fontWeight: style === 'bold' ? 'bold' : block.fontWeight,
               fontStyle: style === 'italic' ? 'italic' : block.fontStyle,
             }
-          : block
-      )
+          : block,
+      ),
     );
   }, []);
 

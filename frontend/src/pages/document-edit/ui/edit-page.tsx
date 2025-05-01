@@ -1,11 +1,12 @@
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { usePdfStructure } from '../model/pdf-structure';
+import { usePdfEditorStore } from 'features/pdfEditor/model/store';
 import { PdfTreeInspector } from './pdf-tree-inspector';
-import { PdfCanvas } from './pdf-canvas';
+import { PdfCanvas } from 'features/pdfEditor';
 import { PdfEditorToolbar } from './editor-toolbar';
 import { AppSidebar } from 'widgets/sidebar';
-import AppSidebarProvider from 'widgets/sidebar/ui/provider';
+import { AppSidebarProvider } from 'widgets/sidebar';
 import { AppHeader } from 'widgets/header';
 import { EditMenubar } from './edit-menubar';
 import { UploadProvider } from './upload/context';
@@ -14,30 +15,16 @@ import { ToastProvider } from '../api/toast-provider';
 import { LowerBar } from './lower-bar';
 import { usePdfEditor } from '../model/usePdfEditor';
 import { v4 as uuidv4 } from 'uuid';
-import type { EditablePdfBlock } from '../model/types';
-
-
-export interface PdfText {
-  str: string;
-  x: number;
-  y: number;
-  fontSize: number;
-  fontFamily: string;
-  alignment: 'left' | 'center' | 'right';
-  lineBreakAfter?: boolean;
-  fontWeight?: 'normal' | 'bold';
-  fontStyle?: 'normal' | 'italic';
-}
+import { ArrowRight } from 'lucide-react';
 
 export const EditPage = () => {
-  const [inspectorOpen, setInspectorOpen] = useState(false);
   const { fileId } = useParams();
   const { structure, load } = usePdfStructure();
   const [selectedTextEl, setSelectedTextEl] = useState<HTMLElement | null>(null);
+  const [inspectorOpen, setInspectorOpen] = useState(false);
   const [isInspectorVisible, setIsInspectorVisible] = useState(false);
   const { zoom, setZoom, page, setPage, totalPages, wordCount, isSaved } = usePdfEditor();
-  const [paragraphs, setParagraphs] = useState<PdfText[][]>([]);
-  const [blocks, setBlocks] = useState<EditablePdfBlock[]>([]);
+  const { setBlocks, updateBlock } = usePdfEditorStore();
 
   useEffect(() => {
     if (inspectorOpen) setIsInspectorVisible(true);
@@ -45,7 +32,7 @@ export const EditPage = () => {
   
   const handleInspectorClose = () => {
     setInspectorOpen(false);
-    setTimeout(() => setIsInspectorVisible(false), 300); 
+    setTimeout(() => setIsInspectorVisible(false), 300);
   };
 
   useEffect(() => {
@@ -57,32 +44,32 @@ export const EditPage = () => {
 
   useEffect(() => {
     if (!structure) return;
-    const currentPage = structure.pages[page - 1];
-    const grouped = groupTextIntoParagraphs(currentPage.texts, currentPage.height);
-    setParagraphs(grouped);
+    const pageObj = structure.pages[page - 1];
+    setBlocks(pageObj.texts.map(t => ({
+      id: uuidv4(),
+      pageNumber: pageObj.number,
+      str: t.str,
+      x: t.x,
+      y: t.y,
+      width: t.width,
+      height: t.height,
+      fontSize: t.fontSize,
+      fontFamily: t.fontFamily,
+      alignment: t.alignment,
+      lineBreakAfter: t.lineBreakAfter,
+      fontWeight: t.isBold ? 'bold' : 'normal',
+      fontStyle: t.isItalic ? 'italic' : 'normal',
+    })));
   }, [structure, page]);
-
-  useEffect(() => {
-    if (paragraphs.length > 0) {
-      const initialBlocks: EditablePdfBlock[] = paragraphs.flat().map((block) => ({
-        ...block,
-        id: uuidv4(),
-        pageNumber: page,
-      }));
-      setBlocks(initialBlocks);
-    }
-  }, [paragraphs]);
 
   const handleStyle = (style: 'bold' | 'italic' | 'underline') => {
     if (selectedTextEl) {
-      selectedTextEl.style.fontWeight = style === 'bold' ? 'bold' : '';
-      selectedTextEl.style.fontStyle = style === 'italic' ? 'italic' : '';
-      selectedTextEl.style.textDecoration = style === 'underline' ? 'underline' : '';
+      document.execCommand(style);
     }
   };
 
   const updateText = (id: string, str: string) => {
-    setBlocks((prev) => prev.map((b) => (b.id === id ? { ...b, str } : b)));
+    updateBlock(id, { str });
   };
 
   return (
@@ -91,32 +78,46 @@ export const EditPage = () => {
         <ToastProvider>
           <AppSidebar />
           <div className="grid grid-rows-[auto_auto_auto_1fr_auto] h-screen w-full">
-            <AppHeader breadcrumbs={[{ label: 'Your works', href: '/' }, { label: 'Editor' }]} />
+            <AppHeader breadcrumbs={[
+              { label: 'Your works', href: '/' },
+              { label: 'Editor' }]} 
+              actionButton={{
+                label: 'Next',
+                icon: <ArrowRight className="w-4 h-4" />,
+                onClick: () => {
+                },
+              }}/>
             <EditMenubar />
-            <PdfEditorToolbar onStyle={handleStyle}  onToggleInspector={() => setInspectorOpen(true)}/>
-            <div className="flex flex-row overflow-hidden">
-            {isInspectorVisible && (
-      <PdfTreeInspector
-        structure={structure}
-        onSelect={(t) => {
-          setPage(t.pageNumber);
-          setTimeout(() => {
-            const el = document.getElementById(`block-${t.id}`);
-            el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }, 100);
-        }}
-        onClose={handleInspectorClose}
-        isClosing={!inspectorOpen}
-      />
-    )}
-              <PdfCanvas
-                blocks={blocks}
-                zoom={zoom}
-                pageIndex={page - 1}
-                onUpdate={updateText}
-                onSelectTextEl={setSelectedTextEl}
-              />
-
+            <PdfEditorToolbar
+              onStyle={handleStyle}
+              onToggleInspector={() => setInspectorOpen(true)}
+            />
+            <div className="flex flex-row overflow-hidden justify-center">
+              {isInspectorVisible && (
+                <PdfTreeInspector
+                  structure={structure}
+                  onSelect={(t) => {
+                    setPage(t.pageNumber);
+                    setTimeout(() => {
+                      const el = document.getElementById(`para-${t.id}`);
+                      el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                  }}
+                  onClose={handleInspectorClose}
+                  isClosing={!inspectorOpen}
+                />
+              )}
+              {structure ? (
+                <PdfCanvas
+                  structure={structure}
+                  pageIndex={page - 1}
+                  zoom={zoom}
+                  onUpdate={updateText}
+                  onSelectTextEl={setSelectedTextEl}
+                />
+              ) : (
+                <div className="flex-1 flex items-center justify-center">Loading PDF…</div>
+              )}
             </div>
             <LowerBar
               zoom={zoom}
@@ -134,50 +135,3 @@ export const EditPage = () => {
     </AppSidebarProvider>
   );
 };
-
-
-// function groupTextIntoParagraphs(
-//   texts: PdfText[],
-//   pageHeight: number
-// ): PdfText[][] {
-//   const sorted = [...texts].sort((a, b) => (pageHeight - a.y) - (pageHeight - b.y));
-//   const paragraphs: PdfText[][] = [];
-//   let currentLine: PdfText[] = [];
-//   let lastY: number | null = null;
-
-//   for (const item of sorted) {
-//     const currentY = pageHeight - item.y;
-//     const deltaY = lastY !== null ? Math.abs(currentY - lastY) : 0;
-
-//     if (lastY !== null && (deltaY > item.fontSize * 1.5 || item.lineBreakAfter)) {
-//       paragraphs.push(currentLine);
-//       currentLine = [];
-//     }
-
-//     currentLine.push(item);
-//     lastY = currentY;
-//   }
-
-//   if (currentLine.length > 0) paragraphs.push(currentLine);
-
-//   return paragraphs;
-// }
-function groupTextIntoParagraphs(texts: PdfText[], pageHeight: number): PdfText[][] {
-  const sorted = texts.sort((a, b) => pageHeight - a.y - (pageHeight - b.y));
-  const paragraphs: PdfText[][] = [];
-  let currentParagraph: PdfText[] = [];
-  let lastY = sorted[0]?.y ?? 0;
-
-  for (const text of sorted) {
-    const deltaY = Math.abs(text.y - lastY);
-    if (deltaY > text.fontSize * 2.0 || text.lineBreakAfter) {
-      if (currentParagraph.length) paragraphs.push(currentParagraph);
-      currentParagraph = [];
-    }
-    currentParagraph.push(text);
-    lastY = text.y;
-  }
-
-  if (currentParagraph.length) paragraphs.push(currentParagraph);
-  return paragraphs;
-}

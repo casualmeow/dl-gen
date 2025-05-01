@@ -8,7 +8,6 @@ type Props = {
 };
 
 export const PdfEditorToolbar = ({ onStyle, onToggleInspector }: Props) => {
-
   return (
     <div className="w-full p-2 border-b shadow flex justify-between items-center gap-2">
       <div>
@@ -23,7 +22,7 @@ export const PdfEditorToolbar = ({ onStyle, onToggleInspector }: Props) => {
         </Toggle>
       </div>
       <div>
-        <Button variant="ghost" onClick={onToggleInspector}> 
+        <Button variant="ghost" onClick={onToggleInspector}>
           <NotebookText />
           Tree inspector
         </Button>

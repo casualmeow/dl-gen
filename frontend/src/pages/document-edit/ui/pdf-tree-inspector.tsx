@@ -1,8 +1,8 @@
 import { type PdfStructure } from '../api/pdf-parser';
-import { X } from 'lucide-react'
+import { X } from 'lucide-react';
 import { Button } from 'entities/components';
 import { useState, useEffect } from 'react';
-import { EditablePdfBlock } from '../model/types';
+import { EditablePdfBlock } from 'features/pdfEditor';
 
 export const PdfTreeInspector = ({
   structure,
@@ -14,7 +14,6 @@ export const PdfTreeInspector = ({
   onSelect: (obj: EditablePdfBlock) => void;
   onClose: () => void;
   isClosing?: boolean;
-  
 }) => {
   const [isAnimatingIn, setIsAnimatingIn] = useState(false);
 
@@ -46,25 +45,25 @@ export const PdfTreeInspector = ({
           <X />
         </Button>
       </div>
-      <div className='p-2'>
-      {structure.pages.map((page) => (
-        <details key={page.number} className=" mb-2">
-          <summary className="cursor-pointer font-semibold">Page {page.number}</summary>
-          <ul className="pl-4">
-            {page.texts.map((t, i) => (
-              <li
-              key={i}
-              className="text-xs text-muted-foreground cursor-pointer hover:underline"
-              onClick={() => {
-                onSelect({ ...t, pageNumber: page.number, id: `block-${i}` });
-              }}
-            >
-              {t.str.slice(0, 40)}...
-            </li>
-            ))}
-          </ul>
-        </details>
-      ))}
+      <div className="p-2">
+        {structure.pages.map((page) => (
+          <details key={page.number} className=" mb-2">
+            <summary className="cursor-pointer font-semibold">Page {page.number}</summary>
+            <ul className="pl-4">
+              {page.texts.map((t, i) => (
+                <li
+                  key={i}
+                  className="text-xs text-muted-foreground cursor-pointer hover:underline"
+                  onClick={() => {
+                    onSelect({ ...t, pageNumber: page.number, id: `block-${i}` });
+                  }}
+                >
+                  {t.str.slice(0, 40)}...
+                </li>
+              ))}
+            </ul>
+          </details>
+        ))}
       </div>
     </div>
   );
