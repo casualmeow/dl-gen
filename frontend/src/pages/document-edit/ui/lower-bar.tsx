@@ -2,6 +2,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from 'entiti
 import { Button } from 'entities/components';
 import { Slider } from 'entities/components';
 import { Separator } from 'entities/components';
+
 import {
   ZoomIn,
   ZoomOut,

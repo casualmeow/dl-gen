@@ -15,7 +15,8 @@ import { ToastProvider } from '../api/toast-provider';
 import { LowerBar } from './lower-bar';
 import { usePdfEditor } from '../model/usePdfEditor';
 import { v4 as uuidv4 } from 'uuid';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Plus } from 'lucide-react';
+import { Dock, DockItem } from 'widgets/dock';
 
 export const EditPage = () => {
   const { fileId } = useParams();
@@ -59,6 +60,8 @@ export const EditPage = () => {
       lineBreakAfter: t.lineBreakAfter,
       fontWeight: t.isBold ? 'bold' : 'normal',
       fontStyle: t.isItalic ? 'italic' : 'normal',
+      html: t.str, // ← на початку просто плейнтекст
+
     })));
   }, [structure, page]);
 
@@ -68,10 +71,10 @@ export const EditPage = () => {
     }
   };
 
-  const updateText = (id: string, str: string) => {
-    updateBlock(id, { str });
+  const updateText = (id: string, str: string, html: string) => {
+    updateBlock(id, { str, html });
   };
-
+  
   return (
     <AppSidebarProvider>
       <UploadProvider>
@@ -118,6 +121,13 @@ export const EditPage = () => {
               ) : (
                 <div className="flex-1 flex items-center justify-center">Loading PDF…</div>
               )}
+              <Dock position='bottom'>
+              <DockItem
+                    icon={<Plus />}
+                    label="Settings"
+                    onClick={() => console.log("Settings clicked")}
+                />
+              </Dock>  
             </div>
             <LowerBar
               zoom={zoom}

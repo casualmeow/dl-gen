@@ -3,6 +3,7 @@ import { X } from 'lucide-react';
 import { Button } from 'entities/components';
 import { useState, useEffect } from 'react';
 import { EditablePdfBlock } from 'features/pdfEditor';
+import { createEditablePdfBlockFromText } from 'features/pdfEditor';
 
 export const PdfTreeInspector = ({
   structure,
@@ -32,13 +33,6 @@ export const PdfTreeInspector = ({
         ${isAnimatingIn && !isClosing ? 'translate-x-0 opacity-100' : 'translate-x-[-100%] opacity-0'}
       `}
     >
-      {/* <div
-      className={`
-        w-80 h-full overflow-auto border-r p-2 text-sm bg-muted transition-all duration-300 transform
-        ${isClosing ? 'translate-x-full opacity-0' : ''}
-        ${isAnimatingIn && !isClosing ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'}
-      `}
-    ></div> */}
       <div className="sticky top-0 z-10 bg-muted flex items-center justify-between mb-2 p-2 border-b">
         <span className="font-semibold text-base pl-1">PDF Structure</span>
         <Button variant="ghost" size="icon" onClick={onClose}>
@@ -55,7 +49,8 @@ export const PdfTreeInspector = ({
                   key={i}
                   className="text-xs text-muted-foreground cursor-pointer hover:underline"
                   onClick={() => {
-                    onSelect({ ...t, pageNumber: page.number, id: `block-${i}` });
+                    const block = createEditablePdfBlockFromText(t, page.number, i);
+                    onSelect(block);
                   }}
                 >
                   {t.str.slice(0, 40)}...

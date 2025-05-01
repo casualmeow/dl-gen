@@ -59,7 +59,7 @@ export function AppHeader({ breadcrumbs, actionButton }: HeaderProps) {
           </Breadcrumb>
         </div>
       {actionButton && (
-        <Button onClick={actionButton.onClick} className="gap-2 text-sm font-medium">
+        <Button onClick={actionButton.onClick} className="gap-2 text-sm font-semibold">
           {actionButton.label}
           {actionButton.icon}
         </Button>

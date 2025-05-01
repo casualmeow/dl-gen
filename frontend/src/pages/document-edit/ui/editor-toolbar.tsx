@@ -28,6 +28,7 @@ export const PdfEditorToolbar = ({ onStyle, onToggleInspector }: Props) => {
         </Button>
         <Button variant="ghost">
           <Download />
+          Download
         </Button>
       </div>
     </div>

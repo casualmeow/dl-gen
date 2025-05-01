@@ -1,13 +1,13 @@
-import { cn } from 'shared/lib/utils';
+import { useMemo, useRef } from 'react';
 import { usePdfEditorStore } from '../model/store';
-import { getParagraphHeight, PAGE_PADDING } from '../lib/utils';
 import type { PdfStructure } from 'pages/document-edit';
+import { PAGE_PADDING } from '../lib/utils';
 
 interface Props {
   structure: PdfStructure | null;
   pageIndex: number;
   zoom: number;
-  onUpdate: (id: string, text: string) => void;
+  onUpdate: (id: string, text: string, html: string) => void;
   onSelectTextEl: (el: HTMLElement) => void;
 }
 
@@ -18,105 +18,84 @@ export const PdfCanvas = ({
   onUpdate,
   onSelectTextEl,
 }: Props) => {
-  const { blocks } = usePdfEditorStore();
+  const { blocks, pages, setPages } = usePdfEditorStore();
 
-  if (!structure) {
-    return <div className="flex-1 flex items-center justify-center">Loading…</div>;
-  }
+  const page = structure?.pages[pageIndex];
+  const containerRef = useRef<HTMLDivElement>(null);
+  if (!structure || !page) return <div className="flex-1 flex items-center justify-center">Loading…</div>;
 
-  const page = structure.pages[pageIndex];
-  const scaledWidth = page.width * (zoom / 100);
   const scaledHeight = page.height * (zoom / 100);
+  const scaledWidth = page.width * (zoom / 100);
+  const pageBlocks = useMemo(() => blocks.filter((b) => b.pageNumber === page.number), [blocks, page]);
 
-  const pageBlocks = blocks
-    .filter((b) => b.pageNumber === page.number)
-    .map((b) => ({
-      ...b,
-      y: page.height - b.y,
-    }))
-    .sort((a, b) => a.y - b.y || a.x - b.x);
-
-    type Para = {
-        id: string;
-        text: string;
-        fontSize: number;
-        fontFamily: string;
-        fontWeight: string;
-        fontStyle: string;
-        alignment: 'left' | 'center' | 'right';
-      };
-      
-
-  // Группируем блоки в параграфы
-  const paragraphs: Para[] = pageBlocks.map((block) => ({
-    id: block.id,
-    text: block.str,
-    fontSize: block.fontSize,
-    fontFamily: block.fontFamily,
-    fontWeight: block.fontWeight ?? 'normal', // ✅ если undefined => 'normal'
-    fontStyle: block.fontStyle ?? 'normal',   // ✅ если undefined => 'normal'
-    alignment: block.alignment,
-  }));
-  
-
-  // Разбиваем параграфы на страницы
-    const pages: Para[][] = [];
-    let currentPg: Para[] = [];
+  useMemo(() => {
+    const tempPages: string[][] = [];
+    let currentPage: string[] = [];
     let accHeight = PAGE_PADDING;
 
-  paragraphs.forEach((p) => {
-    const paraHeight = getParagraphHeight(p.fontSize, zoom);
-  
-    if (accHeight + paraHeight > scaledHeight + PAGE_PADDING) {
-      pages.push([...currentPg]); // ✅ Клонируем currentPg в pages
-      currentPg = [];
-      accHeight = PAGE_PADDING;
-    }
-  
-    currentPg.push(p);
-    accHeight += paraHeight;
-  });
+    for (const block of pageBlocks) {
+      const approxHeight = block.fontSize * 1.3 * (zoom / 100);
+      if (accHeight + approxHeight > scaledHeight + PAGE_PADDING) {
+        tempPages.push(currentPage);
+        currentPage = [];
+        accHeight = PAGE_PADDING;
+      }
 
-  if (currentPg.length) pages.push(currentPg);
+      currentPage.push(block.id);
+      accHeight += approxHeight;
+    }
+
+    if (currentPage.length) tempPages.push(currentPage);
+    setPages(tempPages);
+  }, [pageBlocks, zoom, setPages]);
 
   return (
-    <div className="flex flex-col items-center overflow-auto bg-background p-4 space-y-8">
-      {pages.map((paras, idx) => (
+    <div ref={containerRef} className="flex flex-col items-center overflow-auto bg-background p-4 space-y-8">
+      {pages.map((blockIds, pageIdx) => (
         <div
-          key={idx}
-          className={cn("bg-background shadow border rounded-lg p-10")}
+          key={pageIdx}
+          className="bg-white shadow border rounded-lg p-10"
           style={{
             width: scaledWidth + PAGE_PADDING * 2,
             height: scaledHeight + PAGE_PADDING * 2,
           }}
         >
-          {paras.map((p) => (
-            <div
-              key={p.id}
-              contentEditable
-              suppressContentEditableWarning
-              className="whitespace-pre-wrap outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              style={{
-                fontSize: p.fontSize * (zoom / 100),
-                fontFamily: `${p.fontFamily}, Times New Roman, system-ui, sans-serif`,
-                fontWeight: p.fontWeight,
-                fontStyle: p.fontStyle,
-                textAlign: p.alignment as any,
-                lineHeight: `${p.fontSize * 1.3 * (zoom / 100)}px`,
-                overflowWrap: 'break-word',
-                wordBreak: 'break-word',
-                maxWidth: scaledWidth - PAGE_PADDING * 2,
-                marginBottom: p.fontSize * 0.6,
-              }}
-              onBlur={(e) => {
-                const newText = e.currentTarget.innerText;
-                if (newText !== p.text) onUpdate(p.id, newText);
-              }}
-              onClick={(e) => onSelectTextEl(e.currentTarget)}
-            >
-              {p.text}
-            </div>
-          ))}
+          {blockIds.map((id) => {
+            const block = pageBlocks.find((b) => b.id === id);
+            if (!block) return null;
+
+            return (
+              <div
+                key={block.id}
+                data-testid="pdf-page"
+                contentEditable
+                suppressContentEditableWarning
+                className="whitespace-pre-wrap outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                style={{
+                  fontSize: block.fontSize * (zoom / 100),
+                  fontFamily: `${block.fontFamily}, Times New Roman, system-ui, sans-serif`,
+                  fontWeight: block.fontWeight ?? 'normal',
+                  fontStyle: block.fontStyle ?? 'normal',
+                  textAlign: block.alignment as any,
+                  lineHeight: `${block.fontSize * 1.3 * (zoom / 100)}px`,
+                  overflowWrap: 'break-word',
+                  wordBreak: 'break-word',
+                  maxWidth: scaledWidth - PAGE_PADDING * 2,
+                  marginBottom: block.fontSize * 0.6,
+                }}
+                onBlur={(e) => {
+                  const newText = e.currentTarget.innerText;
+                  const newHtml = e.currentTarget.innerHTML;
+                  if (newText !== block.str || newHtml !== block.html) {
+                    onUpdate(block.id, newText, newHtml);
+                  }
+                }}
+                onClick={(e) => onSelectTextEl(e.currentTarget)}
+              >
+                {block.str}
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>
