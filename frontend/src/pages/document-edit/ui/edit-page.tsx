@@ -95,7 +95,7 @@ export const EditPage = () => {
               onStyle={handleStyle}
               onToggleInspector={() => setInspectorOpen(true)}
             />
-            <div className="flex flex-row overflow-hidden justify-center">
+            <div className="flex flex-1 overflow-auto flex-row justify-center">
               {isInspectorVisible && (
                 <PdfTreeInspector
                   structure={structure}
