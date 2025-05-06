@@ -60,7 +60,7 @@ export const EditPage = () => {
       lineBreakAfter: t.lineBreakAfter,
       fontWeight: t.isBold ? 'bold' : 'normal',
       fontStyle: t.isItalic ? 'italic' : 'normal',
-      html: t.str, // ← на початку просто плейнтекст
+      html: t.str, 
 
     })));
   }, [structure, page]);

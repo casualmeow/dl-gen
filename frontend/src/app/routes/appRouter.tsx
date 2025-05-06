@@ -3,6 +3,7 @@ import { EditPage } from 'pages/document-edit';
 import { WorksPage } from 'pages/works';
 import { LoginPage } from 'pages/login';
 import { NotFound } from 'pages/error';
+import { ViewPage } from 'pages/document-view';
 
 export const appRouter = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ export const appRouter = createBrowserRouter([
   {
     path: '/edit/:fileId',
     element: <EditPage />,
+  },
+  {
+    path: '/view/:fileId',
+    element: <ViewPage />,
   },
   {
     path: '/login',

@@ -10,11 +10,10 @@ import {
   SidebarGroupLabel,
 } from 'entities/components';
 import { Briefcase, BookOpenText, BookDashed } from 'lucide-react';
-import { SidebarViewProvider, useSidebarView } from '../model/useSidebarView';
+import { SidebarViewProvider } from '../model/useSidebarView';
 import { NavUser } from './navUser';
 import { useAuth } from 'features/auth';
 import { UnauthorizedUserHeader } from './unathorized';
-import { SidebarSettings } from './settings';
 
 type MenuItem = {
   icon: React.ComponentType<{ size?: number }>;
@@ -31,13 +30,12 @@ export const AppSidebar = () => {
 };
 
 const AppSidebarContent = () => {
-  const { view, setView } = useSidebarView();
   const { user, isAuthenticated } = useAuth();
 
   const menuItems: MenuItem[] = [
     {
       icon: Briefcase,
-      label: 'My works',
+      label: 'My Projects',
       url: '/',
     },
     {
@@ -47,7 +45,7 @@ const AppSidebarContent = () => {
     },
     {
       icon: BookDashed,
-      label: 'Explore templates',
+      label: 'Explore Templates',
       url: '/explore',
     },
 
@@ -61,7 +59,8 @@ const AppSidebarContent = () => {
   return (
     <Sidebar>
       <SidebarContent>
-        <SidebarHeader className="pt-5">
+        
+        <SidebarHeader>
           {isAuthenticated ? (
             <NavUser
               user={{
@@ -74,16 +73,13 @@ const AppSidebarContent = () => {
             <UnauthorizedUserHeader />
           )}
         </SidebarHeader>
-        {view === 'settings' ? (
-          <SidebarSettings showBack={true} onBack={() => setView('main')} />
-        ) : (
           <SidebarMenu>
             <SidebarGroup className="pt-0">
               <SidebarGroupLabel>Sections</SidebarGroupLabel>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url} className="flex items-center gap-3">
+                    <a href={item.url} className="flex font-medium items-center gap-3">
                       <item.icon size={18} />
                       <span>{item.label}</span>
                     </a>
@@ -92,7 +88,7 @@ const AppSidebarContent = () => {
               ))}
             </SidebarGroup>
           </SidebarMenu>
-        )}
+        
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>

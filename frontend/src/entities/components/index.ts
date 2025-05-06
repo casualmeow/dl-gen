@@ -125,3 +125,4 @@ export { Badge, badgeVariants } from './ui/badge';
 export { Progress } from './ui/progress';
 export { Toaster } from './ui/sonner';
 export { Slider } from './ui/slider';
+export { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './ui/resizable';

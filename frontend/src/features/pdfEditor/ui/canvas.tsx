@@ -38,6 +38,7 @@ export const PdfCanvas = ({
   const { blocks, pages, setPages } = usePdfEditorStore();
   const [focusedId, setFocusedId] = useState<string | null>(null);
   const blockRefs = useRef(new Map<string, HTMLDivElement>());
+  const lastPagesRef = useRef<string[][]>([]);
 
   const page = structure?.pages[pageIndex];
   if (!structure || !page) {
@@ -95,49 +96,60 @@ export const PdfCanvas = ({
 
   // 3️⃣ split paragraphs into pages by accumulating heights
 
-  const pageBlocks = usePdfEditorStore(s => 
-    s.blocks.filter(b => b.pageNumber === page.number)
+  const pageBlocks = useMemo(() =>
+    blocks.filter(b => b.pageNumber === page.number),
+    [blocks, page.number]
   );
-  
+
+  // Debounced page splitting to avoid excessive updates
   useLayoutEffect(() => {
     if (!pageBlocks.length) return;
-  
-    const tempPages: string[][] = [];
-    let currentPage: string[] = [];
-    let accHeight = PAGE_PADDING;
-  
-    pageBlocks.forEach((block) => {
-      const el = blockRefs.current.get(block.id);
-      const height = el?.offsetHeight ?? block.fontSize * 1.3 * (zoom / 100);
-  
-      if (accHeight + height > scaledHeight) {
-        if (currentPage.length) {
-          tempPages.push(currentPage);
-          currentPage = [];
-          accHeight = PAGE_PADDING;
+
+    let animationFrame: number;
+    const splitPages = () => {
+      const tempPages: string[][] = [];
+      let currentPage: string[] = [];
+      let accHeight = PAGE_PADDING;
+
+      pageBlocks.forEach((block) => {
+        const el = blockRefs.current.get(block.id);
+        const height = el?.offsetHeight ?? block.fontSize * 1.3 * (zoom / 100);
+
+        if (accHeight + height > scaledHeight) {
+          if (currentPage.length) {
+            tempPages.push(currentPage);
+            currentPage = [];
+            accHeight = PAGE_PADDING;
+          }
         }
+
+        currentPage.push(block.id);
+        accHeight += height;
+      });
+
+      if (currentPage.length) {
+        tempPages.push(currentPage);
       }
-  
-      currentPage.push(block.id);
-      accHeight += height;
-    });
-  
-    if (currentPage.length) {
-      tempPages.push(currentPage);
-    }
-  
-    // Prevent unnecessary updates:
-    setPages((prevPages) => {
-      if (JSON.stringify(prevPages) !== JSON.stringify(tempPages)) {
-        return tempPages;
+
+      // Only update if pages actually changed
+      const prevPages = lastPagesRef.current;
+      const changed =
+        prevPages.length !== tempPages.length ||
+        prevPages.some((arr, i) => arr.join(',') !== tempPages[i]?.join(','));
+
+      if (changed) {
+        lastPagesRef.current = tempPages;
+        setPages(tempPages);
       }
-      return prevPages;
-    });
+    };
+
+    // Debounce with requestAnimationFrame
+    animationFrame = window.requestAnimationFrame(splitPages);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+    };
   }, [pageBlocks, zoom, scaledHeight, setPages]);
-  
-  
-  
-  
 
   // 4️⃣ render
   return (
@@ -146,11 +158,14 @@ export const PdfCanvas = ({
         <div
           key={pi}
           data-testid="pdf-page"
-          className="bg-white shadow border rounded-lg p-10 overflow-hidden relative"
+          className="bg-white shadow border rounded-lg overflow-hidden relative"
           style={{
             width: scaledWidth + PAGE_PADDING * 2,
             height: scaledHeight + PAGE_PADDING * 2,
+            paddingTop: PAGE_PADDING,
             paddingBottom: PAGE_PADDING,
+            paddingLeft: PAGE_PADDING,
+            paddingRight: PAGE_PADDING,
           }}
         >
           {ids.map((id) => {

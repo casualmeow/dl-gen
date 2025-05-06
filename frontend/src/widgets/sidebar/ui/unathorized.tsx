@@ -1,45 +1,34 @@
-import { useSidebarView } from '../model/useSidebarView';
-import { useNavigate } from 'react-router';
-import { Settings } from 'lucide-react';
+import { UpperHeader } from './upperHeader';
 import { Button } from 'entities/components';
+import { Avatar, AvatarFallback } from 'entities/components';
+import { User, LogIn } from 'lucide-react';
 
 export function UnauthorizedUserHeader() {
-  const navigate = useNavigate();
-  const { setView } = useSidebarView();
 
   return (
-    <div className="flex items-center justify-between w-full">
-      <Button variant="outline" onClick={() => navigate('/login')}>
-        Log in
-      </Button>
-      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setView('settings')}>
-        <Settings className="h-4 w-4" />
-      </Button>
-      {/* <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button variant='ghost' size='icon' className='h-8 w-8'>
-                        <Ellipsis className='h-4 w-4'/>
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg mt-1.5 ml-2" side='right' sideOffset={4}>
-                    <DropdownMenuLabel>Options</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
-                        <DropdownMenuItem onClick={() => navigate('/login')}>
-                            <LogIn className="mr-2 h-4 w-4" />
-                            Log in
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setView("settings")}>
-                            <Palette className="mr-2 h-4 w-4" />
-                            Theme
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <Languages className="mr-2 h-4 w-4" />
-                            Language
-                        </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                </DropdownMenuContent>
-            </DropdownMenu> */}
+    <div className="flex flex-col items-center justify-between w-full">
+      <UpperHeader />
+      <div className="px-3 py-2 w-full">
+      <div className="rounded-lg border border-border/40 bg-card p-3 shadow-sm">
+        <div className="mb-3 flex items-center justify-center">
+          <Avatar className="h-12 w-12 ring-2 ring-background">
+            <AvatarFallback className="bg-primary/10">
+              <User className="h-6 w-6 text-primary" />
+            </AvatarFallback>
+          </Avatar>
+        </div>
+        <div className="mb-3 text-center">
+          <h3 className="text-sm font-medium">Welcome to PDF to Site</h3>
+          <p className="text-xs text-muted-foreground">Sign in to access your workspace</p>
+        </div>
+        <Button variant="default" size="sm" className="w-full gap-2" asChild>
+          <a href="/login">
+            <LogIn className="h-4 w-4" />
+            sign in
+          </a>
+        </Button>
+      </div>
+    </div>
     </div>
   );
 }
