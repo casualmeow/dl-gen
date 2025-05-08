@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogClose
 } from "entities/components";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 
 interface MarkdownDialogProps {
@@ -18,6 +18,8 @@ fileUrl: string;
 }
 
 export function MarkdownDialog({isOpen, onOpenChange, fileUrl}: MarkdownDialogProps) {
+  const [_markdown, setMarkdown] = useState<string>("");
+
     useEffect(() => {
         const fetchMarkdown = async () => {
           try {

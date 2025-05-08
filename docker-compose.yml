@@ -10,12 +10,16 @@ services:
       - pdfdata:/app/pdfs
 
   backendv2:
-    build: ./backendv2
+    build:
+      context: ./backendv2
+      target: runtime         # picks up the final stage
     container_name: backendv2
     ports:
       - "8000:8000"
     networks:
-      - app_network   
+      - app_network
+    volumes:
+      - hf_cache:/root/.cache/huggingface  # persist your HF cache across builds
 
   backendv3:
     build: ./backendv3
@@ -42,3 +46,4 @@ networks:
 
 volumes:
   pdfdata:
+  hf_cache:

@@ -1,16 +1,14 @@
-# FastAPI & server
+
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
 
-# HTTP client
 httpx==0.25.1
-anyio<4.0.0                # satisfy FastAPI
+anyio<4.0.0              
 
-# Marker PDF converter
 marker-pdf==1.6.2
 
-# PDF password check
 PyMuPDF==1.23.7
 
-# Pin click to play nicely with marker-pdf & pdftext
 click==8.1.8
+
+python-multipart==0.0.20 

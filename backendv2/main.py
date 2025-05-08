@@ -29,8 +29,8 @@ converter = PdfConverter(artifact_dict=create_model_dict())
 async def root():
     return {"message": "Welcome to DL-Gen API. See /docs"}
 
-@app.get("/healthcheck")
-async def healthcheck():
+@app.get("/healthz")
+async def healthz():
     return {"status": "ok"}
 
 @app.get(
