@@ -1,6 +1,7 @@
 services:
   backendv1:
     build: ./backend
+    dockerfile: ./backend/Dockerfile
     container_name: backend
     ports:
       - "8080:8080"
