@@ -13,7 +13,7 @@ target
 .metals
 *.db
 *.log
-
+docker/supervisord.conf
 # Frontend rules 
 # Logs
 logs

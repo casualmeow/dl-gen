@@ -9,32 +9,34 @@ import { MarkdownDialog } from "./markdown-dialog"
 export function ViewPage(){
     const { fileId } = useParams();
     const [pdfUrl, setPdfUrl] = useState('');
+     const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     useEffect(() => {
-      const fetchPdf = async () => {
-        try {
-          const response = await fetch(`/api/files/${fileId}`);
-          if (!response.ok) {
-            throw new Error('PDF file retrieval failed');
-          }
-  
-          const blob = await response.blob();
-          setPdfUrl(URL.createObjectURL(blob));
-        } catch (error) {
-          console.error("Error fetching PDF:", error);
-        }
-      };
-  
-      fetchPdf();
-    }, [fileId]);
-  
+    (async () => {
+      try {
+        const res = await fetch(`/api/files/${fileId}`);
+        if (!res.ok) throw new Error();
+        const blob = await res.blob();
+        setPdfBlob(blob);
+        setPdfUrl(URL.createObjectURL(blob));
+      } catch {
+        console.error("PDF retrieval failed");
+      }
+    })();
+  }, [fileId]);
     
     return (
         <AppSidebarProvider>
             <AppSidebar />
               <div className="grid grid-rows-[auto_1fr] h-screen w-full">
-              <MarkdownDialog isOpen={isDialogOpen} onOpenChange={setIsDialogOpen} fileUrl={pdfUrl}/>
+                   {pdfUrl && (
+                      <MarkdownDialog
+                        isOpen={isDialogOpen}
+                        onOpenChange={setIsDialogOpen}
+                        pdfBlob={pdfBlob!}
+                      />
+                    )}
               <AppHeader breadcrumbs={[
               { label: 'Your works', href: '/' },
               { label: 'View' }]} 

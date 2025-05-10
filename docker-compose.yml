@@ -1,7 +1,6 @@
 services:
   backendv1:
     build: ./backend
-    dockerfile: ./backend/Dockerfile
     container_name: backend
     ports:
       - "8080:8080"
@@ -12,15 +11,14 @@ services:
 
   backendv2:
     build:
-      context: ./backendv2
-      target: runtime         # picks up the final stage
+      context: ./backendv2    
     container_name: backendv2
     ports:
       - "8000:8000"
     networks:
       - app_network
     volumes:
-      - hf_cache:/root/.cache/huggingface  # persist your HF cache across builds
+      - hf_cache:/root/.cache/huggingface  
 
   backendv3:
     build: ./backendv3
