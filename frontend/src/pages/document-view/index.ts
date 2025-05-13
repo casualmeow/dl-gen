@@ -1,1 +1,1 @@
-export * from './ui/view-page'
+export * from './ui/view-page';

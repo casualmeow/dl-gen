@@ -4,7 +4,7 @@ import type { EditablePdfBlock } from '../model/types';
 export function createEditablePdfBlockFromText(
   t: PdfText,
   pageNumber: number,
-  index: number
+  index: number,
 ): EditablePdfBlock {
   return {
     id: `block-${pageNumber}-${index}`,

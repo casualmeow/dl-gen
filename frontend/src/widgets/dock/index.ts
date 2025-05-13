@@ -1,1 +1,1 @@
-export { Dock, DockItem } from "./ui/dock";
+export { Dock, DockItem } from './ui/dock';

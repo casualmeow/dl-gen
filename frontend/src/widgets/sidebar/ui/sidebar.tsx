@@ -59,7 +59,6 @@ const AppSidebarContent = () => {
   return (
     <Sidebar>
       <SidebarContent>
-        
         <SidebarHeader>
           {isAuthenticated ? (
             <NavUser
@@ -73,22 +72,21 @@ const AppSidebarContent = () => {
             <UnauthorizedUserHeader />
           )}
         </SidebarHeader>
-          <SidebarMenu>
-            <SidebarGroup className="pt-0">
-              <SidebarGroupLabel>Sections</SidebarGroupLabel>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.label}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url} className="flex font-medium items-center gap-3">
-                      <item.icon size={18} />
-                      <span>{item.label}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarGroup>
-          </SidebarMenu>
-        
+        <SidebarMenu>
+          <SidebarGroup className="pt-0">
+            <SidebarGroupLabel>Sections</SidebarGroupLabel>
+            {menuItems.map((item) => (
+              <SidebarMenuItem key={item.label}>
+                <SidebarMenuButton asChild>
+                  <a href={item.url} className="flex font-medium items-center gap-3">
+                    <item.icon size={18} />
+                    <span>{item.label}</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarGroup>
+        </SidebarMenu>
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>

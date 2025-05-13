@@ -1,5 +1,3 @@
-
-
 import { render, screen, fireEvent } from '@testing-library/react';
 import { PdfCanvas } from 'features/pdfEditor/ui/canvas';
 import { describe, it, expect, beforeEach, vi, Mock } from 'vitest';
@@ -23,30 +21,53 @@ describe('PdfCanvas DOM and rendering', () => {
   beforeEach(() => {
     const blocks = createMockBlocks(20).map((b) => ({
       ...b,
-      pageNumber: structure.pages[0].number, 
+      pageNumber: structure.pages[0].number,
     }));
-  
+
     mockedUsePdfEditorStore.mockReturnValue({
       blocks,
-      pages: [blocks.map(b => b.id)],
+      pages: [blocks.map((b) => b.id)],
       setPages: mockSetPages,
       updateBlock: mockUpdateBlock,
     });
   });
-  
 
   it('renders fallback when structure is null', () => {
-    render(<PdfCanvas structure={null} pageIndex={0} zoom={100} onUpdate={onUpdate} onSelectTextEl={onSelect} />);
+    render(
+      <PdfCanvas
+        structure={null}
+        pageIndex={0}
+        zoom={100}
+        onUpdate={onUpdate}
+        onSelectTextEl={onSelect}
+      />,
+    );
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it('renders paragraphs with correct styles', () => {
-    render(<PdfCanvas structure={structure} pageIndex={0} zoom={100} onUpdate={onUpdate} onSelectTextEl={onSelect} />);
+    render(
+      <PdfCanvas
+        structure={structure}
+        pageIndex={0}
+        zoom={100}
+        onUpdate={onUpdate}
+        onSelectTextEl={onSelect}
+      />,
+    );
     expect(screen.getByText('Text 0')).toBeInTheDocument();
   });
 
   it('triggers onUpdate on blur if text changed', () => {
-    render(<PdfCanvas structure={structure} pageIndex={0} zoom={100} onUpdate={onUpdate} onSelectTextEl={onSelect} />);
+    render(
+      <PdfCanvas
+        structure={structure}
+        pageIndex={0}
+        zoom={100}
+        onUpdate={onUpdate}
+        onSelectTextEl={onSelect}
+      />,
+    );
     const el = screen.getByText('Text 1');
     fireEvent.blur(el, {
       target: { innerText: 'Foo', innerHTML: '<p>Foo</p>' },
@@ -55,7 +76,15 @@ describe('PdfCanvas DOM and rendering', () => {
   });
 
   it('calls onSelectTextEl when clicked', () => {
-    render(<PdfCanvas structure={structure} pageIndex={0} zoom={100} onUpdate={onUpdate} onSelectTextEl={onSelect} />);
+    render(
+      <PdfCanvas
+        structure={structure}
+        pageIndex={0}
+        zoom={100}
+        onUpdate={onUpdate}
+        onSelectTextEl={onSelect}
+      />,
+    );
     fireEvent.click(screen.getByText('Text 2'));
     expect(onSelect).toHaveBeenCalled();
   });
@@ -64,12 +93,20 @@ describe('PdfCanvas DOM and rendering', () => {
     const manyBlocks = createMockBlocks(60);
     mockedUsePdfEditorStore.mockReturnValue({
       blocks: manyBlocks,
-      pages: [manyBlocks.slice(0, 30).map(b => b.id), manyBlocks.slice(30).map(b => b.id)],
+      pages: [manyBlocks.slice(0, 30).map((b) => b.id), manyBlocks.slice(30).map((b) => b.id)],
       setPages: mockSetPages,
       updateBlock: mockUpdateBlock,
     });
 
-    render(<PdfCanvas structure={structure} pageIndex={0} zoom={100} onUpdate={onUpdate} onSelectTextEl={onSelect} />);
+    render(
+      <PdfCanvas
+        structure={structure}
+        pageIndex={0}
+        zoom={100}
+        onUpdate={onUpdate}
+        onSelectTextEl={onSelect}
+      />,
+    );
     const pages = screen.getAllByTestId('pdf-page');
     expect(pages.length).toBeGreaterThanOrEqual(2);
   });
@@ -91,7 +128,15 @@ describe('PdfCanvas DOM and rendering', () => {
       updateBlock: mockUpdateBlock,
     });
 
-    render(<PdfCanvas structure={structure} pageIndex={0} zoom={100} onUpdate={onUpdate} onSelectTextEl={onSelect} />);
+    render(
+      <PdfCanvas
+        structure={structure}
+        pageIndex={0}
+        zoom={100}
+        onUpdate={onUpdate}
+        onSelectTextEl={onSelect}
+      />,
+    );
     const node = screen.getByText('Test content');
     expect(node).toHaveAttribute('data-alignment', 'center');
     expect(node).toHaveStyle({

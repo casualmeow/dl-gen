@@ -30,7 +30,7 @@ export const EditPage = () => {
   useEffect(() => {
     if (inspectorOpen) setIsInspectorVisible(true);
   }, [inspectorOpen]);
-  
+
   const handleInspectorClose = () => {
     setInspectorOpen(false);
     setTimeout(() => setIsInspectorVisible(false), 300);
@@ -46,23 +46,24 @@ export const EditPage = () => {
   useEffect(() => {
     if (!structure) return;
     const pageObj = structure.pages[page - 1];
-    setBlocks(pageObj.texts.map(t => ({
-      id: uuidv4(),
-      pageNumber: pageObj.number,
-      str: t.str,
-      x: t.x,
-      y: t.y,
-      width: t.width,
-      height: t.height,
-      fontSize: t.fontSize,
-      fontFamily: t.fontFamily,
-      alignment: t.alignment,
-      lineBreakAfter: t.lineBreakAfter,
-      fontWeight: t.isBold ? 'bold' : 'normal',
-      fontStyle: t.isItalic ? 'italic' : 'normal',
-      html: t.str, 
-
-    })));
+    setBlocks(
+      pageObj.texts.map((t) => ({
+        id: uuidv4(),
+        pageNumber: pageObj.number,
+        str: t.str,
+        x: t.x,
+        y: t.y,
+        width: t.width,
+        height: t.height,
+        fontSize: t.fontSize,
+        fontFamily: t.fontFamily,
+        alignment: t.alignment,
+        lineBreakAfter: t.lineBreakAfter,
+        fontWeight: t.isBold ? 'bold' : 'normal',
+        fontStyle: t.isItalic ? 'italic' : 'normal',
+        html: t.str,
+      })),
+    );
   }, [structure, page]);
 
   const handleStyle = (style: 'bold' | 'italic' | 'underline') => {
@@ -74,22 +75,21 @@ export const EditPage = () => {
   const updateText = (id: string, str: string, html: string) => {
     updateBlock(id, { str, html });
   };
-  
+
   return (
     <AppSidebarProvider>
       <UploadProvider>
         <ToastProvider>
           <AppSidebar />
           <div className="grid grid-rows-[auto_auto_auto_1fr_auto] h-screen w-full">
-            <AppHeader breadcrumbs={[
-              { label: 'Your works', href: '/' },
-              { label: 'Editor' }]} 
+            <AppHeader
+              breadcrumbs={[{ label: 'Your works', href: '/' }, { label: 'Editor' }]}
               actionButton={{
                 label: 'Next',
                 icon: <ArrowRight className="w-4 h-4" />,
-                onClick: () => {
-                },
-              }}/>
+                onClick: () => {},
+              }}
+            />
             <EditMenubar />
             <PdfEditorToolbar
               onStyle={handleStyle}
@@ -121,13 +121,13 @@ export const EditPage = () => {
               ) : (
                 <div className="flex-1 flex items-center justify-center">Loading PDF…</div>
               )}
-              <Dock position='bottom'>
-              <DockItem
-                    icon={<Plus />}
-                    label="Settings"
-                    onClick={() => console.log("Settings clicked")}
+              <Dock position="bottom">
+                <DockItem
+                  icon={<Plus />}
+                  label="Settings"
+                  onClick={() => console.log('Settings clicked')}
                 />
-              </Dock>  
+              </Dock>
             </div>
             <LowerBar
               zoom={zoom}

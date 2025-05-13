@@ -1,4 +1,3 @@
-
 import { useMemo, useRef, useLayoutEffect, useState } from 'react';
 import { usePdfEditorStore } from '../model/store';
 import type { PdfStructure } from 'pages/document-edit';
@@ -28,13 +27,7 @@ interface Props {
   onSelectTextEl: (el: HTMLElement) => void;
 }
 
-export const PdfCanvas = ({
-  structure,
-  pageIndex,
-  zoom,
-  onUpdate,
-  onSelectTextEl,
-}: Props) => {
+export const PdfCanvas = ({ structure, pageIndex, zoom, onUpdate, onSelectTextEl }: Props) => {
   const { blocks, pages, setPages } = usePdfEditorStore();
   const [focusedId, setFocusedId] = useState<string | null>(null);
   const blockRefs = useRef(new Map<string, HTMLDivElement>());
@@ -56,7 +49,7 @@ export const PdfCanvas = ({
       .sort((a, b) => a.y - b.y || a.x - b.x);
 
     // cluster into lines
-    const clusters: typeof sorted[] = [];
+    const clusters: (typeof sorted)[] = [];
     let curr: typeof sorted = [];
     let lastY: number | null = null;
 
@@ -96,9 +89,9 @@ export const PdfCanvas = ({
 
   // 3️⃣ split paragraphs into pages by accumulating heights
 
-  const pageBlocks = useMemo(() =>
-    blocks.filter(b => b.pageNumber === page.number),
-    [blocks, page.number]
+  const pageBlocks = useMemo(
+    () => blocks.filter((b) => b.pageNumber === page.number),
+    [blocks, page.number],
   );
 
   // Debounced page splitting to avoid excessive updates
@@ -183,7 +176,7 @@ export const PdfCanvas = ({
                 data-alignment={p.style.textAlign}
                 className={cn(
                   'whitespace-pre-wrap outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                  focusedId === p.id && 'shiny-text'
+                  focusedId === p.id && 'shiny-text',
                 )}
                 style={{
                   marginLeft: p.indent,

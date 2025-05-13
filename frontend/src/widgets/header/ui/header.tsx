@@ -21,7 +21,7 @@ export interface HeaderProps {
     label: string;
     icon: React.ReactNode;
     onClick?: () => void;
-  }
+  };
 }
 
 export interface SeparatorProps {
@@ -32,7 +32,7 @@ export interface SeparatorProps {
 export function AppHeader({ breadcrumbs, actionButton }: HeaderProps) {
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-      <div className='flex w-[calc(100%-20px)] justify-between'>
+      <div className="flex w-[calc(100%-20px)] justify-between">
         <div className="flex items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 !h-4 bg-border" />
@@ -58,12 +58,12 @@ export function AppHeader({ breadcrumbs, actionButton }: HeaderProps) {
             </BreadcrumbList>
           </Breadcrumb>
         </div>
-      {actionButton && (
-        <Button onClick={actionButton.onClick} className="gap-2 text-sm font-semibold">
-          {actionButton.label}
-          {actionButton.icon}
-        </Button>
-      )}
+        {actionButton && (
+          <Button onClick={actionButton.onClick} className="gap-2 text-sm font-semibold">
+            {actionButton.label}
+            {actionButton.icon}
+          </Button>
+        )}
       </div>
     </header>
   );

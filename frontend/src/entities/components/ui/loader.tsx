@@ -1,62 +1,74 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { motion } from "framer-motion"
+import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { motion } from 'framer-motion';
 
-import { cn } from "shared/lib/utils"
+import { cn } from 'shared/lib/utils';
 
-const loaderVariants = cva("relative flex items-center justify-center", {
+const loaderVariants = cva('relative flex items-center justify-center', {
   variants: {
     variant: {
-      default: "text-primary",
-      secondary: "text-secondary",
-      destructive: "text-destructive",
-      outline: "text-primary border border-input bg-background",
-      ghost: "hover:bg-accent hover:text-accent-foreground",
-      muted: "text-muted-foreground",
-      accent: "text-accent-foreground bg-accent",
+      default: 'text-primary',
+      secondary: 'text-secondary',
+      destructive: 'text-destructive',
+      outline: 'text-primary border border-input bg-background',
+      ghost: 'hover:bg-accent hover:text-accent-foreground',
+      muted: 'text-muted-foreground',
+      accent: 'text-accent-foreground bg-accent',
     },
     size: {
-      xs: "h-3 w-3",
-      sm: "h-4 w-4",
-      default: "h-5 w-5",
-      md: "h-6 w-6",
-      lg: "h-8 w-8",
-      xl: "h-10 w-10",
-      "2xl": "h-12 w-12",
+      xs: 'h-3 w-3',
+      sm: 'h-4 w-4',
+      default: 'h-5 w-5',
+      md: 'h-6 w-6',
+      lg: 'h-8 w-8',
+      xl: 'h-10 w-10',
+      '2xl': 'h-12 w-12',
     },
   },
   defaultVariants: {
-    variant: "default",
-    size: "default",
+    variant: 'default',
+    size: 'default',
   },
-})
+});
 
-export interface LoaderProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof loaderVariants> {
-  type?: "spinner" | "dots" | "pulse" | "linear" | "circular"
-  speed?: "slow" | "default" | "fast"
-  thickness?: "thin" | "default" | "thick"
-  progress?: number
-  label?: string
+export interface LoaderProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof loaderVariants> {
+  type?: 'spinner' | 'dots' | 'pulse' | 'linear' | 'circular';
+  speed?: 'slow' | 'default' | 'fast';
+  thickness?: 'thin' | 'default' | 'thick';
+  progress?: number;
+  label?: string;
 }
 
 const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
   (
-    { className, variant, size, type = "spinner", speed = "default", thickness = "default", progress, label, ...props },
+    {
+      className,
+      variant,
+      size,
+      type = 'spinner',
+      speed = 'default',
+      thickness = 'default',
+      progress,
+      label,
+      ...props
+    },
     ref,
   ) => {
     const speedValues = {
       slow: 1.5,
       default: 1,
       fast: 0.5,
-    }
+    };
 
     const thicknessValues = {
-      thin: type === "spinner" ? "border" : "2px",
-      default: type === "spinner" ? "border-2" : "3px",
-      thick: type === "spinner" ? "border-[3px]" : "4px",
-    }
+      thin: type === 'spinner' ? 'border' : '2px',
+      default: type === 'spinner' ? 'border-2' : '3px',
+      thick: type === 'spinner' ? 'border-[3px]' : '4px',
+    };
 
-    const ariaLabel = label || "Loading"
+    const ariaLabel = label || 'Loading';
 
     return (
       <div
@@ -66,50 +78,56 @@ const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
         aria-label={ariaLabel}
         {...props}
       >
-        {type === "spinner" && <SpinnerLoader duration={speedValues[speed]} thickness={thicknessValues[thickness]} />}
-        {type === "dots" && <DotsLoader duration={speedValues[speed]} />}
-        {type === "pulse" && <PulseLoader duration={speedValues[speed]} />}
-        {type === "linear" && <LinearLoader progress={progress} thickness={thicknessValues[thickness]} />}
-        {type === "circular" && <CircularLoader progress={progress} thickness={thicknessValues[thickness]} />}
+        {type === 'spinner' && (
+          <SpinnerLoader duration={speedValues[speed]} thickness={thicknessValues[thickness]} />
+        )}
+        {type === 'dots' && <DotsLoader duration={speedValues[speed]} />}
+        {type === 'pulse' && <PulseLoader duration={speedValues[speed]} />}
+        {type === 'linear' && (
+          <LinearLoader progress={progress} thickness={thicknessValues[thickness]} />
+        )}
+        {type === 'circular' && (
+          <CircularLoader progress={progress} thickness={thicknessValues[thickness]} />
+        )}
         {label && <span className="sr-only">{label}</span>}
       </div>
-    )
+    );
   },
-)
-Loader.displayName = "Loader"
+);
+Loader.displayName = 'Loader';
 
 // Spinner Loader
 interface SpinnerLoaderProps {
-  duration: number
-  thickness: string
+  duration: number;
+  thickness: string;
 }
 
 const SpinnerLoader = ({ duration, thickness }: SpinnerLoaderProps) => {
   return (
     <div className="relative h-full w-full">
       {/* Static ring */}
-      <div className={cn("absolute inset-0 rounded-full border-current opacity-20", thickness)} />
+      <div className={cn('absolute inset-0 rounded-full border-current opacity-20', thickness)} />
 
       {/* Animated spinner */}
       <motion.div
-        className={cn("absolute inset-0 rounded-full border-transparent", thickness)}
+        className={cn('absolute inset-0 rounded-full border-transparent', thickness)}
         style={{
-          borderTopColor: "currentColor",
+          borderTopColor: 'currentColor',
         }}
         animate={{ rotate: 360 }}
         transition={{
           duration,
-          ease: "linear",
+          ease: 'linear',
           repeat: Number.POSITIVE_INFINITY,
         }}
       />
     </div>
-  )
-}
+  );
+};
 
 // Dots Loader
 interface DotsLoaderProps {
-  duration: number
+  duration: number;
 }
 
 const DotsLoader = ({ duration }: DotsLoaderProps) => {
@@ -127,17 +145,17 @@ const DotsLoader = ({ duration }: DotsLoaderProps) => {
             duration: duration * 0.8,
             repeat: Number.POSITIVE_INFINITY,
             delay: i * (duration / 4),
-            ease: "easeInOut",
+            ease: 'easeInOut',
           }}
         />
       ))}
     </div>
-  )
-}
+  );
+};
 
 // Pulse Loader
 interface PulseLoaderProps {
-  duration: number
+  duration: number;
 }
 
 const PulseLoader = ({ duration }: PulseLoaderProps) => {
@@ -153,7 +171,7 @@ const PulseLoader = ({ duration }: PulseLoaderProps) => {
         transition={{
           duration: duration * 1.2,
           repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         }}
       />
       <motion.div
@@ -166,60 +184,60 @@ const PulseLoader = ({ duration }: PulseLoaderProps) => {
         transition={{
           duration: duration * 1.2,
           repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
+          ease: 'easeInOut',
           delay: duration * 0.3,
         }}
       />
     </div>
-  )
-}
+  );
+};
 
 // Linear Loader
 interface LinearLoaderProps {
-  progress?: number
-  thickness: string
+  progress?: number;
+  thickness: string;
 }
 
 const LinearLoader = ({ progress }: LinearLoaderProps) => {
-  const determinate = typeof progress === "number"
+  const determinate = typeof progress === 'number';
 
   return (
     <div className="h-1/4 w-full overflow-hidden rounded-full bg-current bg-opacity-20">
       {determinate ? (
         <motion.div
           className="h-full bg-current"
-          initial={{ width: "0%" }}
+          initial={{ width: '0%' }}
           animate={{ width: `${progress}%` }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
         />
       ) : (
         <motion.div
           className="h-full bg-current"
-          initial={{ x: "-100%" }}
-          animate={{ x: "100%" }}
+          initial={{ x: '-100%' }}
+          animate={{ x: '100%' }}
           transition={{
             duration: 1.5,
             repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
+            ease: 'easeInOut',
           }}
-          style={{ width: "30%" }}
+          style={{ width: '30%' }}
         />
       )}
     </div>
-  )
-}
+  );
+};
 
 // Circular Loader
 interface CircularLoaderProps {
-  progress?: number
-  thickness: string
+  progress?: number;
+  thickness: string;
 }
 
 const CircularLoader = ({ progress, thickness }: CircularLoaderProps) => {
-  const determinate = typeof progress === "number"
-  const strokeWidth = Number.parseInt(thickness.replace(/[^\d]/g, "")) * 2
-  const radius = 45
-  const circumference = 2 * Math.PI * radius
+  const determinate = typeof progress === 'number';
+  const strokeWidth = Number.parseInt(thickness.replace(/[^\d]/g, '')) * 2;
+  const radius = 45;
+  const circumference = 2 * Math.PI * radius;
 
   return (
     <div className="relative h-full w-full">
@@ -246,7 +264,7 @@ const CircularLoader = ({ progress, thickness }: CircularLoaderProps) => {
             animate={{
               strokeDashoffset: circumference - (progress / 100) * circumference,
             }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
           />
         ) : (
           <motion.circle
@@ -262,9 +280,9 @@ const CircularLoader = ({ progress, thickness }: CircularLoaderProps) => {
             transition={{
               duration: 1.5,
               repeat: Number.POSITIVE_INFINITY,
-              ease: "linear",
+              ease: 'linear',
             }}
-            style={{ transformOrigin: "center" }}
+            style={{ transformOrigin: 'center' }}
           />
         )}
         {determinate && (
@@ -280,7 +298,7 @@ const CircularLoader = ({ progress, thickness }: CircularLoaderProps) => {
         )}
       </svg>
     </div>
-  )
-}
+  );
+};
 
-export { Loader }
+export { Loader };

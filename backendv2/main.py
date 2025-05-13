@@ -4,7 +4,7 @@ import sys
 import tempfile
 from typing import Any, Dict
 
-from fastapi import FastAPI, HTTPException, Query, UploadFile, File
+from fastapi import FastAPI, HTTPException, Query, UploadFile, File, Body
 from fastapi.responses import PlainTextResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -96,7 +96,7 @@ async def post_markdown(
     "/markdown",
     summary="Get cached Markdown"
 )
-async def get_markdown(fileId: str = Query(..., description="ID документа")):
+async def get_markdown(fileId: str = Query(..., description="ID of the document")):
     if not r:
         raise HTTPException(status_code=503, detail="Redis not configured")
 
@@ -109,6 +109,37 @@ async def get_markdown(fileId: str = Query(..., description="ID документ
     if md is None:
         raise HTTPException(status_code=404, detail="Not cached")
     return JSONResponse({"markdown": md, "cached": True})
+
+app.put(
+    "/markdown",
+    summary="Update cached Markdown"
+)
+async def update_markdown(
+    fileId: str = Query(..., description="ID of the document for cache key"),
+    new_md: str = Body(..., media_type="text/plain")
+):
+    key = f"md:{fileId}"
+    try:
+        await r.set(key, new_md)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Redis set failed: {e}")
+    return JSONResponse({"cached": True})
+
+@app.delete(
+    "/markdown",
+    summary="Delete cached Markdown"
+)
+async def delete_markdown(fileId: str = Query(..., description="ID of the document")):
+    if not r:
+        raise HTTPException(status_code=503, detail="Redis not configured")
+
+    key = f"md:{fileId}"
+    try:
+        await r.delete(key)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Redis delete failed: {e}")
+
+    return JSONResponse({"deleted": True})
 
 if __name__ == "__main__":
     import uvicorn

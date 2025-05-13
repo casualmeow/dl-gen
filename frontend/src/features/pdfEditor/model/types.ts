@@ -15,10 +15,8 @@ export interface EditablePdfText {
   lineBreakAfter?: boolean;
 }
 
-  
-  export interface EditablePdfBlock extends EditablePdfText {
-    id: string;
-    pageNumber: number;
-    html: string;
-  }
-  
+export interface EditablePdfBlock extends EditablePdfText {
+  id: string;
+  pageNumber: number;
+  html: string;
+}
