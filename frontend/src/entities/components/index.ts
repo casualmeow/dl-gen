@@ -127,3 +127,4 @@ export { Toaster } from './ui/sonner';
 export { Slider } from './ui/slider';
 export { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './ui/resizable';
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './ui/tabs';
+export { Loader } from './ui/loader';

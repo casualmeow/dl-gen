@@ -1,8 +1,0 @@
-# flyctl launch added from .gitignore
-
-**\__pycache__
-**\.env
-**\venv
-**\.venv
-**\venv\Scripts
-fly.toml

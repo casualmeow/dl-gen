@@ -9,10 +9,20 @@ services:
     volumes:
       - pdfdata:/app/pdfs
 
+  redis:
+    image: redis:8
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
   backendv2:
     build:
       context: ./backendv2    
     container_name: backendv2
+    depends_on:
+      - redis
     ports:
       - "8000:8000"
     networks:
@@ -46,3 +56,4 @@ networks:
 volumes:
   pdfdata:
   hf_cache:
+  redis_data:
