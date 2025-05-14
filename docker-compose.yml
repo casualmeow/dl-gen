@@ -29,6 +29,7 @@ services:
       - app_network
     volumes:
       - hf_cache:/root/.cache/huggingface  
+      - ./backendv2:/app
 
   backendv3:
     build: ./backendv3

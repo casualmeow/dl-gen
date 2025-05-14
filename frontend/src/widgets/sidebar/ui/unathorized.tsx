@@ -23,7 +23,7 @@ export function UnauthorizedUserHeader() {
           <Button variant="default" size="sm" className="w-full gap-2" asChild>
             <a href="/login">
               <LogIn className="h-4 w-4" />
-              sign in
+              Sign in
             </a>
           </Button>
         </div>

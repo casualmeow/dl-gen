@@ -7,7 +7,7 @@ export function MainPageLayout() {
   return (
     <main className="flex min-h-screen flex-col p-6 ml-auto w-[calc(100%-var(--sidebar-width))]">
       <div className="w-full max-w-5xl">
-        <h1 className="text-2xl font-bold mb-4">File Uploader Example</h1>
+        <h1 className="text-2xl font-bold mb-4">Your works</h1>
         <div className="flex flex-wrap gap-4">
           <FileUploaderComponent
             onFilesSelected={(files) => {

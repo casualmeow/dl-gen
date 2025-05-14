@@ -6,12 +6,13 @@ interface UsePdfToMarkdownResult {
   markdown: string;
   status: ConversionStatus;
   refresh: () => void;
+  save: (editedMd: string) => Promise<void>;
 }
 
 export function usePdfToMarkdown(
   fileId: string | undefined,
   pdfBlob: Blob | null,
-): UsePdfToMarkdownResult & { save: (editedMd: string) => Promise<void> } {
+): UsePdfToMarkdownResult {
   const [markdown, setMarkdown] = useState('');
   const [status, setStatus] = useState<ConversionStatus>('idle');
 

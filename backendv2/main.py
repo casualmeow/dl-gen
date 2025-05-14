@@ -44,6 +44,11 @@ async def root() -> Dict[str, Any]:
 async def healthz() -> Dict[str, str]:
     return {"status": "ok"}
 
+app.patch(
+    "/healthz", summary="Health check")
+async def healthz_put() -> Dict[str, str]:
+    return {"status": "ok"}
+
 @app.get("/redis-health", summary="Redis connectivity check")
 async def redis_health():
     if r is None:
@@ -59,7 +64,7 @@ async def redis_health():
 
     return {"redis": "ok"}
 
-
+#markdown
 @app.post(
     "/markdown",
     response_class=PlainTextResponse,
@@ -110,20 +115,34 @@ async def get_markdown(fileId: str = Query(..., description="ID of the document"
         raise HTTPException(status_code=404, detail="Not cached")
     return JSONResponse({"markdown": md, "cached": True})
 
-app.put(
+@app.put(
     "/markdown",
-    summary="Update cached Markdown"
+    summary="Update cached Markdown",
 )
 async def update_markdown(
     fileId: str = Query(..., description="ID of the document for cache key"),
     new_md: str = Body(..., media_type="text/plain")
 ):
-    key = f"md:{fileId}"
+    if not r:
+        raise HTTPException(status_code=503, detail="Redis not configured")
+    if not new_md:
+        raise HTTPException(status_code=400, detail="Empty markdown")
+    if len(new_md) > 1000000:
+        raise HTTPException(status_code=400, detail="Markdown too long")
+    if not fileId:
+        raise HTTPException(status_code=400, detail="Empty fileId")
+    
     try:
-        await r.set(key, new_md)
+        await r.set(f"md:{fileId}", new_md, ex=int(os.getenv("CACHE_TTL", "86400")))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Redis set failed: {e}")
     return JSONResponse({"cached": True})
+    # key = f"md:{fileId}"
+    # try:
+    #     await r.set(key, new_md)
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail=f"Redis set failed: {e}")
+    # return JSONResponse({"cached": True})
 
 @app.delete(
     "/markdown",
