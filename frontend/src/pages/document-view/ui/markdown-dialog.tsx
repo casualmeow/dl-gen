@@ -41,20 +41,17 @@ export const PreviewCode: React.FC<PreviewCodeProps> = ({
   const gcs = _getCodeString ?? getCodeString;
   const codeStr = node?.children ? gcs(node.children) : text;
 
-  // **1) Inline math**
   if (inline && /^\$(.+)\$$/.test(text)) {
     const expr = text.replace(/^\$(.+)\$$/, '$1');
     const html = katex.renderToString(expr, { throwOnError: false });
     return <code dangerouslySetInnerHTML={{ __html: html }} />;
   }
 
-  // **2) Block KaTeX**
   if (/^language-katex/.test(className.toLowerCase())) {
     const html = katex.renderToString(codeStr, { throwOnError: false });
     return <code dangerouslySetInnerHTML={{ __html: html }} />;
   }
 
-  // **3) Mermaid – now with state + effect**
   const [svg, setSvg] = useState<string>('');
   useEffect(() => {
     if (/^language-mermaid/.test(className.toLowerCase())) {
@@ -75,7 +72,6 @@ export const PreviewCode: React.FC<PreviewCodeProps> = ({
     );
   }
 
-  // **4) Fallback**
   return <code className={className}>{children}</code>;
 };
 
@@ -117,7 +113,6 @@ export function MarkdownDialog({
   const isError = status === 'error' || status === 'notfound';
 
   const toolbar = [
-    // default commands plus your refresh button
     'bold',
     'italic',
     'strike',
@@ -127,7 +122,7 @@ export function MarkdownDialog({
       name: 'refresh',
       keyCommand: 'refresh',
       buttonProps: { 'aria-label': 'Refresh' },
-      icon: <RefreshCw />,      // ← no nested <button>
+      icon: <RefreshCw />,     
       execute: () => refresh(),
     },
     'divider',
@@ -171,9 +166,20 @@ export function MarkdownDialog({
               </TabsList>
 
               <TabsContent value="edit">
-                <div className="overflow-hidden rounded-md border">
+                <div className="overflow-hidden rounded-md border prose prose-invert dark:prose-invert">
   <MDEditor
-    className="wmde-markdown-var"
+     className="
+      prose 
+      max-h-[500px]
+      max-w-[800px]
+      overflow-auto 
+      p-4 
+      rounded-md 
+      bg-background 
+      text-foreground 
+      dark:bg-background
+      dark:text-foreground
+    "
     value={edited}
     onChange={(v) => setEdited(v || '')}
     height={500}
@@ -188,13 +194,17 @@ export function MarkdownDialog({
         rehypeSanitize,
       ],
       components: { code: PreviewCode },
+      style:{
+      backgroundColor: 'var(--color-card)',
+      color:           'var(--color-foreground)',
+      }
     }}
   />
                 </div>
               </TabsContent>
 
               <TabsContent value="preview">
-                <div className="prose max-h-[500px] overflow-auto p-4 rounded-md">
+                <div className="prose max-h-[500px] max-w-[800px] overflow-auto p-4 rounded-md">
    <MDEditor.Markdown
                     source={edited}
                     remarkPlugins={[remarkMath]}

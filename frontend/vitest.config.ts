@@ -11,7 +11,7 @@ export default defineConfig({
     include: [
       'src/**/__tests__/**/*.test.{ts,tsx}',
       'src/**/__tests__/*.test.{ts,tsx}',
-      'src/**/?(*.)+(spec|test).[tj]s?(x)', // загальна підтримка
+      'src/**/?(*.)+(spec|test).[tj]s?(x)',
     ],
     exclude: ['node_modules', 'dist'],
     coverage: {

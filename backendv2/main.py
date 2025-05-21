@@ -14,6 +14,7 @@ from redis.asyncio import Redis
 from marker.converters.pdf import PdfConverter
 from marker.models import create_model_dict
 from marker.output import text_from_rendered
+from routers.templates import router as template_router
 
 load_dotenv()
 
@@ -33,6 +34,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(template_router)
 
 converter = PdfConverter(artifact_dict=create_model_dict())
 
@@ -137,12 +140,6 @@ async def update_markdown(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Redis set failed: {e}")
     return JSONResponse({"cached": True})
-    # key = f"md:{fileId}"
-    # try:
-    #     await r.set(key, new_md)
-    # except Exception as e:
-    #     raise HTTPException(status_code=500, detail=f"Redis set failed: {e}")
-    # return JSONResponse({"cached": True})
 
 @app.delete(
     "/markdown",

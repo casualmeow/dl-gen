@@ -39,9 +39,6 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --md-editor-background: var(--background !important);
-  --md-editor-color:      var(--foreground !important);
-  --md-editor-border:     var(--ring !important);
 }
 
 .dark {
@@ -126,21 +123,6 @@
   }
 }
 
-.shiny-text {
-  color: #b5b5b5a4;
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0) 40%,
-    rgba(255, 255, 255, 0.8) 50%,
-    rgba(255, 255, 255, 0) 60%
-  );
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  display: inline-block;
-  animation: shine 5s linear infinite;
-}
-
 @keyframes shine {
   0% {
     background-position: 100%;
@@ -152,4 +134,24 @@
 
 .shiny-text.disabled {
   animation: none;
+}
+
+
+.prose table {
+  @apply w-full border-collapse border border-border;
+}
+
+/* header row */
+.prose th {
+  @apply bg-muted-foreground text-foreground font-medium p-2 border border-border;
+}
+
+/* body cells */
+.prose td {
+  @apply p-2 border border-border;
+}
+
+/* zebra-stripe every other row */
+.prose tr:nth-child(even) td {
+  @apply bg-muted;
 }

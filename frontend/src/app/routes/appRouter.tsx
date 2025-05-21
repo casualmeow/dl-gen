@@ -4,6 +4,7 @@ import { WorksPage } from 'pages/works';
 import { LoginPage } from 'pages/login';
 import { NotFound } from 'pages/error';
 import { ViewPage } from 'pages/document-view';
+import { TemplatePage } from 'pages/template-use';
 
 export const appRouter = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const appRouter = createBrowserRouter([
   {
     path: '/view/:fileId',
     element: <ViewPage />,
+  },
+  {
+    path: '/templates/',
+    element: <TemplatePage />,
   },
   {
     path: '/login',

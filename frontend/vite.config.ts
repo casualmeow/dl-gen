@@ -63,11 +63,9 @@ export default defineConfig({
       app: path.resolve(__dirname, './src/app'),
       widgets: path.resolve(__dirname, './src/widgets'),
       features: path.resolve(__dirname, './src/features'),
-      // entities: path.resolve(__dirname, './src/entities'), 
       pages: path.resolve(__dirname, './src/pages'),
       shared: path.resolve(__dirname, './src/shared'),
 
-      //parse5 dist alias
       "parse5/dist/serializer/index.js": path.resolve(
         __dirname,
         "node_modules/parse5/dist/serializer/index.js"
