@@ -5,6 +5,7 @@ import { LoginPage } from 'pages/login';
 import { NotFound } from 'pages/error';
 import { ViewPage } from 'pages/document-view';
 import { TemplatePage } from 'pages/template-use';
+import { ExploreTemplatesPage } from 'pages/templates-explore';
 
 export const appRouter = createBrowserRouter([
   {
@@ -20,7 +21,11 @@ export const appRouter = createBrowserRouter([
     element: <ViewPage />,
   },
   {
-    path: '/templates/',
+    path: '/templates',
+    element: <ExploreTemplatesPage />,
+  },
+  {
+    path: '/templates/:templateId',
     element: <TemplatePage />,
   },
   {

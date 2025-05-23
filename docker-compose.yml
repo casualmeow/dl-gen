@@ -28,7 +28,7 @@ services:
     networks:
       - app_network
     env_file:
-      - .env
+      - backendv2/.env
     volumes:
       - hf_cache:/root/.cache/huggingface  
       - ./backendv2:/app
@@ -41,7 +41,7 @@ services:
     networks:
       - app_network   
     env_file: 
-      - .env
+      - backendv3/.env
     environment:
       - JAVA_OPTS=-Xms256m -Xmx512m
 

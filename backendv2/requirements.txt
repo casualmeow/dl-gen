@@ -3,7 +3,8 @@ torch==2.7.0+cpu
 
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
-httpx==0.25.1
+surya-ocr<0.14.0,>=0.13.1
+httpx>=0.26,<0.29
 anyio<4.0.0              
 marker-pdf==1.6.2
 redis==6.0.0

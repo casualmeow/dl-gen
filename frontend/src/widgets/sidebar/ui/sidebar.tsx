@@ -46,7 +46,7 @@ const AppSidebarContent = () => {
     {
       icon: BookDashed,
       label: 'Explore Templates',
-      url: '/explore',
+      url: '/templates',
     },
 
     // { TOOD: decompose into header
