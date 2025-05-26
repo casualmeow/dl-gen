@@ -128,3 +128,17 @@ export { Slider } from './ui/slider';
 export { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './ui/resizable';
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './ui/tabs';
 export { Loader } from './ui/loader';
+export { Textarea } from './ui/textarea';
+export {
+  AlertDialog,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from './ui/alert-dialog';

@@ -22,6 +22,7 @@ export interface HeaderProps {
     icon: React.ReactNode;
     onClick?: () => void;
   };
+  withBorder?: boolean;
 }
 
 export interface SeparatorProps {
@@ -29,9 +30,14 @@ export interface SeparatorProps {
   className?: string;
 }
 
-export function AppHeader({ breadcrumbs, actionButton }: HeaderProps) {
+export function AppHeader({ breadcrumbs, actionButton, withBorder }: HeaderProps) {
   return (
-    <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+    <header className={`
+        flex h-16 shrink-0 items-center gap-2
+        transition-[width,height] ease-linear
+        group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12
+        ${withBorder ? "border-b border-border" : ""}
+      `}>
       <div className="flex w-[calc(100%-20px)] justify-between">
         <div className="flex items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />

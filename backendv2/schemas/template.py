@@ -5,6 +5,7 @@ from typing import Optional
 
 class TemplateBase(BaseModel):
     name: str
+    description: Optional[str] = None
     body: str
     tags: Optional[list[str]] = None
 
@@ -21,6 +22,7 @@ class TemplateCreate(TemplateBase):
 
 class TemplateUpdate(BaseModel):
     name: Optional[str]
+    description: Optional[str] = None
     body: Optional[str]
     tags: Optional[list[str]] = None
 
