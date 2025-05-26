@@ -10,11 +10,18 @@ import rehypeMermaid from 'rehype-mermaidjs';
 import 'katex/dist/katex.min.css';
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
-import remarkMath from 'remark-math'
+import remarkMath from 'remark-math';
 
-import { 
-  Button, Card, Dialog, DialogContent, DialogHeader, 
-  DialogFooter, DialogTitle, DialogDescription, DialogClose 
+import {
+  Button,
+  Card,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
 } from 'entities/components';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from 'entities/components';
 import { Loader } from 'entities/components';
@@ -67,14 +74,11 @@ export const PreviewCode: React.FC<PreviewCodeProps> = ({
   }, [className, codeStr]);
 
   if (/^language-mermaid/.test(className.toLowerCase())) {
-    return (
-      <div data-testid="mermaid-container" dangerouslySetInnerHTML={{ __html: svg }} />
-    );
+    return <div data-testid="mermaid-container" dangerouslySetInnerHTML={{ __html: svg }} />;
   }
 
   return <code className={className}>{children}</code>;
 };
-
 
 interface MarkdownDialogProps {
   isOpen: boolean;
@@ -83,16 +87,8 @@ interface MarkdownDialogProps {
   pdfBlob: Blob;
 }
 
-export function MarkdownDialog({
-  isOpen,
-  onOpenChange,
-  fileId,
-  pdfBlob,
-}: MarkdownDialogProps) {
-  const { markdown, status, refresh, save } = usePdfToMarkdown(
-    fileId,
-    pdfBlob
-  );
+export function MarkdownDialog({ isOpen, onOpenChange, fileId, pdfBlob }: MarkdownDialogProps) {
+  const { markdown, status, refresh, save } = usePdfToMarkdown(fileId, pdfBlob);
   const [edited, setEdited] = useState(markdown);
   const prevOpen = useRef(isOpen);
   const initial = useRef(markdown);
@@ -122,7 +118,7 @@ export function MarkdownDialog({
       name: 'refresh',
       keyCommand: 'refresh',
       buttonProps: { 'aria-label': 'Refresh' },
-      icon: <RefreshCw />,     
+      icon: <RefreshCw />,
       execute: () => refresh(),
     },
     'divider',
@@ -137,7 +133,8 @@ export function MarkdownDialog({
           <DialogDescription>
             {isLoading && 'Converting…'}
             {isError && 'Conversion failed or file not found.'}
-            {!isLoading && !isError &&
+            {!isLoading &&
+              !isError &&
               'This PDF has been converted to Markdown. Edit below and Save.'}
           </DialogDescription>
         </DialogHeader>
@@ -147,7 +144,7 @@ export function MarkdownDialog({
             <div
               className={cn(
                 'absolute inset-0 z-10 flex items-center justify-center',
-                'bg-background'
+                'bg-background',
               )}
             >
               <Loader />
@@ -167,8 +164,8 @@ export function MarkdownDialog({
 
               <TabsContent value="edit">
                 <div className="overflow-hidden rounded-md border prose prose-invert dark:prose-invert">
-  <MDEditor
-     className="
+                  <MDEditor
+                    className="
       prose 
       max-h-[500px]
       max-w-[800px]
@@ -180,32 +177,32 @@ export function MarkdownDialog({
       dark:bg-background
       dark:text-foreground
     "
-    value={edited}
-    onChange={(v) => setEdited(v || '')}
-    height={500}
-    commands={toolbar as any}
-    extraCommands={[]}
-    preview="live"
-    previewOptions={{
-      remarkPlugins: [remarkMath],
-      rehypePlugins: [
-        [rehypeKatex, { strict: false }],
-        [rehypeMermaid, {}],
-        rehypeSanitize,
-      ],
-      components: { code: PreviewCode },
-      style:{
-      backgroundColor: 'var(--color-card)',
-      color:           'var(--color-foreground)',
-      }
-    }}
-  />
+                    value={edited}
+                    onChange={(v) => setEdited(v || '')}
+                    height={500}
+                    commands={toolbar as any}
+                    extraCommands={[]}
+                    preview="live"
+                    previewOptions={{
+                      remarkPlugins: [remarkMath],
+                      rehypePlugins: [
+                        [rehypeKatex, { strict: false }],
+                        [rehypeMermaid, {}],
+                        rehypeSanitize,
+                      ],
+                      components: { code: PreviewCode },
+                      style: {
+                        backgroundColor: 'var(--color-card)',
+                        color: 'var(--color-foreground)',
+                      },
+                    }}
+                  />
                 </div>
               </TabsContent>
 
               <TabsContent value="preview">
                 <div className="prose max-h-[500px] max-w-[800px] overflow-auto p-4 rounded-md">
-   <MDEditor.Markdown
+                  <MDEditor.Markdown
                     source={edited}
                     remarkPlugins={[remarkMath]}
                     rehypePlugins={[
@@ -224,10 +221,7 @@ export function MarkdownDialog({
           <DialogClose asChild>
             <Button variant="secondary">Close</Button>
           </DialogClose>
-          <Button
-            onClick={() => save(edited)}
-            disabled={isLoading || isError}
-          >
+          <Button onClick={() => save(edited)} disabled={isLoading || isError}>
             {isLoading ? <Loader2 className="animate-spin" /> : 'Save'}
           </Button>
         </DialogFooter>

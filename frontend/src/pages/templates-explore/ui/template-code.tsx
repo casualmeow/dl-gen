@@ -1,11 +1,11 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState } from "react"
-import { Copy } from "lucide-react"
+import { useState } from 'react';
+import { Copy } from 'lucide-react';
 
-import { Button } from "entities/components"
+import { Button } from 'entities/components';
 import {
   Dialog,
   DialogContent,
@@ -13,23 +13,23 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "entities/components"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "entities/components"
+} from 'entities/components';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from 'entities/components';
 
 interface CodePreviewDialogProps {
-  code: string
-  title: string
-  children: React.ReactNode
+  code: string;
+  title: string;
+  children: React.ReactNode;
 }
 
 export function CodePreviewDialog({ code, title, children }: CodePreviewDialogProps) {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(code)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <Dialog>
@@ -47,7 +47,7 @@ export function CodePreviewDialog({ code, title, children }: CodePreviewDialogPr
             </TabsList>
             <Button variant="outline" size="sm" className="gap-2" onClick={copyToClipboard}>
               <Copy className="h-4 w-4" />
-              {copied ? "Copied!" : "Copy Code"}
+              {copied ? 'Copied!' : 'Copy Code'}
             </Button>
           </div>
           <TabsContent value="code" className="mt-0">
@@ -57,11 +57,15 @@ export function CodePreviewDialog({ code, title, children }: CodePreviewDialogPr
           </TabsContent>
           <TabsContent value="preview" className="mt-0">
             <div className="border rounded-md p-4 overflow-auto max-h-[60vh]">
-              <div dangerouslySetInnerHTML={{ __html: code.replace(/{{.*?}}/g, "Example").replace(/{%.*?%}/g, "") }} />
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: code.replace(/{{.*?}}/g, 'Example').replace(/{%.*?%}/g, ''),
+                }}
+              />
             </div>
           </TabsContent>
         </Tabs>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

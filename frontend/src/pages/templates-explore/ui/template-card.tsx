@@ -1,10 +1,14 @@
+import { Clock, Code, MoreHorizontal, Copy, Eye } from 'lucide-react';
 
-import { Clock, Code, MoreHorizontal, Copy, Eye } from "lucide-react"
-
-import { Badge } from "entities/components"
-import { Button } from "entities/components"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "entities/components"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "entities/components"
+import { Badge } from 'entities/components';
+import { Button } from 'entities/components';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from 'entities/components';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from 'entities/components';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -14,106 +18,105 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-} from "entities/components" 
-import { TemplatePreviewDialog } from "./template-preview"
-import { useToast } from "../model/useToast"
-import { Edit, Download, Trash2 } from "lucide-react"
-import { useTemplates } from "entities/templates/model/useTemplates"
-import { useState } from "react"
+} from 'entities/components';
+import { TemplatePreviewDialog } from './template-preview';
+import { useToast } from '../model/useToast';
+import { Edit, Download, Trash2 } from 'lucide-react';
+import { useTemplates } from 'entities/templates/model/useTemplates';
+import { useState } from 'react';
 
 interface Template {
-  id: string
-  title: string
-  description: string
-  updatedAt: string
-  category: string | string[]
-  tags?: string[] 
-  previewHtml: string
-  code: string
+  id: string;
+  title: string;
+  description: string;
+  updatedAt: string;
+  category: string | string[];
+  tags?: string[];
+  previewHtml: string;
+  code: string;
 }
 
 interface TemplateCardProps {
-  template: Template
-  onDelete: (id: string) => void
+  template: Template;
+  onDelete: (id: string) => void;
 }
 
 export function TemplateCard({ template, onDelete }: TemplateCardProps) {
-  const { toast } = useToast()
-  const { loading, deleteTemplate } = useTemplates()
+  const { toast } = useToast();
+  const { loading, deleteTemplate } = useTemplates();
   const [openDialog, setOpenDialog] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleCopyCode = () => {
-    navigator.clipboard.writeText(template.code)
+    navigator.clipboard.writeText(template.code);
     toast({
-      title: "Code copied",
-      description: "Template code copied to clipboard",
+      title: 'Code copied',
+      description: 'Template code copied to clipboard',
       duration: 2000,
-    })
-  }
+    });
+  };
   const normalizeCategory = (category: string | string[]): string => {
-  if (Array.isArray(category)) {
-    return category.length > 0 ? category[0] : "Uncategorized"
-  }
-  return category || "Uncategorized"
-}
+    if (Array.isArray(category)) {
+      return category.length > 0 ? category[0] : 'Uncategorized';
+    }
+    return category || 'Uncategorized';
+  };
 
   const getCategoriesArray = (category: string | string[], tags?: string[]): string[] => {
-  const categories: string[] = []
+    const categories: string[] = [];
 
-  if (Array.isArray(category)) {
-    categories.push(...category)
-  } else if (category) {
-    categories.push(category)
-  }
+    if (Array.isArray(category)) {
+      categories.push(...category);
+    } else if (category) {
+      categories.push(category);
+    }
 
-  if (tags && Array.isArray(tags)) {
-    categories.push(...tags)
-  }
+    if (tags && Array.isArray(tags)) {
+      categories.push(...tags);
+    }
 
-  return [...new Set(categories)] 
-}
+    return [...new Set(categories)];
+  };
 
   const handleExport = () => {
-    const blob = new Blob([template.code], { type: "text/plain" })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `${template.title.toLowerCase().replace(/\s+/g, "-")}.njk`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
+    const blob = new Blob([template.code], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${template.title.toLowerCase().replace(/\s+/g, '-')}.njk`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 
     toast({
-      title: "Template Exported",
+      title: 'Template Exported',
       description: `"${template.title}.njk" has been downloaded`,
-    })
-  }
+    });
+  };
 
   const handleDelete = async () => {
-    try{
-    await deleteTemplate(template.id)
-      .then(() => {
+    try {
+      await deleteTemplate(template.id).then(() => {
         toast({
-          title: "Template Deleted",
+          title: 'Template Deleted',
           description: `"${template.title}" has been successfully deleted`,
-        })
-      })
-      onDelete(template.id)
+        });
+      });
+      onDelete(template.id);
     } catch {
-        toast({
-          title: "Error Deleting Template",
-          description: "An unexpected error occurred",
-          variant: "destructive",
-        })
-      } finally {
+      toast({
+        title: 'Error Deleting Template',
+        description: 'An unexpected error occurred',
+        variant: 'destructive',
+      });
+    } finally {
       setOpenDialog(false);
     }
-  }
+  };
 
-  const primaryCategory = normalizeCategory(template.category)
-  const allCategories = getCategoriesArray(template.category, template.tags)
+  const primaryCategory = normalizeCategory(template.category);
+  const allCategories = getCategoriesArray(template.category, template.tags);
 
   const onClickDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -127,10 +130,10 @@ export function TemplateCard({ template, onDelete }: TemplateCardProps) {
     <Card className="overflow-hidden flex flex-col h-full border-border">
       <TemplatePreviewDialog template={template}>
         <div className="template-preview border-b relative bg-muted/50 p-2 cursor-pointer transition-all hover:bg-muted">
-          <iframe 
-          srcDoc={template.previewHtml}
-          className="w-full h-[140px] overflow-hidden bg-background text-text border rounded shadow-sm transform scale-[0.8] mx-auto"
-          sandbox="allow-scripts allow-same-origin"
+          <iframe
+            srcDoc={template.previewHtml}
+            className="w-full h-[140px] overflow-hidden bg-background text-text border rounded shadow-sm transform scale-[0.8] mx-auto"
+            sandbox="allow-scripts allow-same-origin"
           />
           <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
             <div className="bg-primary/80 text-primary-foreground text-xs font-medium py-1.5 px-3 rounded-full flex items-center gap-1.5">
@@ -155,14 +158,16 @@ export function TemplateCard({ template, onDelete }: TemplateCardProps) {
           <DropdownMenuContent align="end">
             <DropdownMenuItem>
               <Edit className="h-4 w-4 mr-2" />
-              Edit Template</DropdownMenuItem>
+              Edit Template
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={handleCopyCode}>
               <Copy className="h-4 w-4 mr-2" />
               Copy Code
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleExport}>
               <Download className="h-4 w-4 mr-2" />
-              Export as .njk</DropdownMenuItem>
+              Export as .njk
+            </DropdownMenuItem>
             <DropdownMenuItem className="text-destructive" onClick={onClickDelete}>
               <Trash2 className="h-4 w-4 mr-2" />
               Delete
@@ -170,7 +175,7 @@ export function TemplateCard({ template, onDelete }: TemplateCardProps) {
           </DropdownMenuContent>
         </DropdownMenu>
       </CardHeader>
-    
+
       <AlertDialog open={openDialog} onOpenChange={setOpenDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -181,18 +186,15 @@ export function TemplateCard({ template, onDelete }: TemplateCardProps) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDelete}
-              disabled={loading}
-            >
-              {loading ? "Deleting…" : "Confirm"}
+            <AlertDialogAction onClick={handleDelete} disabled={loading}>
+              {loading ? 'Deleting…' : 'Confirm'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      
+
       <CardContent className="flex-grow">
-         <div className="flex flex-wrap gap-1 mb-3">
+        <div className="flex flex-wrap gap-1 mb-3">
           <Badge variant="secondary">{primaryCategory}</Badge>
           {allCategories.length > 1 && (
             <>
@@ -232,5 +234,5 @@ export function TemplateCard({ template, onDelete }: TemplateCardProps) {
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }

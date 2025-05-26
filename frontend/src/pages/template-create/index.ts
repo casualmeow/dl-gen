@@ -1,1 +1,1 @@
-export * from "./ui/template-create";
+export * from './ui/template-create';

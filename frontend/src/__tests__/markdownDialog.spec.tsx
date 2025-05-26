@@ -3,14 +3,10 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import katex from 'katex';
 import mermaid from 'mermaid';
 
-import {
-  PreviewCode,
-  MarkdownDialog,
-} from 'pages/document-view/ui/markdown-dialog';
+import { PreviewCode, MarkdownDialog } from 'pages/document-view/ui/markdown-dialog';
 import { usePdfToMarkdown } from 'pages/document-view/model/usePdfToMarkdown';
 
 vi.mock('pages/document-view/model/usePdfToMarkdown');
-
 
 beforeAll(() => {
   mermaid.render = (_id: string, _config: string) =>
@@ -23,21 +19,17 @@ beforeAll(() => {
 
 vi.mocked(usePdfToMarkdown).mockReturnValue({
   markdown: 'hello **world**',
-  status:   'idle',
-  refresh:  vi.fn(),
-  save:     vi.fn(),
+  status: 'idle',
+  refresh: vi.fn(),
+  save: vi.fn(),
 });
-
-
 
 describe('PreviewCode component', () => {
   it('renders inline math ($...$)', () => {
     const expr = 'x=1+1';
     render(<PreviewCode inline className="" children={`$${expr}$`} />);
     const code = screen.getByRole('code');
-    expect(code.innerHTML).toContain(
-      katex.renderToString(expr, { throwOnError: false })
-    );
+    expect(code.innerHTML).toContain(katex.renderToString(expr, { throwOnError: false }));
   });
 
   it('renders language-katex blocks via injected getCodeString', () => {
@@ -50,32 +42,28 @@ describe('PreviewCode component', () => {
         children={[]}
         node={fakeNode}
         _getCodeString={() => math}
-      />
+      />,
     );
     const code = screen.getByRole('code');
-    expect(code.innerHTML).toContain(
-      katex.renderToString(math, { throwOnError: false })
-    );
+    expect(code.innerHTML).toContain(katex.renderToString(math, { throwOnError: false }));
   });
 
   it('renders a mermaid-container div for mermaid blocks', async () => {
-  const graph = 'graph TD; A-->B;';
-  render(
-    <PreviewCode
-      inline={false}
-      className="language-mermaid"
-      children={[]}
-      node={{ children: [{ type: 'text', value: graph }] }}
-    />
-  );
+    const graph = 'graph TD; A-->B;';
+    render(
+      <PreviewCode
+        inline={false}
+        className="language-mermaid"
+        children={[]}
+        node={{ children: [{ type: 'text', value: graph }] }}
+      />,
+    );
 
-  const wrapper = await screen.findByTestId('mermaid-container');
-  await waitFor(() => {
-    expect(wrapper.innerHTML).toContain('<svg>');
+    const wrapper = await screen.findByTestId('mermaid-container');
+    await waitFor(() => {
+      expect(wrapper.innerHTML).toContain('<svg>');
+    });
   });
-});
-
-
 
   it('falls back to plain <code> for unknown classes', () => {
     render(<PreviewCode inline={false} className="foo" children="plain" />);
@@ -86,47 +74,25 @@ describe('PreviewCode component', () => {
 
 describe('MarkdownDialog component', () => {
   it('shows a loading spinner when status is loading', () => {
-  vi.mocked(usePdfToMarkdown).mockReturnValueOnce({
-    markdown: '',
-    status:   'loading',
-    refresh:  vi.fn(),
-    save:     vi.fn(),
+    vi.mocked(usePdfToMarkdown).mockReturnValueOnce({
+      markdown: '',
+      status: 'loading',
+      refresh: vi.fn(),
+      save: vi.fn(),
+    });
+
+    render(<MarkdownDialog isOpen onOpenChange={() => {}} fileId="123" pdfBlob={new Blob()} />);
+
+    expect(screen.getByRole('status')).toBeInTheDocument();
   });
 
-  render(
-    <MarkdownDialog
-      isOpen
-      onOpenChange={() => {}}
-      fileId="123"
-      pdfBlob={new Blob()}
-    />
-  );
-
-  expect(screen.getByRole('status')).toBeInTheDocument();
-});
-
-
   it('has a “Refresh” button in the toolbar', () => {
-    render(
-      <MarkdownDialog
-        isOpen
-        onOpenChange={() => {}}
-        fileId="123"
-        pdfBlob={new Blob()}
-      />
-    );
+    render(<MarkdownDialog isOpen onOpenChange={() => {}} fileId="123" pdfBlob={new Blob()} />);
     expect(screen.getByLabelText('Refresh')).toBeInTheDocument();
   });
 
   it('renders the Markdown in the Preview tab', async () => {
-    render(
-      <MarkdownDialog
-        isOpen
-        onOpenChange={() => {}}
-        fileId="123"
-        pdfBlob={new Blob()}
-      />
-    );
+    render(<MarkdownDialog isOpen onOpenChange={() => {}} fileId="123" pdfBlob={new Blob()} />);
 
     fireEvent.click(screen.getByText('Preview'));
 
@@ -150,23 +116,21 @@ describe('MarkdownDialog component (Preview tab rendering)', () => {
     });
 
     const { container } = render(
-      <MarkdownDialog
-        isOpen
-        onOpenChange={() => {}}
-        fileId="math"
-        pdfBlob={new Blob()}
-      />
+      <MarkdownDialog isOpen onOpenChange={() => {}} fileId="math" pdfBlob={new Blob()} />,
     );
 
     // 2) Flip over to Preview
     fireEvent.click(screen.getByText('Preview'));
 
     // 3) Wait for KaTeX to inject its .katex wrapper
-    await waitFor(() => {
-      // Debug output
-      // console.log(container.innerHTML);
-      expect(container.querySelector('.katex')).not.toBeNull();
-    }, { timeout: 2000 });
+    await waitFor(
+      () => {
+        // Debug output
+        // console.log(container.innerHTML);
+        expect(container.querySelector('.katex')).not.toBeNull();
+      },
+      { timeout: 2000 },
+    );
   });
 
   it('renders mermaid diagrams in the Preview tab', async () => {
@@ -180,21 +144,19 @@ describe('MarkdownDialog component (Preview tab rendering)', () => {
     });
 
     const { container } = render(
-      <MarkdownDialog
-        isOpen
-        onOpenChange={() => {}}
-        fileId="mermaid"
-        pdfBlob={new Blob()}
-      />
+      <MarkdownDialog isOpen onOpenChange={() => {}} fileId="mermaid" pdfBlob={new Blob()} />,
     );
 
     // 2) Switch to Preview
     fireEvent.click(screen.getByText('Preview'));
 
     // 3) Mermaid stub (from your beforeAll) will synchronously render an <svg>
-    await waitFor(() => {
-      expect(container.querySelector('svg')).toBeInTheDocument();
-    }, { timeout: 2000 });
+    await waitFor(
+      () => {
+        expect(container.querySelector('svg')).toBeInTheDocument();
+      },
+      { timeout: 2000 },
+    );
 
     const mermaidDiv = await screen.findByTestId('mermaid-container', {}, { timeout: 2000 });
     expect(mermaidDiv.innerHTML).toContain('<svg>');

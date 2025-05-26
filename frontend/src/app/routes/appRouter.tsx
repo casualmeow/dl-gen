@@ -27,10 +27,10 @@ export const appRouter = createBrowserRouter([
   },
   {
     path: '/template/create',
-    element: <TemplateCreatePage />, 
+    element: <TemplateCreatePage />,
   },
   {
-    path: '/template/:templateId',
+    path: 'view/:fileId/template',
     element: <TemplatePage />,
   },
   {

@@ -1,23 +1,23 @@
-import React, { useState } from "react"
-import { Link, useNavigate } from "react-router"
-import { ArrowLeft, Save, Eye, Code } from "lucide-react"
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router';
+import { ArrowLeft, Save, Eye, Code } from 'lucide-react';
 
-import { Button } from "entities/components"
-import { Card, CardContent, CardHeader, CardTitle } from "entities/components"
-import { Input } from "entities/components"
-import { Label } from "entities/components"
-import { Textarea } from "entities/components"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "entities/components"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "entities/components"
-import { Badge } from "entities/components"
-import { useToast } from "pages/templates-explore/model/useToast"
-import { Loader2 } from "lucide-react"
-import { AppSidebarProvider } from "widgets/sidebar"
-import { AppSidebar } from "widgets/sidebar"
-import { AppHeader } from "widgets/header"
-import { useTemplates } from "entities/templates"
+import { Button } from 'entities/components';
+import { Card, CardContent, CardHeader, CardTitle } from 'entities/components';
+import { Input } from 'entities/components';
+import { Label } from 'entities/components';
+import { Textarea } from 'entities/components';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'entities/components';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from 'entities/components';
+import { Badge } from 'entities/components';
+import { useToast } from 'pages/templates-explore/model/useToast';
+import { Loader2 } from 'lucide-react';
+import { AppSidebarProvider } from 'widgets/sidebar';
+import { AppSidebar } from 'widgets/sidebar';
+import { AppHeader } from 'widgets/header';
+import { useTemplates } from 'entities/templates';
 
-const existingCategories = ["Blog", "E-commerce", "Email", "Admin", "Marketing", "Portfolio"]
+const existingCategories = ['Blog', 'E-commerce', 'Email', 'Admin', 'Marketing', 'Portfolio'];
 
 const defaultTemplate = `<!DOCTYPE html>
 <html lang="en">
@@ -118,70 +118,80 @@ const defaultTemplate = `<!DOCTYPE html>
     {% endif %}
   </main>
 </body>
-</html>`
+</html>`;
 
 export function TemplateCreatePage() {
-  const navigate = useNavigate()
-  const { toast } = useToast()
-  const { createTemplate, loading } = useTemplates()
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { createTemplate, loading } = useTemplates();
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    category: "",
-    customCategory: "",
+    title: '',
+    description: '',
+    category: '',
+    customCategory: '',
     code: defaultTemplate,
-  })
-  const [activeTab, setActiveTab] = useState<"editor" | "preview">("editor")
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  });
+  const [activeTab, setActiveTab] = useState<'editor' | 'preview'>('editor');
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validateForm = () => {
-    const newErrors: Record<string, string> = {}
-    if (!formData.title.trim()) newErrors.title = "Template title is required"
-    if (!formData.description.trim()) newErrors.description = "Template description is required"
+    const newErrors: Record<string, string> = {};
+    if (!formData.title.trim()) newErrors.title = 'Template title is required';
+    if (!formData.description.trim()) newErrors.description = 'Template description is required';
     if (!formData.category && !formData.customCategory.trim())
-      newErrors.category = "Please select a category or create a new one"
-    if (!formData.code.trim()) newErrors.code = "Template code is required"
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+      newErrors.category = 'Please select a category or create a new one';
+    if (!formData.code.trim()) newErrors.code = 'Template code is required';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!validateForm()) {
-      toast({ title: "Validation Error", description: "Please fix the errors before saving", variant: "destructive" })
-      return
+      toast({
+        title: 'Validation Error',
+        description: 'Please fix the errors before saving',
+        variant: 'destructive',
+      });
+      return;
     }
 
-    const finalCategory = formData.customCategory.trim() || formData.category
+    const finalCategory = formData.customCategory.trim() || formData.category;
     try {
       await createTemplate({
         name: formData.title,
         description: formData.description,
         body: formData.code,
         tags: [finalCategory],
-      })
-      toast({ title: "Template Created", description: `"${formData.title}" has been saved successfully` })
-      navigate("/templates")
+      });
+      toast({
+        title: 'Template Created',
+        description: `"${formData.title}" has been saved successfully`,
+      });
+      navigate('/templates');
     } catch (err) {
-      toast({ title: "Error", description: (err as Error).message, variant: "destructive" })
+      toast({ title: 'Error', description: (err as Error).message, variant: 'destructive' });
     }
-  }
+  };
 
   const generatePreviewHtml = () => {
     const previewHtml = formData.code
-      .replace(/\{\{\s*pageTitle\s*\}\}/g, formData.title || "Sample Title")
-      .replace(/\{\{\s*heading\s*\}\}/g, formData.title || "Sample Heading")
-      .replace(/\{\{\s*subtitle\s*\}\}/g, "This is a sample subtitle")
-      .replace(/\{\{\s*content\s*\|\s*safe\s*\}\}/g, "<p>This is sample content for the template preview.</p>")
-      .replace(/\{%.*?%\}/g, "")
-      .replace(/\{\{.*?\}\}/g, "Sample Text")
+      .replace(/\{\{\s*pageTitle\s*\}\}/g, formData.title || 'Sample Title')
+      .replace(/\{\{\s*heading\s*\}\}/g, formData.title || 'Sample Heading')
+      .replace(/\{\{\s*subtitle\s*\}\}/g, 'This is a sample subtitle')
+      .replace(
+        /\{\{\s*content\s*\|\s*safe\s*\}\}/g,
+        '<p>This is sample content for the template preview.</p>',
+      )
+      .replace(/\{%.*?%\}/g, '')
+      .replace(/\{\{.*?\}\}/g, 'Sample Text');
 
     return `
       <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.4; padding: 16px; background: white; border: 1px solid #ddd;">
         ${previewHtml}
       </div>
-    `
-  }
+    `;
+  };
 
   return (
     <AppSidebarProvider>
@@ -190,9 +200,9 @@ export function TemplateCreatePage() {
         <div className="flex-1 grid grid-rows-[auto_1fr]">
           <AppHeader
             breadcrumbs={[
-              { label: "Your works", href: "/" },
-              { label: "Explore templates", href: "/templates" },
-              { label: "Create template", href: "/template/create" },
+              { label: 'Your works', href: '/' },
+              { label: 'Explore templates', href: '/templates' },
+              { label: 'Create template', href: '/template/create' },
             ]}
             withBorder={true}
           />
@@ -213,7 +223,9 @@ export function TemplateCreatePage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Info */}
                 <Card>
-                  <CardHeader><CardTitle>Template Information</CardTitle></CardHeader>
+                  <CardHeader>
+                    <CardTitle>Template Information</CardTitle>
+                  </CardHeader>
                   <CardContent className="space-y-4">
                     {/* Title */}
                     <div className="space-y-2">
@@ -222,7 +234,7 @@ export function TemplateCreatePage() {
                         id="title"
                         value={formData.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        className={errors.title ? "border-destructive" : ""}
+                        className={errors.title ? 'border-destructive' : ''}
                         placeholder="e.g., Blog Post Layout"
                       />
                       {errors.title && <p className="text-sm text-destructive">{errors.title}</p>}
@@ -233,43 +245,57 @@ export function TemplateCreatePage() {
                         id="description"
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        className={errors.description ? "border-destructive" : ""}
+                        className={errors.description ? 'border-destructive' : ''}
                         rows={3}
                         placeholder="Describe what this template is used for..."
                       />
-                      {errors.description && <p className="text-sm text-destructive">{errors.description}</p>}
+                      {errors.description && (
+                        <p className="text-sm text-destructive">{errors.description}</p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="category">Category *</Label>
                       <Select
                         value={formData.category}
-                        onValueChange={(v) => setFormData({ ...formData, category: v, customCategory: "" })}
+                        onValueChange={(v) =>
+                          setFormData({ ...formData, category: v, customCategory: '' })
+                        }
                       >
-                        <SelectTrigger className={errors.category ? "border-destructive" : ""}>
+                        <SelectTrigger className={errors.category ? 'border-destructive' : ''}>
                           <SelectValue placeholder="Select a category" />
                         </SelectTrigger>
                         <SelectContent>
                           {existingCategories.map((cat) => (
-                            <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                            <SelectItem key={cat} value={cat}>
+                              {cat}
+                            </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
-                      {errors.category && <p className="text-sm text-destructive">{errors.category}</p>}
+                      {errors.category && (
+                        <p className="text-sm text-destructive">{errors.category}</p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="customCategory">Or Create New Category</Label>
                       <Input
                         id="customCategory"
                         value={formData.customCategory}
-                        onChange={(e) => setFormData({ ...formData, customCategory: e.target.value, category: "" })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, customCategory: e.target.value, category: '' })
+                        }
                         placeholder="e.g., Landing Pages"
                       />
-                      <p className="text-xs text-muted-foreground">Leave empty to use the selected category above</p>
+                      <p className="text-xs text-muted-foreground">
+                        Leave empty to use the selected category above
+                      </p>
                     </div>
                     {(formData.category || formData.customCategory) && (
                       <div className="flex items-center gap-2">
                         <span className="text-sm text-muted-foreground">Selected category:</span>
-                        <Badge variant="secondary">{formData.customCategory || formData.category}</Badge>
+                        <Badge variant="secondary">
+                          {formData.customCategory || formData.category}
+                        </Badge>
                       </div>
                     )}
                   </CardContent>
@@ -277,9 +303,14 @@ export function TemplateCreatePage() {
 
                 {/* Preview */}
                 <Card>
-                  <CardHeader><CardTitle>Template Preview</CardTitle></CardHeader>
+                  <CardHeader>
+                    <CardTitle>Template Preview</CardTitle>
+                  </CardHeader>
                   <CardContent>
-                    <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "editor" | "preview")}>
+                    <Tabs
+                      value={activeTab}
+                      onValueChange={(v) => setActiveTab(v as 'editor' | 'preview')}
+                    >
                       <TabsList className="grid w-full grid-cols-2">
                         <TabsTrigger value="editor" className="gap-2">
                           <Code className="h-4 w-4" /> Editor
@@ -295,7 +326,7 @@ export function TemplateCreatePage() {
                             id="code"
                             value={formData.code}
                             onChange={(e) => setFormData({ ...formData, code: e.target.value })}
-                            className={`font-mono text-sm min-h-[400px] ${errors.code ? "border-destructive" : ""}`}
+                            className={`font-mono text-sm min-h-[400px] ${errors.code ? 'border-destructive' : ''}`}
                             placeholder="Enter your Nunjucks template code here..."
                           />
                           {errors.code && <p className="text-sm text-destructive">{errors.code}</p>}
@@ -325,36 +356,32 @@ export function TemplateCreatePage() {
               </div>
 
               {/* Actions */}
-                          <div className="flex justify-between items-center pt-6 border-t">
-              <Button variant="outline" asChild disabled={loading}>
-                <Link to="/templates">Cancel</Link>
-              </Button>
-              <div className="flex gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setActiveTab("preview")}
-                  disabled={loading}
-                >
-                  <Eye className="h-4 w-4 mr-2" /> Preview
+              <div className="flex justify-between items-center pt-6 border-t">
+                <Button variant="outline" asChild disabled={loading}>
+                  <Link to="/templates">Cancel</Link>
                 </Button>
-                <Button
-                    type="submit"
-                    className="gap-2"
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setActiveTab('preview')}
                     disabled={loading}
-                    >
+                  >
+                    <Eye className="h-4 w-4 mr-2" /> Preview
+                  </Button>
+                  <Button type="submit" className="gap-2" disabled={loading}>
                     {loading ? (
-                        <>
+                      <>
                         <Loader2 className="h-4 w-4 animate-spin" />
                         Saving...
-                        </>
+                      </>
                     ) : (
-                        <>
+                      <>
                         <Save className="h-4 w-4" />
                         Save Template
-                        </>
+                      </>
                     )}
-                    </Button>
+                  </Button>
                 </div>
               </div>
             </form>
@@ -362,5 +389,5 @@ export function TemplateCreatePage() {
         </div>
       </div>
     </AppSidebarProvider>
-  )
+  );
 }
