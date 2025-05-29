@@ -26,7 +26,7 @@ interface TemplateCardProps {
 
 export function TemplateCard({ template, onClick }: TemplateCardProps) {
   return (
-    <Card className="w-full h-full">
+    <Card className="w-full h-full bg-sidebar">
       <CardHeader>
         <CardTitle>{template.title}</CardTitle>
         <CardDescription>{template.description}</CardDescription>

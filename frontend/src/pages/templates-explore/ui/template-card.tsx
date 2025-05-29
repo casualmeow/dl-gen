@@ -41,7 +41,7 @@ interface TemplateCardProps {
   onDelete: (id: string) => void;
 }
 
-export function TemplateCard({ template, onDelete }: TemplateCardProps) {
+export function TemplateCard({ template, onDelete, }: TemplateCardProps) {
   const { toast } = useToast();
   const { loading, deleteTemplate } = useTemplates();
   const [openDialog, setOpenDialog] = useState(false);
@@ -57,7 +57,7 @@ export function TemplateCard({ template, onDelete }: TemplateCardProps) {
   };
   const normalizeCategory = (category: string | string[]): string => {
     if (Array.isArray(category)) {
-      return category.length > 0 ? category[0] : 'Uncategorized';
+      return category.length > 0 ? category[0].replace(/["\[\]]/g, '') : 'Uncategorized';
     }
     return category || 'Uncategorized';
   };
@@ -120,14 +120,12 @@ export function TemplateCard({ template, onDelete }: TemplateCardProps) {
 
   const onClickDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // 1) закриваємо меню
     setMenuOpen(false);
-    // 2) відкриваємо діалог у наступному event loop
     setTimeout(() => setOpenDialog(true), 0);
   };
 
   return (
-    <Card className="overflow-hidden flex flex-col h-full border-border">
+    <Card className="overflow-hidden flex flex-col h-full border-border bg-sidebar">
       <TemplatePreviewDialog template={template}>
         <div className="template-preview border-b relative bg-muted/50 p-2 cursor-pointer transition-all hover:bg-muted">
           <iframe

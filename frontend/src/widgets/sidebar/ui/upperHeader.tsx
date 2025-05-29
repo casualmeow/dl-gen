@@ -8,7 +8,7 @@ export function UpperHeader() {
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
           <HeaderLogo />
         </div>
-        <span className="text-lg font-semibold tracking-tight">PDF to Site</span>
+        <span className="text-lg font-semibold tracking-tight">MustachePDF</span>
       </div>
       <ThemeSwitch />
     </div>

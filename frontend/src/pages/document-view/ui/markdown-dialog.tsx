@@ -28,6 +28,7 @@ import { Loader } from 'entities/components';
 import { Loader2, RefreshCw } from 'lucide-react';
 import { usePdfToMarkdown } from '../model/usePdfToMarkdown';
 import { cn } from 'shared/lib/utils';
+import { useNavigate } from 'react-router';
 
 export interface PreviewCodeProps {
   inline?: boolean;
@@ -92,6 +93,7 @@ export function MarkdownDialog({ isOpen, onOpenChange, fileId, pdfBlob }: Markdo
   const [edited, setEdited] = useState(markdown);
   const prevOpen = useRef(isOpen);
   const initial = useRef(markdown);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setEdited(markdown);
@@ -223,6 +225,9 @@ export function MarkdownDialog({ isOpen, onOpenChange, fileId, pdfBlob }: Markdo
           </DialogClose>
           <Button onClick={() => save(edited)} disabled={isLoading || isError}>
             {isLoading ? <Loader2 className="animate-spin" /> : 'Save'}
+          </Button>
+          <Button onClick={() => navigate(`/view/${fileId}/template`)}>
+            Next
           </Button>
         </DialogFooter>
       </DialogContent>

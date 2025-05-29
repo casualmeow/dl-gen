@@ -1,7 +1,8 @@
 import { UpperHeader } from './upperHeader';
 import { Button } from 'entities/components';
 import { Avatar, AvatarFallback } from 'entities/components';
-import { User, LogIn } from 'lucide-react';
+import { LogIn } from 'lucide-react';
+import { UnauthUser } from '../lib/unauthuser';
 
 export function UnauthorizedUserHeader() {
   return (
@@ -12,12 +13,12 @@ export function UnauthorizedUserHeader() {
           <div className="mb-3 flex items-center justify-center">
             <Avatar className="h-12 w-12 ring-2 ring-background">
               <AvatarFallback className="bg-primary/10">
-                <User className="h-6 w-6 text-primary" />
+                <UnauthUser className="h-9 w-9 text-primary" />
               </AvatarFallback>
             </Avatar>
           </div>
           <div className="mb-3 text-center">
-            <h3 className="text-sm font-medium">Welcome to PDF to Site</h3>
+            <h3 className="text-sm font-medium">Welcome to MustachePDF</h3>
             <p className="text-xs text-muted-foreground">Sign in to access your workspace</p>
           </div>
           <Button variant="default" size="sm" className="w-full gap-2" asChild>

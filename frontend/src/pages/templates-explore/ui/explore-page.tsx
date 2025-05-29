@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, SlidersHorizontal } from 'lucide-react';
 import { AppSidebar, AppSidebarProvider } from 'widgets/sidebar';
 import { AppHeader } from 'widgets/header';
 import { useTemplates } from 'entities/templates';
@@ -10,6 +10,9 @@ import { Tabs, TabsList, TabsTrigger } from 'entities/components';
 import { Input } from 'entities/components';
 import { Loader } from 'entities/components';
 import { useEffect } from 'react';
+import { generatePreviewHtml } from '../model/renderTemplatePreview'
+import { ConfigModal } from './config-dialog';
+import { extractTemplateVariables } from '../model/extractTemplateVaribales';
 
 interface DisplayTemplate {
   id: string;
@@ -23,42 +26,43 @@ interface DisplayTemplate {
 
 export function ExploreTemplatesPage() {
   const { templates, loading, error } = useTemplates();
-
-  // Локальна копія для маніпуляцій (видалення)
+  
+  const [selectedTemplate, setSelectedTemplate] = useState<DisplayTemplate | null>(null);
+  const [configOpen, setConfigOpen] = useState(false);
+  const [variables, setVariables] = useState<string[]>([]);
+  const [variableValues, setVariableValues] = useState<Record<string, string>>({});
+  const [_previewHtml, setPreviewHtml] = useState<string>('');
   const [_localTemplates, setLocalTemplates] = useState<DisplayTemplate[]>([]);
-
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
     setLocalTemplates(templates);
   }, [templates]);
-
+  
   const categories = [
     'all',
     ...new Set(
-      templates.map((t) => (t.tags && t.tags.length > 0 ? t.tags.join(', ') : 'Uncategorized')),
+      templates.map((t) => (t.tags && t.tags.length > 0 ? t.tags.join(', ').replace(/["\[\]]/g, '') : 'Uncategorized')),
     ),
   ];
-
-  // To this:
-  // Remove this entire block
-  // const filteredTemplates = templates
-  //   .map(t => { ... })
-  //   .filter(tpl => { ... });
-
-  // Keep only this implementation and rename it back to filteredTemplates
   const filteredTemplates = _localTemplates
     .map((t) => {
-      const tagsString = t.tags && t.tags.length > 0 ? t.tags.join(', ') : 'Uncategorized';
+      const tagsString = t.tags && t.tags.length > 0 ? t.tags.join(', ').replace(/["\[\]]/g, '') : 'Uncategorized';
 
       return {
         id: t.id,
         title: t.name,
         description: t.description,
         category: tagsString,
-        previewHtml: t.body,
-        code: t.body,
+        previewHtml: generatePreviewHtml(t.body, {
+          title: `Звiт`,
+          content: 'З передатестаційної практики',
+        }),
+        code: generatePreviewHtml(t.body, {
+          title: `File test`,
+          content: 'З передатестаційної практики',
+        }),
         updatedAt: new Date(t.updated_at).toLocaleDateString(),
       };
     })
@@ -76,6 +80,30 @@ export function ExploreTemplatesPage() {
     setLocalTemplates((prev) => prev.filter((t) => t.id !== id));
   };
 
+  useEffect(() => {
+    if (configOpen && selectedTemplate) {
+      const vars = extractTemplateVariables(selectedTemplate.body);
+      setVariables(vars);
+      setVariableValues((vals) => {
+        const v = { ...vals };
+        vars.forEach(key => { if (!(key in v)) v[key] = ''; });
+        return v;
+      });
+      setPreviewHtml(selectedTemplate.body);
+    }
+  }, [configOpen, selectedTemplate]);  
+  
+  function handleVariableChange(key: string, value: string) {
+    setVariableValues(vals => ({ ...vals, [key]: value }));
+  }
+  
+  function handleApply() {
+    if (!selectedTemplate) return;
+    const html = generatePreviewHtml(selectedTemplate.body, variableValues);
+    setPreviewHtml(html);
+    setConfigOpen(false);
+  }
+
   return (
     <AppSidebarProvider>
       <AppSidebar />
@@ -88,7 +116,6 @@ export function ExploreTemplatesPage() {
           withBorder={true}
         />
 
-        {/* Заголовок + кнопки */}
         <div className="container mx-auto">
           <div className="container mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 py-8">
             <div>
@@ -98,6 +125,29 @@ export function ExploreTemplatesPage() {
               </p>
             </div>
             <div className="flex items-center gap-2">
+            <Button variant={'secondary'}
+   onClick={() => {
+    // Используй именно оригинальный объект (например, из _localTemplates или templates)
+    const t = _localTemplates.find(x => x.id === selectedTemplate?.id);
+    if (!t) return;
+    setSelectedTemplate(t);
+    setVariables(extractTemplateVariables(t.body));
+    setVariableValues({});
+    setConfigOpen(true);
+    setPreviewHtml(generatePreviewHtml(t.body, {}));
+  }}
+>
+<SlidersHorizontal />
+  Configure
+</Button>
+<ConfigModal
+  open={configOpen}
+  onOpenChange={setConfigOpen}
+  variables={variables}
+  values={variableValues}
+  onChange={handleVariableChange}
+  onApply={handleApply}
+/>
               <Button asChild size="lg" className="gap-2">
                 <Link to="/template/create">
                   <PlusCircle className="h-5 w-5" />
@@ -117,8 +167,8 @@ export function ExploreTemplatesPage() {
               >
                 <TabsList className="w-full md:w-auto grid grid-cols-3 md:flex">
                   {categories.map((cat) => (
-                    <TabsTrigger key={cat} value={cat.toString()} className="capitalize">
-                      {cat.toString()}
+                    <TabsTrigger key={cat} value={cat} className="capitalize">
+                      {cat}
                     </TabsTrigger>
                   ))}
                 </TabsList>
