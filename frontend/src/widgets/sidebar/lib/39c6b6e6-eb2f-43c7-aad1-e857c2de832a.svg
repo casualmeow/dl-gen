@@ -1,16 +1,12 @@
-import { type SVGProps } from 'react';
-
-export function UnauthUser(props: SVGProps<SVGSVGElement>) {
-    return (
-        <>
-<svg version="1.0" 
-xmlns="http://www.w3.org/2000/svg"
-{... props}
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
  width="1024.000000pt" height="1024.000000pt" viewBox="0 0 1024.000000 1024.000000"
  preserveAspectRatio="xMidYMid meet">
 
 <g transform="translate(0.000000,1024.000000) scale(0.100000,-0.100000)"
-fill="currentColor" stroke="none">
+fill="#000000" stroke="none">
 <path d="M4045 9584 c-341 -61 -520 -208 -656 -540 -77 -189 -201 -637 -345
 -1252 -40 -174 -77 -319 -81 -323 -4 -4 -53 -17 -108 -28 -459 -98 -774 -221
 -883 -346 -57 -65 -77 -113 -76 -190 0 -175 142 -302 451 -404 136 -46 517
@@ -55,7 +51,3 @@ fill="currentColor" stroke="none">
 41 c-126 112 -322 155 -511 114z"/>
 </g>
 </svg>
-
-        </>
-    )
-}

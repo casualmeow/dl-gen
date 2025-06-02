@@ -79,7 +79,7 @@ export function FileUploaderComponent({
   return (
     <div
       className={cn(
-        'relative w-1/4 aspect-square border-2 border-dashed rounded-lg flex flex-col items-center justify-center cursor-pointer transition-all duration-200',
+        'relative w-full aspect-square border-2 border-dashed rounded-lg flex flex-col items-center justify-center cursor-pointer transition-all duration-200',
         isDragging || isHovering
           ? 'border-primary bg-primary/5'
           : 'border-muted-foreground/25 hover:border-primary/50',

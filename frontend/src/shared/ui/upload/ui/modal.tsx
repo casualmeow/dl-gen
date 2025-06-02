@@ -1,7 +1,7 @@
 'use client';
 
 import type React from 'react';
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -15,29 +15,25 @@ import { Badge } from 'entities/components';
 import { Button } from 'entities/components';
 import { Upload, CheckCircle, AlertCircle } from 'lucide-react';
 import { cn } from 'shared/lib/utils';
-import { useToast } from '../../model/useToast';
-import { useUploadModal } from './context';
+import { useToast } from '../model/useToast';
+import { useUploadModal } from '../api/provider';
 import { FileItem } from './item';
 
 interface UploadModalProps {
-  /**
-   * Цей колбек викликається, коли «завантаження» файлів успішно завершилось.
-   * Ми передаємо масив файлів (File[]) — або, якщо multiple=false — можна брати файл[0].
-   * Сам обробник має повернути шлях (string) або виконати будь-яку іншу дію.
-   */
   onUploadComplete?: (files: File[]) => void;
+  initialFiles?: File[];
 }
 
-export function UploadModal({ onUploadComplete }: UploadModalProps) {
+export function UploadModal({ onUploadComplete, initialFiles }: UploadModalProps) {
   const { toast } = useToast();
   const { open, openDropzone } = useUploadModal();
-  const [isDragging, setIsDragging] = useState(false);
+
   const [files, setFiles] = useState<File[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploaded, setUploaded] = useState(false);
   const [invalidFiles, setInvalidFiles] = useState<string[]>([]);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const acceptedFileTypes = [
@@ -46,6 +42,27 @@ export function UploadModal({ onUploadComplete }: UploadModalProps) {
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   ];
   const acceptedExtensions = ['.pdf', '.doc', '.docx'];
+
+  // Якщо є initialFiles – встановлюємо його у внутрішній state і відкриваємо модалку
+  useEffect(() => {
+    if (initialFiles && initialFiles.length > 0) {
+      const valid = validateFiles(initialFiles);
+      if (valid.length > 0) {
+        setFiles(valid);
+        setUploaded(false);
+        openDropzone(true);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialFiles]);
+
+  // Автоматичний старт аплоаду, коли файли встановлені вдруге (іще не завантажувались)
+  useEffect(() => {
+    if (files.length > 0 && !uploading && !uploaded) {
+      handleUpload();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [files]);
 
   const validateFiles = (filesToValidate: File[]) => {
     const valid: File[] = [];
@@ -63,7 +80,7 @@ export function UploadModal({ onUploadComplete }: UploadModalProps) {
       setInvalidFiles(invalid);
       toast({
         title: 'Invalid file type',
-        description: `Only PDF і Word документи приймаються.`,
+        description: `Тільки PDF і Word документи приймаються.`,
         variant: 'destructive',
       });
     }
@@ -71,125 +88,52 @@ export function UploadModal({ onUploadComplete }: UploadModalProps) {
     return valid;
   };
 
-  const handleDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-  }, []);
-
-  const handleDragOver = useCallback(
-    (e: React.DragEvent<HTMLDivElement>) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (!isDragging) setIsDragging(true);
-    },
-    [isDragging],
-  );
-
-  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-    setInvalidFiles([]);
-
-    const droppedFiles = Array.from(e.dataTransfer.files);
-    const validFiles = validateFiles(droppedFiles);
-    if (validFiles.length > 0) {
-      setFiles(validFiles);
-      setUploaded(false);
-    }
-  }, []);
-
-  const handleFileInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setInvalidFiles([]);
-      if (e.target.files && e.target.files.length > 0) {
-        const selectedFiles = Array.from(e.target.files);
-        const validFiles = validateFiles(selectedFiles);
-        if (validFiles.length > 0) {
-          setFiles(validFiles);
-          setUploaded(false);
-        }
-      }
-    },
-    [],
-  );
-
-  const openFileDialog = () => {
-    fileInputRef.current?.click();
-  };
-
-  const removeFile = (index: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  // Автоматичний старт «завантаження» після вибору файлів
-  useEffect(() => {
-    if (files.length > 0 && !uploading && !uploaded) {
-      handleUpload();
-    }
-  }, [files]);
-
   const handleUpload = () => {
     if (files.length === 0 || uploading || uploaded) return;
 
     setUploading(true);
     setUploadProgress(0);
 
-    // Імітація прогресу завантаження
+    // Імітація прогресу (ви можете тут підключити реальний onUploadProgress від axios)
     const interval = setInterval(() => {
       setUploadProgress((prev) => {
-        const newProgress = prev + Math.random() * 10;
-        if (newProgress >= 100) {
+        const next = prev + Math.random() * 10;
+        if (next >= 100) {
           clearInterval(interval);
           return 100;
         }
-        return newProgress;
+        return next;
       });
     }, 300);
 
-    // Імітація завершення завантаження
     setTimeout(() => {
       clearInterval(interval);
       setUploadProgress(100);
       setUploading(false);
       setUploaded(true);
 
-      console.log(
-        'Files uploaded:',
-        files.map((f) => f.name),
-      );
-
       toast({
         title: 'Завантаження завершено',
-        description: `Успішно завантажено ${files.length} ${files.length === 1 ? 'файл' : 'файли'}`,
+        description: `Успішно завантажено ${files.length} ${
+          files.length === 1 ? 'файл' : 'файли'
+        }`,
       });
 
-      // Викликаємо зовнішній колбек перед закриттям модалки
-      if (onUploadComplete) {
-        onUploadComplete(files);
-      }
+      onUploadComplete?.(files);
 
-      // Закриваємо модалку через 1.5 секунди
       setTimeout(() => {
         openDropzone(false);
-        // Після закриття модалки скидаємо стани
         setTimeout(() => {
           setFiles([]);
           setUploaded(false);
           setUploadProgress(0);
+          setInvalidFiles([]);
+          setIsDragging(false);
         }, 300);
       }, 1500);
     }, 3000);
   };
 
-  // Якщо модалка закрита, оновлюємо стани
   useEffect(() => {
     if (!open) {
       setTimeout(() => {
@@ -204,13 +148,57 @@ export function UploadModal({ onUploadComplete }: UploadModalProps) {
     }
   }, [open]);
 
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    setInvalidFiles([]);
+
+    const droppedFiles = Array.from(e.dataTransfer.files);
+    const valid = validateFiles(droppedFiles);
+    if (valid.length > 0) {
+      setFiles(valid);
+      setUploaded(false);
+    }
+  };
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const selected = Array.from(e.target.files);
+      const valid = validateFiles(selected);
+      if (valid.length > 0) {
+        setFiles(valid);
+        setUploaded(false);
+      }
+    }
+  };
+  const openFileDialog = () => {
+    fileInputRef.current?.click();
+  };
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
   return (
     <Dialog open={open} onOpenChange={openDropzone}>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>Upload documents</DialogTitle>
           <DialogDescription>
-            Drag and drop your PDF or Word documents, or click to browse
+            Drag and drop PDF чи Word документи, або натисніть, щоб обрати
           </DialogDescription>
         </DialogHeader>
 
@@ -254,10 +242,12 @@ export function UploadModal({ onUploadComplete }: UploadModalProps) {
                 </div>
                 <div className="space-y-2">
                   <p className="text-lg font-medium">
-                    {isDragging ? 'Drop documents here' : 'Drag documents here or click to browse'}
+                    {isDragging
+                      ? 'Drop files here'
+                      : 'Drag files here or click to browse'}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Only PDF і Word документи
+                    Тільки PDF і Word документи
                   </p>
                   <div className="flex justify-center gap-2 pt-2">
                     {acceptedExtensions.map((ext) => (
@@ -342,7 +332,7 @@ export function UploadModal({ onUploadComplete }: UploadModalProps) {
                     The following files are not accepted: {invalidFiles.join(', ')}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Only PDF і Word документи (.pdf, .doc, .docx) дозволені.
+                    Тільки PDF і Word документи (.pdf, .doc, .docx) дозволені
                   </p>
                 </div>
               </div>

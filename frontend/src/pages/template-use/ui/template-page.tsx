@@ -36,7 +36,7 @@ export function TemplatePage() {
           withBorder
         />
 
-        <div className="container mx-auto flex flex-col gap-4 py-8">
+        <div className="container mx-auto flex flex-col gap-4 p-8">
           <h1 className="text-3xl font-bold tracking-tight">Choose template</h1>
           <p className="text-muted-foreground mt-1">
             Choose template for desired file that you created before.
@@ -48,7 +48,7 @@ export function TemplatePage() {
           {!loading && !error && templates.length === 0 && <p>No templates available.</p>}
 
           {!loading && !error && templates.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid auto-rows-min gap-4 md:grid-cols-3">
               {templates.map((rawTpl) => {
                 const tpl = {
                   id: rawTpl.id,

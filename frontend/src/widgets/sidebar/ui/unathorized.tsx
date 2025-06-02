@@ -9,9 +9,9 @@ export function UnauthorizedUserHeader() {
     <div className="flex flex-col items-center justify-between w-full">
       <UpperHeader />
       <div className="px-3 py-2 w-full">
-        <div className="rounded-lg border border-border/40 bg-card p-3 shadow-sm">
+        <div className="rounded-lg border border-border/40 p-3 shadow-sm bg-secondary">
           <div className="mb-3 flex items-center justify-center">
-            <Avatar className="h-12 w-12 ring-2 ring-background">
+            <Avatar className="h-12 w-12 ring-2 ring-transparent">
               <AvatarFallback className="bg-primary/10">
                 <UnauthUser className="h-9 w-9 text-primary" />
               </AvatarFallback>
