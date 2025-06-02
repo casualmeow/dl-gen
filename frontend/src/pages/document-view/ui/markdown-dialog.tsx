@@ -1,16 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
-import MDEditor from '@uiw/react-md-editor';
-// import Markdown from "@uiw/react-md-editor"
-import { getCodeString } from 'rehype-rewrite';
-import katex from 'katex';
-import mermaid from 'mermaid';
-import rehypeSanitize from 'rehype-sanitize';
-import rehypeKatex from 'rehype-katex';
-import rehypeMermaid from 'rehype-mermaidjs';
-import 'katex/dist/katex.min.css';
-import '@uiw/react-md-editor/markdown-editor.css';
-import '@uiw/react-markdown-preview/markdown.css';
-import remarkMath from 'remark-math';
+"use client";
+
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  ReactNode,
+} from "react";
+import ReactMarkdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import remarkGfm from "remark-gfm";
+import rehypeMermaid from "rehype-mermaidjs";
+import rehypeSanitize from "rehype-sanitize";
+import "katex/dist/katex.min.css";
 
 import {
   Button,
@@ -18,68 +21,40 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogFooter,
   DialogTitle,
   DialogDescription,
+  DialogFooter,
   DialogClose,
-} from 'entities/components';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from 'entities/components';
-import { Loader } from 'entities/components';
-import { Loader2, RefreshCw } from 'lucide-react';
-import { usePdfToMarkdown } from '../model/usePdfToMarkdown';
-import { cn } from 'shared/lib/utils';
-import { useNavigate } from 'react-router';
+  Textarea,
+  Separator,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  Loader,
+} from "entities/components";
+import {
+  Loader2,
+  RefreshCw,
+  Bold,
+  Italic,
+  Link as IconLink,
+  List as IconList,
+  ListOrdered as IconListOrdered,
+  Quote as IconQuote,
+  Code as IconCode,
+  Heading1,
+  Heading2,
+  Heading3,
+  Image as ImageIcon,
+  Minus,
+  EyeOff,
+  Eye, Columns, HardDriveDownload
+} from "lucide-react";
 
-export interface PreviewCodeProps {
-  inline?: boolean;
-  className?: string;
-  children?: React.ReactNode;
-  node?: any;
-  _getCodeString?: (children: any[]) => string;
-}
-
-export const PreviewCode: React.FC<PreviewCodeProps> = ({
-  inline,
-  className = '',
-  children,
-  node,
-  _getCodeString,
-}) => {
-  const text = Array.isArray(children) ? children.join('') : String(children || '');
-  const gcs = _getCodeString ?? getCodeString;
-  const codeStr = node?.children ? gcs(node.children) : text;
-
-  if (inline && /^\$(.+)\$$/.test(text)) {
-    const expr = text.replace(/^\$(.+)\$$/, '$1');
-    const html = katex.renderToString(expr, { throwOnError: false });
-    return <code dangerouslySetInnerHTML={{ __html: html }} />;
-  }
-
-  if (/^language-katex/.test(className.toLowerCase())) {
-    const html = katex.renderToString(codeStr, { throwOnError: false });
-    return <code dangerouslySetInnerHTML={{ __html: html }} />;
-  }
-
-  const [svg, setSvg] = useState<string>('');
-  useEffect(() => {
-    if (/^language-mermaid/.test(className.toLowerCase())) {
-      mermaid
-        .render(`mmd-${Math.random()}`, codeStr)
-        .then((res) => {
-          setSvg(res.svg);
-        })
-        .catch(() => {
-          setSvg('<pre>Invalid diagram</pre>');
-        });
-    }
-  }, [className, codeStr]);
-
-  if (/^language-mermaid/.test(className.toLowerCase())) {
-    return <div data-testid="mermaid-container" dangerouslySetInnerHTML={{ __html: svg }} />;
-  }
-
-  return <code className={className}>{children}</code>;
-};
+import { usePdfToMarkdown } from "../model/usePdfToMarkdown";
+import { useNavigate } from "react-router";
+import { PreviewCode } from "../api/preview-code";
 
 interface MarkdownDialogProps {
   isOpen: boolean;
@@ -88,147 +63,211 @@ interface MarkdownDialogProps {
   pdfBlob: Blob;
 }
 
-export function MarkdownDialog({ isOpen, onOpenChange, fileId, pdfBlob }: MarkdownDialogProps) {
+interface ToolbarButtonProps {
+  icon: ReactNode;
+  title: string;
+  onClick: () => void;
+}
+
+const ToolbarButton = ({ icon, title, onClick }: ToolbarButtonProps) => (
+  <Button
+    variant="ghost"
+    size="sm"
+    onClick={onClick}
+    title={title}
+    className="h-8 w-8 p-0 hover:bg-accent hover:text-accent-foreground"
+  >
+    {icon}
+  </Button>
+);
+
+export function MarkdownDialog({
+  isOpen,
+  onOpenChange,
+  fileId,
+  pdfBlob,
+}: MarkdownDialogProps) {
   const { markdown, status, refresh, save } = usePdfToMarkdown(fileId, pdfBlob);
-  const [edited, setEdited] = useState(markdown);
-  const prevOpen = useRef(isOpen);
-  const initial = useRef(markdown);
+  const [value, setValue] = useState(markdown);
+  const [activeTab, setActiveTab] = useState("edit");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const initialMarkdown = useRef(markdown);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setEdited(markdown);
-    initial.current = markdown;
+    setValue(markdown);
+    initialMarkdown.current = markdown;
   }, [markdown]);
 
   useEffect(() => {
-    if (prevOpen.current && !isOpen && initial.current !== edited) {
-      save(edited);
+    if (!isOpen && initialMarkdown.current !== value) {
+      save(value);
     }
-    prevOpen.current = isOpen;
-  }, [isOpen, edited, save]);
+  }, [isOpen, value, save]);
 
-  const isLoading = status === 'loading';
-  const isError = status === 'error' || status === 'notfound';
+  const isLoading = status === "loading";
+  const isError = status === "error" || status === "notfound";
 
-  const toolbar = [
-    'bold',
-    'italic',
-    'strike',
-    'code',
-    'link',
-    {
-      name: 'refresh',
-      keyCommand: 'refresh',
-      buttonProps: { 'aria-label': 'Refresh' },
-      icon: <RefreshCw />,
-      execute: () => refresh(),
+  const insertText = useCallback(
+    (before: string, after = "", placeholder = "") => {
+      const textarea = textareaRef.current;
+      if (!textarea) return;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selected = value.substring(start, end) || placeholder;
+      setValue(
+        value.substring(0, start) + before + selected + after + value.substring(end)
+      );
+      setTimeout(() => textarea.setSelectionRange(start + before.length, start + before.length + selected.length), 0);
     },
-    'divider',
-    'fullscreen',
-  ];
+    [value]
+  );
+
+  const insertAtLineStart = useCallback(
+    (prefix: string) => {
+      const textarea = textareaRef.current;
+      if (!textarea) return;
+      const pos = textarea.selectionStart;
+      const lineStart = value.lastIndexOf("\n", pos - 1) + 1;
+      setValue(value.slice(0, lineStart) + prefix + value.slice(lineStart));
+      setTimeout(() => textarea.setSelectionRange(pos + prefix.length, pos + prefix.length), 0);
+    },
+    [value]
+  );
+
+  const downloadMarkdown = () => {
+    const blob = new Blob([value], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${fileId}.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const toolbarActions = {
+    bold: () => insertText("**", "**", "bold text"),
+    italic: () => insertText("*", "*", "italic text"),
+    heading1: () => insertAtLineStart("# "),
+    heading2: () => insertAtLineStart("## "),
+    heading3: () => insertAtLineStart("### "),
+    link: () => insertText("[", "](url)", "link text"),
+    image: () => insertText("![", "](image-url)", "alt text"),
+    code: () => insertText("```", "```", "code"),
+    quote: () => insertAtLineStart("> "),
+    unorderedList: () => insertAtLineStart("- "),
+    orderedList: () => insertAtLineStart("1. "),
+    hr: () => insertText("\n---\n"),
+    refresh,
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl w-full">
+      <DialogContent className="sm:max-w-fit sm:min-w-2xl sm:min-h-4/12 sm:max-h-fit">
         <DialogHeader>
           <DialogTitle>PDF → Markdown</DialogTitle>
           <DialogDescription>
-            {isLoading && 'Converting…'}
-            {isError && 'Conversion failed or file not found.'}
-            {!isLoading &&
-              !isError &&
-              'This PDF has been converted to Markdown. Edit below and Save.'}
+            {isLoading ? "Converting…" : isError ? "Conversion failed or file not found." : "This PDF has been converted. Edit and Save."}
           </DialogDescription>
         </DialogHeader>
 
         <Card className="relative bg-background text-foreground">
           {isLoading && (
-            <div
-              className={cn(
-                'absolute inset-0 z-10 flex items-center justify-center',
-                'bg-background',
-              )}
-            >
+            <div className="absolute inset-0 flex items-center justify-center bg-background z-20">
               <Loader />
             </div>
           )}
 
-          <Tabs defaultValue="edit" asChild>
-            <div>
-              <TabsList>
-                <TabsTrigger value="edit" disabled={isLoading || isError}>
-                  Edit
-                </TabsTrigger>
-                <TabsTrigger value="preview" disabled={isLoading || isError}>
-                  Preview
-                </TabsTrigger>
-              </TabsList>
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="mb-4 ml-4">
+              <TabsTrigger value="edit" disabled={isLoading || isError}>
+                <EyeOff className="w-4 h-4" /> Edit
+              </TabsTrigger>
+              <TabsTrigger value="preview" disabled={isLoading || isError}>
+                <Eye className="w-4 h-4" /> Preview
+              </TabsTrigger>
+              <TabsTrigger value="split" disabled={isLoading || isError}>
+                <Columns className="w-4 h-4 mr-1" /> Split
+              </TabsTrigger>
+            </TabsList>
 
-              <TabsContent value="edit">
-                <div className="overflow-hidden rounded-md border prose prose-invert dark:prose-invert">
-                  <MDEditor
-                    className="
-      prose 
-      max-h-[500px]
-      max-w-[800px]
-      overflow-auto 
-      p-4 
-      rounded-md 
-      bg-background 
-      text-foreground 
-      dark:bg-background
-      dark:text-foreground
-    "
-                    value={edited}
-                    onChange={(v) => setEdited(v || '')}
-                    height={500}
-                    commands={toolbar as any}
-                    extraCommands={[]}
-                    preview="live"
-                    previewOptions={{
-                      remarkPlugins: [remarkMath],
-                      rehypePlugins: [
-                        [rehypeKatex, { strict: false }],
-                        [rehypeMermaid, {}],
-                        rehypeSanitize,
-                      ],
-                      components: { code: PreviewCode },
-                      style: {
-                        backgroundColor: 'var(--color-card)',
-                        color: 'var(--color-foreground)',
-                      },
-                    }}
-                  />
-                </div>
-              </TabsContent>
+            {(activeTab === "edit" || activeTab === "split") && (
+              <div className="mb-2 flex gap-1 border p-1 rounded-md bg-background">
+                <ToolbarButton icon={<Bold />} title="Bold" onClick={toolbarActions.bold} />
+                <ToolbarButton icon={<Italic />} title="Italic" onClick={toolbarActions.italic} />
+                <Separator orientation="vertical" className="mx-1" />
+                <ToolbarButton icon={<Heading1 />} title="H1" onClick={toolbarActions.heading1} />
+                <ToolbarButton icon={<Heading2 />} title="H2" onClick={toolbarActions.heading2} />
+                <ToolbarButton icon={<Heading3 />} title="H3" onClick={toolbarActions.heading3} />
+                <Separator orientation="vertical" className="mx-1" />
+                <ToolbarButton icon={<IconLink />} title="Link" onClick={toolbarActions.link} />
+                <ToolbarButton icon={<ImageIcon />} title="Image" onClick={toolbarActions.image} />
+                <ToolbarButton icon={<IconCode />} title="Code Block" onClick={toolbarActions.code} />
+                <Separator orientation="vertical" className="mx-1" />
+                <ToolbarButton icon={<IconQuote />} title="Quote" onClick={toolbarActions.quote} />
+                <ToolbarButton icon={<IconList />} title="Bullet List" onClick={toolbarActions.unorderedList} />
+                <ToolbarButton icon={<IconListOrdered />} title="Ordered List" onClick={toolbarActions.orderedList} />
+                <ToolbarButton icon={<Minus />} title="HR" onClick={toolbarActions.hr} />
+                <Separator orientation="vertical" className="mx-1" />
+                <ToolbarButton icon={<RefreshCw />} title="Refresh" onClick={refresh} />
+                <ToolbarButton icon={<HardDriveDownload />} title="Download" onClick={downloadMarkdown} />
+              </div>
+            )}
 
-              <TabsContent value="preview">
-                <div className="prose max-h-[500px] max-w-[800px] overflow-auto p-4 rounded-md">
-                  <MDEditor.Markdown
-                    source={edited}
-                    remarkPlugins={[remarkMath]}
-                    rehypePlugins={[
-                      [rehypeKatex, { strict: false }],
-                      [rehypeMermaid, {}],
-                    ]}
+            <TabsContent value="edit">
+              <Textarea
+                ref={textareaRef}
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                className="min-h-[50vh] max-h-[70vh] resize-none p-4 font-mono"
+              />
+            </TabsContent>
+
+            <TabsContent value="preview">
+              <div className="prose p-4 min-h-[50vh] max-h-[70vh] overflow-auto">
+                <ReactMarkdown
+                  remarkPlugins={[remarkMath, remarkGfm]}
+                  rehypePlugins={[rehypeKatex, rehypeMermaid, rehypeSanitize]}
+                  components={{ code: PreviewCode }}
+                >
+                  {value}
+                </ReactMarkdown>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="split">
+              <div className="grid grid-cols-2 gap-4">
+                <Textarea
+                  ref={textareaRef}
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                  className="resize-none font-mono p-4 min-h-[50vh] max-h-[60vh]"
+                />
+                <div className=" p-4 min-h-[50vh] max-h-[60vh] overflow-auto border rounded-md">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkMath, remarkGfm]}
+                    rehypePlugins={[rehypeKatex, rehypeMermaid, rehypeSanitize]}
                     components={{ code: PreviewCode }}
-                  />
+                  >
+                    {value}
+                  </ReactMarkdown>
                 </div>
-              </TabsContent>
-            </div>
+              </div>
+            </TabsContent>
+            
           </Tabs>
         </Card>
 
-        <DialogFooter className="mt-4 flex justify-end space-x-2">
-          <DialogClose asChild>
-            <Button variant="secondary">Close</Button>
-          </DialogClose>
-          <Button onClick={() => save(edited)} disabled={isLoading || isError}>
-            {isLoading ? <Loader2 className="animate-spin" /> : 'Save'}
+        <DialogFooter className="flex sm:justify-between">
+          <DialogClose asChild><Button variant="ghost">Close</Button></DialogClose>
+          <div className="flex gap-2">
+          <Button disabled={isLoading || isError} variant="secondary" onClick={() => save(value)}>
+            {isLoading ? <Loader2 className="animate-spin" /> : "Save"}
           </Button>
-          <Button onClick={() => navigate(`/view/${fileId}/template`)}>
-            Next
-          </Button>
+          <Button onClick={() => navigate(`/view/${fileId}/template`)}>Next</Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -14,9 +14,9 @@ import { UploadModal } from './upload/modal';
 import { ToastProvider } from '../api/toast-provider';
 import { LowerBar } from './lower-bar';
 import { usePdfEditor } from '../model/usePdfEditor';
-import { v4 as uuidv4 } from 'uuid';
 import { ArrowRight, Plus } from 'lucide-react';
 import { Dock, DockItem } from 'widgets/dock';
+import { createEditablePdfBlockFromText } from 'features/pdfEditor';
 
 export const EditPage = () => {
   const { fileId } = useParams();
@@ -25,7 +25,7 @@ export const EditPage = () => {
   const [inspectorOpen, setInspectorOpen] = useState(false);
   const [isInspectorVisible, setIsInspectorVisible] = useState(false);
   const { zoom, setZoom, page, setPage, totalPages, wordCount, isSaved } = usePdfEditor();
-  const { setBlocks, updateBlock } = usePdfEditorStore();
+  const { blocks, setBlocks, updateBlock } = usePdfEditorStore();
 
   useEffect(() => {
     if (inspectorOpen) setIsInspectorVisible(true);
@@ -46,29 +46,49 @@ export const EditPage = () => {
   useEffect(() => {
     if (!structure) return;
     const pageObj = structure.pages[page - 1];
-    setBlocks(
-      pageObj.texts.map((t) => ({
-        id: uuidv4(),
-        pageNumber: pageObj.number,
-        str: t.str,
-        x: t.x,
-        y: t.y,
-        width: t.width,
-        height: t.height,
-        fontSize: t.fontSize,
-        fontFamily: t.fontFamily,
-        alignment: t.alignment,
-        lineBreakAfter: t.lineBreakAfter,
-        fontWeight: t.isBold ? 'bold' : 'normal',
-        fontStyle: t.isItalic ? 'italic' : 'normal',
-        html: t.str,
-      })),
+    
+    // Replace the manual mapping with the utility function
+    const newBlocks = pageObj.texts.map((t, index) => 
+      createEditablePdfBlockFromText(t, pageObj.number, index)
     );
-  }, [structure, page]);
+    
+    // Only update if blocks have actually changed
+    setBlocks(newBlocks);
+  }, [structure, page, setBlocks]);
 
   const handleStyle = (style: 'bold' | 'italic' | 'underline') => {
     if (selectedTextEl) {
-      document.execCommand(style);
+      // Get the block ID from the selected element
+      const blockId = selectedTextEl.getAttribute('data-block-id');
+      
+      if (blockId) {
+        // Get the current block from the store
+        const block = blocks.find(b => b.id === blockId);
+        
+        if (block) {
+          // Update the appropriate style property based on the style parameter
+          if (style === 'bold') {
+            updateBlock(blockId, { 
+              fontWeight: block.fontWeight === 'bold' ? 'normal' : 'bold' 
+            });
+          } else if (style === 'italic') {
+            updateBlock(blockId, { 
+              fontStyle: block.fontStyle === 'italic' ? 'normal' : 'italic' 
+            });
+          } else if (style === 'underline') {
+            // Instead of directly modifying the DOM, update the store
+            // We'll need to add a textDecoration property to the EditablePdfBlock type
+            const currentDecoration = block.textDecoration || 'none';
+            const newDecoration = currentDecoration === 'underline' ? 'none' : 'underline';
+            
+            updateBlock(blockId, { 
+              textDecoration: newDecoration,
+              // Still update HTML for compatibility
+              html: block.html
+            });
+          }
+        }
+      }
     }
   };
 

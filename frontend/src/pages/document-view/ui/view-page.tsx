@@ -39,6 +39,7 @@ export function ViewPage() {
       <div className="grid grid-rows-[auto_1fr] h-screen w-full">
         <AppHeader
           breadcrumbs={[{ label: 'Your works', href: '/' }, { label: 'View' }]}
+          withBorder={true}
           actionButton={{
             label: 'Next',
             icon: <ArrowRight className="w-4 h-4" />,

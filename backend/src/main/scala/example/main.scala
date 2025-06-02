@@ -39,7 +39,7 @@ object Main {
               val futureHash: Future[String] = storePdf(formData)
 
               onSuccess(futureHash) { hash =>
-                complete(UploadResponse(s"/edit/$hash"))
+                complete(UploadResponse(s"$hash"))
               }
             }
           }

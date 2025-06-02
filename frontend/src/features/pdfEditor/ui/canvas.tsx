@@ -1,7 +1,7 @@
 import { useMemo, useRef, useLayoutEffect, useState } from 'react';
 import { usePdfEditorStore } from '../model/store';
 import type { PdfStructure } from 'pages/document-edit';
-import { PAGE_PADDING } from '../lib/utils';
+import { PAGE_PADDING, getParagraphHeight } from '../lib/utils';
 import { cn } from 'shared/lib/utils';
 
 type Paragraph = {
@@ -16,6 +16,7 @@ type Paragraph = {
     textAlign: 'left' | 'center' | 'right';
     lineHeight: string;
     maxWidth: number;
+    textDecoration?: 'none' | 'underline';
   };
 };
 
@@ -33,136 +34,181 @@ export const PdfCanvas = ({ structure, pageIndex, zoom, onUpdate, onSelectTextEl
   const blockRefs = useRef(new Map<string, HTMLDivElement>());
   const lastPagesRef = useRef<string[][]>([]);
 
+  // ✅ Перенесли useRef на верх компонента, а не внутрь useLayoutEffect
+  // Здесь мы храним «токен» для текущего эффекта разделения на страницы
+  const effectIdRef = useRef<number>(Date.now());
+
   const page = structure?.pages[pageIndex];
   if (!structure || !page) {
     return <div className="flex-1 flex items-center justify-center">Loading…</div>;
   }
 
-  // scaled dimensions
-  const scaledWidth = page.width * (zoom / 100);
+  // Вычисляем размеры виртуальной страницы в пикселях
+  const scaledWidth  = page.width  * (zoom / 100);
   const scaledHeight = page.height * (zoom / 100);
 
+  // 1) Сортируем и группируем блоки в "абзацы"
+  //    Извлекаем только те блоки, у которых block.pageNumber === page.number
   const paragraphs: Paragraph[] = useMemo(() => {
-    const sorted = blocks
-      .filter((b) => b.pageNumber === page.number)
-      .map((b) => ({ ...b, y: page.height - b.y }))
-      .sort((a, b) => a.y - b.y || a.x - b.x);
+    const filtered = blocks.filter((b) => b.pageNumber === page.number);
 
-    // cluster into lines
-    const clusters: (typeof sorted)[] = [];
-    let curr: typeof sorted = [];
+    // Сортировка от нижнего края к верхнему, и слева направо
+    const sorted = filtered
+      .map((b) => ({ ...b, yForSort: page.height - b.y }))
+      .sort((a, b) => a.yForSort - b.yForSort || a.x - b.x);
+
+    // Группируем подряд идущие элементы в "кластеры" (строки/абзацы)
+    const clusters: typeof sorted[] = [];
+    let currCluster: typeof sorted = [];
     let lastY: number | null = null;
 
     for (const blk of sorted) {
-      const delta = lastY === null ? 0 : Math.abs(blk.y - lastY);
-      if (lastY !== null && (delta > blk.fontSize * 1.3 || blk.lineBreakAfter)) {
-        clusters.push(curr);
-        curr = [];
-      }
-      curr.push(blk);
-      lastY = blk.y;
-    }
-    if (curr.length) clusters.push(curr);
+      const lineHeight = blk.fontSize * 1.3;
+      const delta = lastY === null ? 0 : Math.abs(blk.yForSort - lastY);
 
+      if (lastY !== null && (delta > lineHeight * 0.9 || blk.lineBreakAfter)) {
+        clusters.push(currCluster);
+        currCluster = [];
+      }
+
+      currCluster.push(blk);
+      lastY = blk.yForSort;
+    }
+    if (currCluster.length) clusters.push(currCluster);
+
+    // Преобразуем каждый кластер в один Paragraph
     return clusters.map((cluster) => {
       const first = cluster[0];
-      const text = cluster.map((c) => c.str).join(' ');
+      const textCombined = cluster.map((c) => c.str).join(' ');
+
+      // Вычисляем горизонтальный отступ
       const indentPx = Math.min(...cluster.map((c) => c.x)) * (zoom / 100) + PAGE_PADDING;
       const fontSizePx = first.fontSize * (zoom / 100);
       const lineHeightPx = first.fontSize * 1.3 * (zoom / 100);
+
       return {
         id: first.id,
-        text,
+        text: textCombined,
         indent: indentPx,
         style: {
           fontSize: fontSizePx,
-          fontFamily: `${first.fontFamily}, Times New Roman, system-ui, sans-serif`,
+          fontFamily: `${first.fontFamily}, Times New Roman, sans-serif`,
           fontWeight: first.fontWeight ?? 'normal',
-          fontStyle: first.fontStyle ?? 'normal',
+          fontStyle: first.fontStyle  ?? 'normal',
           textAlign: first.alignment as any,
           lineHeight: `${lineHeightPx}px`,
+          textDecoration: first.textDecoration,
           maxWidth: scaledWidth - indentPx - PAGE_PADDING,
         },
       };
     });
-  }, [blocks, page, zoom, scaledWidth]);
+  }, [blocks, page.number, page.height, page.width, zoom, scaledWidth]);
 
-  // 3️⃣ split paragraphs into pages by accumulating heights
-
+  // 2) Получаем список всех блоков, относящихся к этой странице,
+  //    чтобы потом пройтись по ним при расчёте высот.
   const pageBlocks = useMemo(
     () => blocks.filter((b) => b.pageNumber === page.number),
-    [blocks, page.number],
+    [blocks, page.number]
   );
 
-  // Debounced page splitting to avoid excessive updates
+  // 3) Разбиваем абзацы на «виртуальные страницы» по высоте
   useLayoutEffect(() => {
-    if (!pageBlocks.length) return;
+    // Если блоков вообще нет, сбрасываем pages и выходим
+    if (!pageBlocks.length) {
+      if (pages.length) {
+        lastPagesRef.current = [];
+        setPages([]);
+      }
+      return;
+    }
+
+    // Создаём локальную копию токена эффекта
+    const currentEffectId = effectIdRef.current;
 
     let animationFrame: number;
     const splitPages = () => {
+      // Если токен изменился (эффект исчерпан), выходим
+      if (currentEffectId !== effectIdRef.current) return;
+
       const tempPages: string[][] = [];
-      let currentPage: string[] = [];
+      let currentPageArr: string[] = [];
       let accHeight = PAGE_PADDING;
 
-      pageBlocks.forEach((block) => {
-        const el = blockRefs.current.get(block.id);
-        const height = el?.offsetHeight ?? block.fontSize * 1.3 * (zoom / 100);
+      // Для каждого абзаца находим его фактический элемент в blockRefs
+      paragraphs.forEach((p) => {
+        const el = blockRefs.current.get(p.id);
+        // Если Element ещё не отрендерен, fallback на грубый расчёт:
+        const heightPx = el?.offsetHeight ?? getParagraphHeight(p.style.fontSize, zoom);
 
-        if (accHeight + height > scaledHeight) {
-          if (currentPage.length) {
-            tempPages.push(currentPage);
-            currentPage = [];
+        if (accHeight + heightPx > scaledHeight - PAGE_PADDING) {
+          // Завершаем текущую виртуальную страницу
+          if (currentPageArr.length) {
+            tempPages.push(currentPageArr);
+            currentPageArr = [];
             accHeight = PAGE_PADDING;
           }
         }
 
-        currentPage.push(block.id);
-        accHeight += height;
+        currentPageArr.push(p.id);
+        accHeight += heightPx;
       });
 
-      if (currentPage.length) {
-        tempPages.push(currentPage);
+      if (currentPageArr.length) {
+        tempPages.push(currentPageArr);
       }
 
-      // Only update if pages actually changed
-      const prevPages = lastPagesRef.current;
-      const changed =
-        prevPages.length !== tempPages.length ||
-        prevPages.some((arr, i) => arr.join(',') !== tempPages[i]?.join(','));
+      // Сравниваем с предыдущими страницами, чтобы обновлять только при реальном изменении
+      const prev = lastPagesRef.current;
+      const isDifferent =
+        prev.length !== tempPages.length ||
+        prev.some((arr, i) => {
+          const nextArr = tempPages[i] || [];
+          if (arr.length !== nextArr.length) return true;
+          return arr.some((id, j) => id !== nextArr[j]);
+        });
 
-      if (changed) {
+      if (isDifferent) {
         lastPagesRef.current = tempPages;
         setPages(tempPages);
       }
     };
 
-    // Debounce with requestAnimationFrame
-    animationFrame = window.requestAnimationFrame(splitPages);
+    // Ожидаем немного, чтобы DOM-элементы появились в дереве, и только потом замеряем
+    const timeoutId = setTimeout(() => {
+      animationFrame = window.requestAnimationFrame(splitPages);
+    }, 50);
 
     return () => {
+      clearTimeout(timeoutId);
       window.cancelAnimationFrame(animationFrame);
+      // Обновляем токен, чтобы «старые» splitPages больше не срабатывали
+      effectIdRef.current = Date.now();
     };
-  }, [pageBlocks, zoom, scaledHeight, setPages]);
+  }, [
+    paragraphs,
+    pageBlocks.length,
+    scaledHeight,
+    setPages,
+    zoom,
+    // NB: не включаем `blocks` напрямую, а используем `paragraphs`
+  ]);
 
-  // 4️⃣ render
+  // 4) Рендерим каждую виртуальную страницу
   return (
     <div className="flex flex-col flex-1 items-center overflow-auto bg-background p-4 space-y-8">
-      {pages.map((ids, pi) => (
+      {pages.map((ids, pageNum) => (
         <div
-          key={pi}
+          key={pageNum}
           data-testid="pdf-page"
-          className="bg-white shadow border rounded-lg overflow-hidden relative"
+          className="bg-background shadow border rounded-lg overflow-hidden relative"
           style={{
             width: scaledWidth + PAGE_PADDING * 2,
             height: scaledHeight + PAGE_PADDING * 2,
-            paddingTop: PAGE_PADDING,
-            paddingBottom: PAGE_PADDING,
-            paddingLeft: PAGE_PADDING,
-            paddingRight: PAGE_PADDING,
+            padding: PAGE_PADDING,
           }}
         >
-          {ids.map((id) => {
-            const p = paragraphs.find((x) => x.id === id);
+          {ids.map((blockId) => {
+            const p = paragraphs.find((x) => x.id === blockId);
             if (!p) return null;
 
             return (
@@ -173,10 +219,10 @@ export const PdfCanvas = ({ structure, pageIndex, zoom, onUpdate, onSelectTextEl
                 }}
                 contentEditable
                 suppressContentEditableWarning
-                data-alignment={p.style.textAlign}
+                data-block-id={p.id}
                 className={cn(
                   'whitespace-pre-wrap outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                  focusedId === p.id && 'shiny-text',
+                  focusedId === p.id && 'text-primary'
                 )}
                 style={{
                   marginLeft: p.indent,
@@ -187,16 +233,16 @@ export const PdfCanvas = ({ structure, pageIndex, zoom, onUpdate, onSelectTextEl
                   fontStyle: p.style.fontStyle,
                   textAlign: p.style.textAlign,
                   lineHeight: p.style.lineHeight,
+                  textDecoration: p.style.textDecoration,
                   marginBottom: p.style.fontSize * 0.6,
                 }}
                 onFocus={() => setFocusedId(p.id)}
                 onBlur={(e) => {
                   setFocusedId(null);
-                  const txt = e.currentTarget.innerText;
-                  const html = e.currentTarget.innerHTML;
-                  if (txt !== p.text || html !== p.text) {
-                    onUpdate(p.id, txt, html);
-                  }
+                  const newText = e.currentTarget.innerText;
+                  const newHtml = e.currentTarget.innerHTML;
+                  // Обновляем только в сторе, не трогая массив blocks напрямую
+                  onUpdate(p.id, newText, newHtml);
                 }}
                 onClick={(e) => onSelectTextEl(e.currentTarget)}
               >

@@ -145,7 +145,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
 
       <div
         className={cn(
-          'absolute top-4 right-4 bg-black/50 text-primary px-3 py-1 rounded-md shadow-sm text-sm',
+          'absolute top-4 right-4 bg-muted text-primary px-3 py-1 rounded-md shadow-sm text-sm',
         )}
       >
         Page {pageNum} / {numPages} • {(scale * 100).toFixed(0)}%

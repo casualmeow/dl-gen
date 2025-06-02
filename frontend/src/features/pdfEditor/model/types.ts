@@ -12,6 +12,7 @@ export interface EditablePdfText {
   alignment: 'left' | 'center' | 'right';
   fontWeight?: 'normal' | 'bold';
   fontStyle?: 'normal' | 'italic';
+  textDecoration?: 'none' | 'underline';
   lineBreakAfter?: boolean;
 }
 

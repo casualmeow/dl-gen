@@ -198,7 +198,7 @@ export function UploadModal({ onUploadComplete, initialFiles }: UploadModalProps
         <DialogHeader>
           <DialogTitle>Upload documents</DialogTitle>
           <DialogDescription>
-            Drag and drop PDF чи Word документи, або натисніть, щоб обрати
+            Uploading documents...
           </DialogDescription>
         </DialogHeader>
 
@@ -247,7 +247,7 @@ export function UploadModal({ onUploadComplete, initialFiles }: UploadModalProps
                       : 'Drag files here or click to browse'}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Тільки PDF і Word документи
+                    Only PDF and Word documents are accepted
                   </p>
                   <div className="flex justify-center gap-2 pt-2">
                     {acceptedExtensions.map((ext) => (
