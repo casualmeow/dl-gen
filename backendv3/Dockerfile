@@ -9,6 +9,5 @@ FROM openjdk:17
 EXPOSE 8001
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/ktor-docker-sample.jar
-COPY .env /app/.env
 WORKDIR /app
 ENTRYPOINT ["java", "-jar", "/app/ktor-docker-sample.jar"]
