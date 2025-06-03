@@ -27,8 +27,19 @@ services:
       - "8000:8000"
     networks:
       - app_network
-    env_file:
-      - backendv2/.env
+    environment:
+      REDIS_URL: redis://default:ntoOLFmieUZstzNXCWbs5i1fbSCDIpgZ@redis-18887.crce198.eu-central-1-3.ec2.redns.redis-cloud.com:18887
+      REDIS_HOST: redis-18887.crce198.eu-central-1-3.ec2.redns.redis-cloud.com
+      REDIS_PORT: 18887
+      REDIS_USER: default
+      REDIS_PASSWORD: ntoOLFmieUZstzNXCWbs5i1fbSCDIpgZ
+      PORT: 8000
+      RELOAD: false
+      SUPABASE_DB_URL: jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:6543/postgres
+      SUPABASE_DB_USER: postgres.svgenseosobwsozyfzlc
+      SUPABASE_DB_PASSWORD: 2ecf9754e4f659830a0c91c1e6a295fa
+      SUPABASE_DATABASE_URL: https://svgenseosobwsozyfzlc.supabase.co
+      SUPABASE_DATABASE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN2Z2Vuc2Vvc29id3NvenlmemxjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMyNzMyMDIsImV4cCI6MjA1ODg0OTIwMn0.1vQZPGKX-4kAgpD_6lst_IGcB-rZWFlciUBWb9wGuOw
     volumes:
       - hf_cache:/root/.cache/huggingface  
       - ./backendv2:/app
@@ -40,10 +51,11 @@ services:
       - "8001:8001"
     networks:
       - app_network   
-    env_file: 
-      - backendv3/.env
     environment:
-      - JAVA_OPTS=-Xms256m -Xmx512m
+      DB_URL: jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:6543/postgres
+      DB_USER: postgres.svgenseosobwsozyfzlc
+      DB_PASSWORD: 2ecf9754e4f659830a0c91c1e6a295fa
+      JAVA_OPTS: -Xms256m -Xmx512m
 
   frontend:
     build: ./frontend
