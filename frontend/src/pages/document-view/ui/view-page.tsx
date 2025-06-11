@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { PdfViewer } from 'features/pdfViewer';
 import { MarkdownDialog } from './markdown-dialog';
 import { Loader } from 'entities/components';
+import { useTranslation } from 'react-i18next';
 
 export function ViewPage() {
   const { fileId } = useParams<{ fileId: string }>();
@@ -14,6 +15,7 @@ export function ViewPage() {
   const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setIsLoading(true);
@@ -38,10 +40,10 @@ export function ViewPage() {
 
       <div className="grid grid-rows-[auto_1fr] h-screen w-full">
         <AppHeader
-          breadcrumbs={[{ label: 'Your works', href: '/' }, { label: 'View' }]}
+          breadcrumbs={[{ label: t('works.breadcrumb'), href: '/' }, { label: t('documentView.breadcrumb') }]}
           withBorder={true}
           actionButton={{
-            label: 'Next',
+            label: t('documentView.next'),
             icon: <ArrowRight className="w-4 h-4" />,
             onClick: () => setIsDialogOpen(true),
           }}

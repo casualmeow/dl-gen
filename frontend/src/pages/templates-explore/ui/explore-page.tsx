@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import { generatePreviewHtml } from '../model/renderTemplatePreview'
 import { ConfigModal } from './config-dialog';
 import { extractTemplateVariables } from '../model/extractTemplateVaribales';
+import { useTranslation } from 'react-i18next';
 
 interface DisplayTemplate {
   id: string;
@@ -26,6 +27,7 @@ interface DisplayTemplate {
 
 export function ExploreTemplatesPage() {
   const { templates, loading, error } = useTemplates();
+  const { t } = useTranslation();
   
   const [selectedTemplate, setSelectedTemplate] = useState<DisplayTemplate | null>(null);
   const [configOpen, setConfigOpen] = useState(false);
@@ -43,7 +45,7 @@ export function ExploreTemplatesPage() {
   const categories = [
     'all',
     ...new Set(
-      templates.map((t) => (t.tags && t.tags.length > 0 ? t.tags.join(', ').replace(/["\[\]]/g, '') : 'Uncategorized')),
+      templates.map((tpl) => (tpl.tags && tpl.tags.length > 0 ? tpl.tags.join(', ').replace(/["\[\]]/g, '') : t('templateExplore.uncategorized'))),
     ),
   ];
   const filteredTemplates = _localTemplates
@@ -110,8 +112,8 @@ export function ExploreTemplatesPage() {
       <div className="flex-1 grid grid-rows-[auto_1fr]">
         <AppHeader
           breadcrumbs={[
-            { label: 'Your works', href: '/' },
-            { label: 'Explore templates', href: '/templates' },
+            { label: t('works.breadcrumb'), href: '/' },
+            { label: t('templateExplore.breadcrumb'), href: '/templates' },
           ]}
           withBorder={true}
         />
@@ -119,9 +121,9 @@ export function ExploreTemplatesPage() {
         <div className="container mx-auto">
           <div className="container mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 py-8">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">HTML Templates</h1>
+              <h1 className="text-3xl font-bold tracking-tight">{t('templateExplore.title')}</h1>
               <p className="text-muted-foreground mt-1">
-                Browse and manage templates or create a new one.
+                {t('templateExplore.description')}
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -138,7 +140,7 @@ export function ExploreTemplatesPage() {
   }}
 >
 <SlidersHorizontal />
-  Configure
+  {t('templateExplore.configure')}
 </Button>
 <ConfigModal
   open={configOpen}
@@ -151,7 +153,7 @@ export function ExploreTemplatesPage() {
               <Button asChild size="lg" className="gap-2">
                 <Link to="/template/create">
                   <PlusCircle className="h-5 w-5" />
-                  Create a Template
+                  {t('templateExplore.createTemplate')}
                 </Link>
               </Button>
             </div>
@@ -168,7 +170,7 @@ export function ExploreTemplatesPage() {
                 <TabsList className="w-full md:w-auto grid grid-cols-3 md:flex">
                   {categories.map((cat) => (
                     <TabsTrigger key={cat} value={cat} className="capitalize">
-                      {cat}
+                      {cat === 'all' ? t('templateExplore.all') : cat}
                     </TabsTrigger>
                   ))}
                 </TabsList>
@@ -176,7 +178,7 @@ export function ExploreTemplatesPage() {
             </div>
             <div className="w-full md:w-64">
               <Input
-                placeholder="Search templates..."
+                placeholder={t('templateExplore.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full"
@@ -192,24 +194,24 @@ export function ExploreTemplatesPage() {
           )}
           {error && (
             <div className="container mx-auto flex items-center justify-center h-64">
-              <p className="text-red-500">Error: {error}</p>
+              <p className="text-red-500">{t('templateExplore.error', { error })}</p>
             </div>
           )}
 
           {/* Порожній результат */}
           {!loading && !error && filteredTemplates.length === 0 && (
             <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
-              <h2 className="text-xl font-semibold">No templates found</h2>
+              <h2 className="text-xl font-semibold">{t('templateExplore.noTemplates')}</h2>
               <p className="text-muted-foreground mt-2">
                 {searchQuery
-                  ? 'Try a different search term or category filter.'
-                  : 'Get started by creating your first template.'}
+                  ? t('templateExplore.noTemplatesSearch')
+                  : t('templateExplore.noTemplatesCreate')}
               </p>
               {!searchQuery && (
                 <Button asChild className="mt-4 gap-2">
                   <Link to="/template/create">
                     <PlusCircle className="h-4 w-4" />
-                    Create a Template
+                    {t('templateExplore.createTemplate')}
                   </Link>
                 </Button>
               )}

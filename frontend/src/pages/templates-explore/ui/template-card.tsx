@@ -1,4 +1,5 @@
 import { Clock, Code, MoreHorizontal, Copy, Eye } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { Badge } from 'entities/components';
 import { Button } from 'entities/components';
@@ -46,6 +47,7 @@ export function TemplateCard({ template, onDelete, }: TemplateCardProps) {
   const { loading, deleteTemplate } = useTemplates();
   const [openDialog, setOpenDialog] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { t } = useTranslation();
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(template.code);
@@ -136,7 +138,7 @@ export function TemplateCard({ template, onDelete, }: TemplateCardProps) {
           <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
             <div className="bg-primary/80 text-primary-foreground text-xs font-medium py-1.5 px-3 rounded-full flex items-center gap-1.5">
               <Eye className="h-3 w-3" />
-              Preview Template
+              {t('templateCard.previewTemplate')}
             </div>
           </div>
           <Badge variant="outline" className="absolute top-2 right-2 bg-background">
@@ -150,25 +152,25 @@ export function TemplateCard({ template, onDelete, }: TemplateCardProps) {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="h-8 w-8">
               <MoreHorizontal className="h-4 w-4" />
-              <span className="sr-only">Open menu</span>
+              <span className="sr-only">{t('templateCard.preview')}</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem>
               <Edit className="h-4 w-4 mr-2" />
-              Edit Template
+              {t('templateCard.edit')}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleCopyCode}>
               <Copy className="h-4 w-4 mr-2" />
-              Copy Code
+              {t('templateCard.copy')}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleExport}>
               <Download className="h-4 w-4 mr-2" />
-              Export as .njk
+              {t('templateCard.export')}
             </DropdownMenuItem>
             <DropdownMenuItem className="text-destructive" onClick={onClickDelete}>
               <Trash2 className="h-4 w-4 mr-2" />
-              Delete
+              {t('templateCard.delete')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -177,15 +179,15 @@ export function TemplateCard({ template, onDelete, }: TemplateCardProps) {
       <AlertDialog open={openDialog} onOpenChange={setOpenDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete template?</AlertDialogTitle>
+            <AlertDialogTitle>{t('templateCreate.deleteTitle')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure that "{template.title}" will be deleted? This action cannot be undone.
+              {t('templateCreate.deleteDesc', { title: template.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('templateCard.cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} disabled={loading}>
-              {loading ? 'Deleting…' : 'Confirm'}
+              {loading ? t('templateCard.deleting') : t('templateCard.confirm')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -214,19 +216,19 @@ export function TemplateCard({ template, onDelete, }: TemplateCardProps) {
       <CardFooter className="flex justify-between border-t p-4">
         <div className="flex items-center text-xs text-muted-foreground">
           <Clock className="mr-1 h-3 w-3" />
-          Updated {template.updatedAt}
+          {t('templateCard.updated')} {template.updatedAt}
         </div>
         <div className="flex gap-2">
           <TemplatePreviewDialog template={template} defaultTab="code">
             <Button size="sm" variant="outline" className="gap-1">
               <Code className="h-3 w-3" />
-              Source
+              {t('templateCard.source')}
             </Button>
           </TemplatePreviewDialog>
           <TemplatePreviewDialog template={template} defaultTab="preview">
             <Button size="sm" className="gap-1">
               <Eye className="h-3 w-3" />
-              Preview
+              {t('templateCard.preview')}
             </Button>
           </TemplatePreviewDialog>
         </div>

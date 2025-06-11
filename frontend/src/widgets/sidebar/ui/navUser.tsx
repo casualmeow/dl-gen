@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from 'entities/components';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from 'entities/components';
+import { useTranslation } from 'react-i18next';
 
 export function NavUser({
   user,
@@ -30,6 +31,7 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+  const { t } = useTranslation();
 
   return (
     <SidebarMenu>
@@ -73,21 +75,21 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <UserCircleIcon />
-                Account
+                {t('navUser.account')}
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCardIcon />
-                Billing
+                {t('navUser.billing')}
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <BellIcon />
-                Notifications
+                {t('navUser.notifications')}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <LogOutIcon />
-              Log out
+              {t('navUser.logout')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

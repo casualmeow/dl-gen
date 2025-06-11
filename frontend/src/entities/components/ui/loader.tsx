@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 import { cn } from 'shared/lib/utils';
 
@@ -68,7 +69,8 @@ const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
       thick: type === 'spinner' ? 'border-[3px]' : '4px',
     };
 
-    const ariaLabel = label || 'Loading';
+    const { t } = useTranslation();
+    const ariaLabel = label || t('loader.loading');
 
     return (
       <div

@@ -17,6 +17,7 @@ import { usePdfEditor } from '../model/usePdfEditor';
 import { ArrowRight, Plus } from 'lucide-react';
 import { Dock, DockItem } from 'widgets/dock';
 import { createEditablePdfBlockFromText } from 'features/pdfEditor';
+import { useTranslation } from 'react-i18next';
 
 export const EditPage = () => {
   const { fileId } = useParams();
@@ -26,6 +27,7 @@ export const EditPage = () => {
   const [isInspectorVisible, setIsInspectorVisible] = useState(false);
   const { zoom, setZoom, page, setPage, totalPages, wordCount, isSaved } = usePdfEditor();
   const { blocks, setBlocks, updateBlock } = usePdfEditorStore();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (inspectorOpen) setIsInspectorVisible(true);
@@ -103,9 +105,9 @@ export const EditPage = () => {
           <AppSidebar />
           <div className="grid grid-rows-[auto_auto_auto_1fr_auto] h-screen w-full">
             <AppHeader
-              breadcrumbs={[{ label: 'Your works', href: '/' }, { label: 'Editor' }]}
+              breadcrumbs={[{ label: t('works.breadcrumb'), href: '/' }, { label: t('documentEdit.breadcrumb') }]}
               actionButton={{
-                label: 'Next',
+                label: t('documentEdit.next'),
                 icon: <ArrowRight className="w-4 h-4" />,
                 onClick: () => {},
               }}
@@ -139,12 +141,12 @@ export const EditPage = () => {
                   onSelectTextEl={setSelectedTextEl}
                 />
               ) : (
-                <div className="flex-1 flex items-center justify-center">Loading PDF…</div>
+                <div className="flex-1 flex items-center justify-center">{t('documentEdit.loading')}</div>
               )}
               <Dock position="bottom">
                 <DockItem
                   icon={<Plus />}
-                  label="Settings"
+                  label={t('documentEdit.settings')}
                   onClick={() => console.log('Settings clicked')}
                 />
               </Dock>

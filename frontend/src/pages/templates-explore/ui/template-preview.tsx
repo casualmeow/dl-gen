@@ -4,6 +4,7 @@ import type React from 'react';
 
 import { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { Button } from 'entities/components';
 import {
@@ -41,6 +42,7 @@ export function TemplatePreviewDialog({
   const [activeTab, setActiveTab] = useState<'preview' | 'code'>(defaultTab);
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(template.code);
@@ -61,7 +63,7 @@ export function TemplatePreviewDialog({
           <div>
             <DialogTitle>{template.title}</DialogTitle>
             <DialogDescription>
-              Nunjucks (.njk) template {activeTab === 'preview' ? 'preview' : 'source code'}
+              {t('templatePreview.nunjucks')} {activeTab === 'preview' ? t('templatePreview.previewTab') : t('templatePreview.sourceTab')}
             </DialogDescription>
           </div>
         </DialogHeader>
@@ -73,12 +75,12 @@ export function TemplatePreviewDialog({
         >
           <div className="flex justify-between items-center mb-4">
             <TabsList>
-              <TabsTrigger value="preview">Preview</TabsTrigger>
-              <TabsTrigger value="code">Source Code</TabsTrigger>
+              <TabsTrigger value="preview">{t('templatePreview.preview')}</TabsTrigger>
+              <TabsTrigger value="code">{t('templatePreview.sourceCode')}</TabsTrigger>
             </TabsList>
             <Button variant="outline" size="sm" className="gap-2" onClick={copyToClipboard}>
               {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-              {copied ? 'Copied!' : 'Copy Code'}
+              {copied ? t('templatePreview.copied') : t('templatePreview.copy')}
             </Button>
           </div>
           <TabsContent value="preview" className="mt-0">

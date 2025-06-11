@@ -3,8 +3,10 @@ import { Button } from 'entities/components';
 import { Avatar, AvatarFallback } from 'entities/components';
 import { LogIn } from 'lucide-react';
 import { UnauthUser } from '../lib/unauthuser';
+import { useTranslation } from 'react-i18next';
 
 export function UnauthorizedUserHeader() {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col items-center justify-between w-full">
       <UpperHeader />
@@ -18,13 +20,13 @@ export function UnauthorizedUserHeader() {
             </Avatar>
           </div>
           <div className="mb-3 text-center">
-            <h3 className="text-sm font-medium">Welcome to MustachePDF</h3>
-            <p className="text-xs text-muted-foreground">Sign in to access your workspace</p>
+            <h3 className="text-sm font-medium">{t('unauthorized.welcome')}</h3>
+            <p className="text-xs text-muted-foreground">{t('unauthorized.signInToAccess')}</p>
           </div>
           <Button variant="default" size="sm" className="w-full gap-2" asChild>
             <a href="/login">
               <LogIn className="h-4 w-4" />
-              Sign in
+              {t('unauthorized.signIn')}
             </a>
           </Button>
         </div>

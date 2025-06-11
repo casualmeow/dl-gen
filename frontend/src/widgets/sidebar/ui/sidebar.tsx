@@ -14,6 +14,7 @@ import { SidebarViewProvider } from '../model/useSidebarView';
 import { NavUser } from './navUser';
 import { useAuth } from 'features/auth';
 import { UnauthorizedUserHeader } from './unathorized';
+import { useTranslation } from 'react-i18next';
 
 type MenuItem = {
   icon: React.ComponentType<{ size?: number }>;
@@ -31,21 +32,22 @@ export const AppSidebar = () => {
 
 const AppSidebarContent = () => {
   const { user, isAuthenticated } = useAuth();
+  const { t, i18n } = useTranslation();
 
   const menuItems: MenuItem[] = [
     {
       icon: Briefcase,
-      label: 'My Projects',
+      label: t('sidebar.myProjects'),
       url: '/',
     },
     {
       icon: BookOpenText,
-      label: 'Documentation',
+      label: t('sidebar.documentation'),
       url: '/docs',
     },
     {
       icon: BookDashed,
-      label: 'Explore Templates',
+      label: t('sidebar.exploreTemplates'),
       url: '/templates',
     },
 
@@ -55,6 +57,10 @@ const AppSidebarContent = () => {
     //   onClick: () => setView("settings")
     // }
   ];
+
+  const handleLanguageChange = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
 
   return (
     <Sidebar>
@@ -74,7 +80,7 @@ const AppSidebarContent = () => {
         </SidebarHeader>
         <SidebarMenu>
           <SidebarGroup className="pt-0">
-            <SidebarGroupLabel>Sections</SidebarGroupLabel>
+            <SidebarGroupLabel>{t('sidebar.sections')}</SidebarGroupLabel>
             {menuItems.map((item) => (
               <SidebarMenuItem key={item.label}>
                 <SidebarMenuButton asChild>
@@ -88,7 +94,19 @@ const AppSidebarContent = () => {
           </SidebarGroup>
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter>
+        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <span>{t('language')}:</span>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button onClick={() => handleLanguageChange('en')} disabled={i18n.language === 'en'}>
+              EN
+            </button>
+            <button onClick={() => handleLanguageChange('uk')} disabled={i18n.language === 'uk'}>
+              УКР
+            </button>
+          </div>
+        </div>
+      </SidebarFooter>
     </Sidebar>
   );
 };

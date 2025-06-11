@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: '/v3/login',
+  baseURL: '/api/v3',  // Updated to use the backendv3 endpoint
   headers: {
     'Content-Type': 'application/json',
   },

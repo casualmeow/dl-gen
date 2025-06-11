@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { ArrowLeft, Save, Eye, Code } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { Button } from 'entities/components';
 import { Card, CardContent, CardHeader, CardTitle } from 'entities/components';
@@ -133,14 +134,15 @@ export function TemplateCreatePage() {
   });
   const [activeTab, setActiveTab] = useState<'editor' | 'preview'>('editor');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const { t } = useTranslation();
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    if (!formData.title.trim()) newErrors.title = 'Template title is required';
-    if (!formData.description.trim()) newErrors.description = 'Template description is required';
+    if (!formData.title.trim()) newErrors.title = t('templateCreate.requiredTitle');
+    if (!formData.description.trim()) newErrors.description = t('templateCreate.requiredDescription');
     if (!formData.category && !formData.customCategory.trim())
-      newErrors.category = 'Please select a category or create a new one';
-    if (!formData.code.trim()) newErrors.code = 'Template code is required';
+      newErrors.category = t('templateCreate.requiredCategory');
+    if (!formData.code.trim()) newErrors.code = t('templateCreate.requiredCode');
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -200,9 +202,9 @@ export function TemplateCreatePage() {
         <div className="flex-1 grid grid-rows-[auto_1fr]">
           <AppHeader
             breadcrumbs={[
-              { label: 'Your works', href: '/' },
-              { label: 'Explore templates', href: '/templates' },
-              { label: 'Create template', href: '/template/create' },
+              { label: t('templateCreate.breadcrumbs.yourWorks'), href: '/' },
+              { label: t('templateCreate.breadcrumbs.exploreTemplates'), href: '/templates' },
+              { label: t('templateCreate.breadcrumbs.createTemplate'), href: '/template/create' },
             ]}
             withBorder={true}
           />
@@ -214,8 +216,8 @@ export function TemplateCreatePage() {
                 </Link>
               </Button>
               <div>
-                <h1 className="text-3xl font-bold tracking-tight">Create New Template</h1>
-                <p className="text-muted-foreground">Create a new Nunjucks (.njk) template</p>
+                <h1 className="text-3xl font-bold tracking-tight">{t('templateCreate.createNew')}</h1>
+                <p className="text-muted-foreground">{t('templateCreate.createDescription')}</p>
               </div>
             </div>
 
@@ -224,37 +226,37 @@ export function TemplateCreatePage() {
                 {/* Info */}
                 <Card>
                   <CardHeader>
-                    <CardTitle>Template Information</CardTitle>
+                    <CardTitle>{t('templateCreate.info')}</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     {/* Title */}
                     <div className="space-y-2">
-                      <Label htmlFor="title">Template Title *</Label>
+                      <Label htmlFor="title">{t('templateCreate.title')}</Label>
                       <Input
                         id="title"
                         value={formData.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                         className={errors.title ? 'border-destructive' : ''}
-                        placeholder="e.g., Blog Post Layout"
+                        placeholder={t('templateCreate.placeholderTitle')}
                       />
                       {errors.title && <p className="text-sm text-destructive">{errors.title}</p>}
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="description">Description *</Label>
+                      <Label htmlFor="description">{t('templateCreate.description')}</Label>
                       <Textarea
                         id="description"
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         className={errors.description ? 'border-destructive' : ''}
                         rows={3}
-                        placeholder="Describe what this template is used for..."
+                        placeholder={t('templateCreate.placeholderDescription')}
                       />
                       {errors.description && (
                         <p className="text-sm text-destructive">{errors.description}</p>
                       )}
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="category">Category *</Label>
+                      <Label htmlFor="category">{t('templateCreate.category')}</Label>
                       <Select
                         value={formData.category}
                         onValueChange={(v) =>
@@ -262,7 +264,7 @@ export function TemplateCreatePage() {
                         }
                       >
                         <SelectTrigger className={errors.category ? 'border-destructive' : ''}>
-                          <SelectValue placeholder="Select a category" />
+                          <SelectValue placeholder={t('templateCreate.selectCategory')} />
                         </SelectTrigger>
                         <SelectContent>
                           {existingCategories.map((cat) => (
@@ -277,22 +279,22 @@ export function TemplateCreatePage() {
                       )}
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="customCategory">Or Create New Category</Label>
+                      <Label htmlFor="customCategory">{t('templateCreate.orCreateNewCategory')}</Label>
                       <Input
                         id="customCategory"
                         value={formData.customCategory}
                         onChange={(e) =>
                           setFormData({ ...formData, customCategory: e.target.value, category: '' })
                         }
-                        placeholder="e.g., Landing Pages"
+                        placeholder={t('templateCreate.placeholderCustomCategory')}
                       />
                       <p className="text-xs text-muted-foreground">
-                        Leave empty to use the selected category above
+                        {t('templateCreate.leaveEmptyToUseSelectedCategory')}
                       </p>
                     </div>
                     {(formData.category || formData.customCategory) && (
                       <div className="flex items-center gap-2">
-                        <span className="text-sm text-muted-foreground">Selected category:</span>
+                        <span className="text-sm text-muted-foreground">{t('templateCreate.selectedCategory')}:</span>
                         <Badge variant="secondary">
                           {formData.customCategory || formData.category}
                         </Badge>
@@ -304,7 +306,7 @@ export function TemplateCreatePage() {
                 {/* Preview */}
                 <Card>
                   <CardHeader>
-                    <CardTitle>Template Preview</CardTitle>
+                    <CardTitle>{t('templateCreate.preview')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <Tabs
@@ -313,28 +315,28 @@ export function TemplateCreatePage() {
                     >
                       <TabsList className="grid w-full grid-cols-2">
                         <TabsTrigger value="editor" className="gap-2">
-                          <Code className="h-4 w-4" /> Editor
+                          <Code className="h-4 w-4" /> {t('templateCreate.editor')}
                         </TabsTrigger>
                         <TabsTrigger value="preview" className="gap-2">
-                          <Eye className="h-4 w-4" /> Preview
+                          <Eye className="h-4 w-4" /> {t('templateCreate.preview')}
                         </TabsTrigger>
                       </TabsList>
                       <TabsContent value="editor" className="mt-4">
                         <div className="space-y-2">
-                          <Label htmlFor="code">Nunjucks Template Code *</Label>
+                          <Label htmlFor="code">{t('templateCreate.nunjucksTemplateCode')}</Label>
                           <Textarea
                             id="code"
                             value={formData.code}
                             onChange={(e) => setFormData({ ...formData, code: e.target.value })}
                             className={`font-mono text-sm min-h-[400px] ${errors.code ? 'border-destructive' : ''}`}
-                            placeholder="Enter your Nunjucks template code here..."
+                            placeholder={t('templateCreate.placeholderCode')}
                           />
                           {errors.code && <p className="text-sm text-destructive">{errors.code}</p>}
                         </div>
                       </TabsContent>
                       <TabsContent value="preview" className="mt-4">
                         <div className="space-y-2">
-                          <Label>Live Preview</Label>
+                          <Label>{t('templateCreate.livePreview')}</Label>
                           <div className="border rounded-lg p-4 bg-muted/50 min-h-[400px] overflow-auto">
                             {formData.code ? (
                               <iframe
@@ -344,7 +346,7 @@ export function TemplateCreatePage() {
                               />
                             ) : (
                               <div className="flex items-center justify-center h-full text-muted-foreground">
-                                Enter template code to see preview
+                                {t('templateCreate.enterTemplateCodeToSeePreview')}
                               </div>
                             )}
                           </div>
@@ -358,7 +360,7 @@ export function TemplateCreatePage() {
               {/* Actions */}
               <div className="flex justify-between items-center pt-6 border-t">
                 <Button variant="outline" asChild disabled={loading}>
-                  <Link to="/templates">Cancel</Link>
+                  <Link to="/templates">{t('templateCreate.cancel')}</Link>
                 </Button>
                 <div className="flex gap-2">
                   <Button
@@ -367,18 +369,18 @@ export function TemplateCreatePage() {
                     onClick={() => setActiveTab('preview')}
                     disabled={loading}
                   >
-                    <Eye className="h-4 w-4 mr-2" /> Preview
+                    <Eye className="h-4 w-4 mr-2" /> {t('templateCreate.preview')}
                   </Button>
                   <Button type="submit" className="gap-2" disabled={loading}>
                     {loading ? (
                       <>
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        Saving...
+                        {t('templateCreate.saving')}
                       </>
                     ) : (
                       <>
                         <Save className="h-4 w-4" />
-                        Save Template
+                        {t('templateCreate.saveTemplate')}
                       </>
                     )}
                   </Button>

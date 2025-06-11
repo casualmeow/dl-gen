@@ -4,8 +4,10 @@ import AppSidebarProvider from 'widgets/sidebar/ui/provider';
 import { AppHeader } from 'widgets/header';
 import { UploadProvider } from 'shared/ui/upload';
 import { ToastProvider } from 'shared/ui/upload/api/toast-provider';
+import { useTranslation } from 'react-i18next';
 
 export function WorksPage() {
+  const { t } = useTranslation();
   return (
     <>
     <ToastProvider>
@@ -13,7 +15,7 @@ export function WorksPage() {
         <AppSidebarProvider>
           <AppSidebar />
           <div className="flex-1 grid grid-rows-[auto_1fr]">
-            <AppHeader breadcrumbs={[{ label: 'Your works', href: '/' }]} withBorder={true}/>
+            <AppHeader breadcrumbs={[{ label: t('works.breadcrumb'), href: '/' }]} withBorder={true}/>
             <MainPageLayout />
           </div>
         </AppSidebarProvider>
