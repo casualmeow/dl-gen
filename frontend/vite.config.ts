@@ -6,8 +6,10 @@ import tailwindcss from '@tailwindcss/vite';
 import { fileURLToPath } from 'url';
 import svgr from 'vite-plugin-svgr';
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const mdx = await import('@mdx-js/rollup');
 
 export default defineConfig({
   assetsInclude: ['**/*.worker.mjs'],
@@ -31,6 +33,7 @@ export default defineConfig({
   plugins: [react(),
     svgr(), 
     tailwindcss(),
+    mdx.default(),
     {
       name: 'fix-mjs-mime',
       configureServer(server) {

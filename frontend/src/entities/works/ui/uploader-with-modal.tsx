@@ -1,5 +1,3 @@
-// entities/works/FileUploaderWithModal.tsx
-'use client';
 
 import { useState } from 'react';
 import { FileUploaderComponent } from './empty';

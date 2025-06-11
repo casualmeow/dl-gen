@@ -1,4 +1,3 @@
-
 import {
   Dialog,
   DialogContent,
@@ -12,6 +11,7 @@ import { Card } from 'entities/components';
 import { Badge } from 'entities/components';
 import { FileIcon, FileText } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 interface ChoiceDialogProps {
   open: boolean;
@@ -27,6 +27,7 @@ export function ChoiceDialog({
   file,
 }: ChoiceDialogProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleEdit = () => {
     onOpenChange(false);
@@ -56,10 +57,10 @@ export function ChoiceDialog({
           {/* Заголовок */}
           <DialogHeader>
             <DialogTitle className="text-xl font-semibold">
-              Download completed
+              {t('choiceDialog.title')}
             </DialogTitle>
             <DialogDescription>
-             Your document has been successfully uploaded. What would you like to do next?
+              {t('choiceDialog.description')}
             </DialogDescription>
           </DialogHeader>
 
@@ -90,26 +91,19 @@ export function ChoiceDialog({
           )}
 
           <DialogFooter className='flex sm:justify-between'>
-          <Button
-                onClick={handleCancel}
-                variant="ghost">
-                Cancel
+            <Button onClick={handleCancel} variant="ghost">
+              {t('choiceDialog.cancel')}
+            </Button>
+            <div className='flex flex-row gap-2'>
+              <Button onClick={handleEdit} variant="secondary">
+                {t('choiceDialog.edit')}
               </Button>
-              <div className='flex flex-row gap-2'>
-              <Button
-                onClick={handleEdit}
-                variant="secondary"
-              >
-                Edit (beta)
+              <Button onClick={handleView}>
+                {t('choiceDialog.view')}
               </Button>
-              <Button
-                onClick={handleView}
-              >
-                View
-              </Button>
-              </div>
+            </div>
           </DialogFooter>
-          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );

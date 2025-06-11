@@ -18,6 +18,7 @@ import { cn } from 'shared/lib/utils';
 import { useToast } from '../../model/useToast';
 import { useUploadModal } from './context';
 import { FileItem } from './item';
+import { useTranslation } from 'react-i18next';
 
 interface UploadModalProps {
   /**
@@ -37,6 +38,7 @@ export function UploadModal({ onUploadComplete }: UploadModalProps) {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploaded, setUploaded] = useState(false);
   const [invalidFiles, setInvalidFiles] = useState<string[]>([]);
+  const { t } = useTranslation();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -208,9 +210,9 @@ export function UploadModal({ onUploadComplete }: UploadModalProps) {
     <Dialog open={open} onOpenChange={openDropzone}>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
-          <DialogTitle>Upload documents</DialogTitle>
+          <DialogTitle>{t('uploadModal.title')}</DialogTitle>
           <DialogDescription>
-            Drag and drop your PDF or Word documents, or click to browse
+            {t('uploadModal.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -280,9 +282,9 @@ export function UploadModal({ onUploadComplete }: UploadModalProps) {
                       <div className="text-xl font-bold">{Math.round(uploadProgress)}%</div>
                     </div>
                     <div className="text-center">
-                      <h3 className="text-lg font-medium">Uploading documents...</h3>
+                      <h3 className="text-lg font-medium">{t('uploadModal.uploading')}</h3>
                       <p className="text-sm text-muted-foreground">
-                        Please wait while your documents are being uploaded
+                        {t('uploadModal.pleaseWait')}
                       </p>
                     </div>
                   </>
@@ -292,10 +294,9 @@ export function UploadModal({ onUploadComplete }: UploadModalProps) {
                       <CheckCircle className="h-10 w-10" />
                     </div>
                     <div className="text-center">
-                      <h3 className="text-lg font-medium">Upload complete!</h3>
+                      <h3 className="text-lg font-medium">{t('uploadModal.uploadComplete')}</h3>
                       <p className="text-sm text-muted-foreground">
-                        Successfully uploaded {files.length}{' '}
-                        {files.length === 1 ? 'document' : 'documents'}
+                        {t('uploadModal.successfullyUploaded', { count: files.length })}
                       </p>
                     </div>
                   </>
@@ -307,7 +308,7 @@ export function UploadModal({ onUploadComplete }: UploadModalProps) {
           {files.length > 0 && !uploaded && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-medium">Selected documents ({files.length})</p>
+                <p className="text-sm font-medium">{t('uploadModal.selectedDocuments', { count: files.length })}</p>
                 {!uploading && (
                   <Button
                     variant="ghost"
@@ -315,7 +316,7 @@ export function UploadModal({ onUploadComplete }: UploadModalProps) {
                     onClick={() => setFiles([])}
                     className="h-8 text-xs"
                   >
-                    Clear all
+                    {t('uploadModal.clearAll')}
                   </Button>
                 )}
               </div>
@@ -337,12 +338,12 @@ export function UploadModal({ onUploadComplete }: UploadModalProps) {
               <div className="flex gap-2">
                 <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium text-destructive">Invalid file type</p>
+                  <p className="text-sm font-medium text-destructive">{t('uploadModal.invalidFileType')}</p>
                   <p className="text-xs text-muted-foreground">
-                    The following files are not accepted: {invalidFiles.join(', ')}
+                    {t('uploadModal.notAcceptedFiles', { files: invalidFiles.join(', ') })}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Only PDF і Word документи (.pdf, .doc, .docx) дозволені.
+                    {t('uploadModal.acceptedFiles')}
                   </p>
                 </div>
               </div>
@@ -352,7 +353,7 @@ export function UploadModal({ onUploadComplete }: UploadModalProps) {
           {uploading && (
             <div className="space-y-2">
               <div className="flex justify-between text-xs">
-                <span className="text-muted-foreground">Uploading...</span>
+                <span className="text-muted-foreground">{t('uploadModal.uploading')}</span>
                 <span>{Math.round(uploadProgress)}%</span>
               </div>
               <Progress value={uploadProgress} className="h-2" />

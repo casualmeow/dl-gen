@@ -14,6 +14,7 @@ import remarkGfm from "remark-gfm";
 import rehypeMermaid from "rehype-mermaidjs";
 import rehypeSanitize from "rehype-sanitize";
 import "katex/dist/katex.min.css";
+import { useTranslation } from 'react-i18next';
 
 import {
   Button,
@@ -87,6 +88,7 @@ export function MarkdownDialog({
   fileId,
   pdfBlob,
 }: MarkdownDialogProps) {
+  const { t } = useTranslation();
   const { markdown, status, refresh, save } = usePdfToMarkdown(fileId, pdfBlob);
   const [value, setValue] = useState(markdown);
   const [activeTab, setActiveTab] = useState("edit");
@@ -167,9 +169,13 @@ export function MarkdownDialog({
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-fit sm:min-w-2xl sm:min-h-4/12 sm:max-h-fit">
         <DialogHeader>
-          <DialogTitle>PDF → Markdown</DialogTitle>
+          <DialogTitle>{t('markdownDialog.title')}</DialogTitle>
           <DialogDescription>
-            {isLoading ? "Converting…" : isError ? "Conversion failed or file not found." : "This PDF has been converted. Edit and Save."}
+            {isLoading
+              ? t('markdownDialog.converting')
+              : isError
+              ? t('markdownDialog.failed')
+              : t('markdownDialog.converted')}
           </DialogDescription>
         </DialogHeader>
 
@@ -183,13 +189,13 @@ export function MarkdownDialog({
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="mb-4 ml-4">
               <TabsTrigger value="edit" disabled={isLoading || isError}>
-                <EyeOff className="w-4 h-4" /> Edit
+                <EyeOff className="w-4 h-4" /> {t('markdownDialog.edit')}
               </TabsTrigger>
               <TabsTrigger value="preview" disabled={isLoading || isError}>
-                <Eye className="w-4 h-4" /> Preview
+                <Eye className="w-4 h-4" /> {t('markdownDialog.preview')}
               </TabsTrigger>
               <TabsTrigger value="split" disabled={isLoading || isError}>
-                <Columns className="w-4 h-4 mr-1" /> Split
+                <Columns className="w-4 h-4 mr-1" /> {t('markdownDialog.split')}
               </TabsTrigger>
             </TabsList>
 
@@ -261,12 +267,12 @@ export function MarkdownDialog({
         </Card>
 
         <DialogFooter className="flex sm:justify-between">
-          <DialogClose asChild><Button variant="ghost">Close</Button></DialogClose>
+          <DialogClose asChild><Button variant="ghost">{t('markdownDialog.close')}</Button></DialogClose>
           <div className="flex gap-2">
           <Button disabled={isLoading || isError} variant="secondary" onClick={() => save(value)}>
-            {isLoading ? <Loader2 className="animate-spin" /> : "Save"}
+            {isLoading ? <Loader2 className="animate-spin" /> : t('markdownDialog.save')}
           </Button>
-          <Button onClick={() => navigate(`/view/${fileId}/template`)}>Next</Button>
+          <Button onClick={() => navigate(`/view/${fileId}/template`)}>{t('markdownDialog.next')}</Button>
           </div>
         </DialogFooter>
       </DialogContent>

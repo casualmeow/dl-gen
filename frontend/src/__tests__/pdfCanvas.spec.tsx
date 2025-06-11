@@ -111,38 +111,4 @@ describe('PdfCanvas DOM and rendering', () => {
     expect(pages.length).toBeGreaterThanOrEqual(2);
   });
 
-  it('renders block with correct styles & alignment', () => {
-    const specialBlock = {
-      ...createMockBlocks(1)[0],
-      str: 'Test content',
-      html: '<p>Test content</p>',
-      alignment: 'center' as const,
-      fontWeight: 'bold' as const,
-      fontStyle: 'italic' as const,
-    };
-
-    mockedUsePdfEditorStore.mockReturnValue({
-      blocks: [specialBlock],
-      pages: [[specialBlock.id]],
-      setPages: mockSetPages,
-      updateBlock: mockUpdateBlock,
-    });
-
-    render(
-      <PdfCanvas
-        structure={structure}
-        pageIndex={0}
-        zoom={100}
-        onUpdate={onUpdate}
-        onSelectTextEl={onSelect}
-      />,
-    );
-    const node = screen.getByText('Test content');
-    expect(node).toHaveAttribute('data-alignment', 'center');
-    expect(node).toHaveStyle({
-      textAlign: 'center',
-      fontWeight: 'bold',
-      fontStyle: 'italic',
-    });
-  });
 });

@@ -1,5 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "entities/components";
 import { Button } from "entities/components";
+import { useTranslation } from 'react-i18next';
 
 interface ConfigModalProps {
   open: boolean;
@@ -11,11 +12,12 @@ interface ConfigModalProps {
 }
 
 export function ConfigModal({ open, onOpenChange, variables, values, onChange, onApply } : ConfigModalProps) {
+  const { t } = useTranslation();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Configure Template Variables</DialogTitle>
+          <DialogTitle>{t('configDialog.title')}</DialogTitle>
         </DialogHeader>
         <form
           onSubmit={e => {
@@ -31,13 +33,13 @@ export function ConfigModal({ open, onOpenChange, variables, values, onChange, o
                   className="input input-bordered"
                   value={values[variable] || ''}
                   onChange={e => onChange(variable, e.target.value)}
-                  placeholder={`Enter value for ${variable}`}
+                  placeholder={t('configDialog.placeholder', { variable })}
                 />
               </div>
             ))}
           </div>
           <DialogFooter>
-            <Button type="submit">Apply</Button>
+            <Button type="submit">{t('configDialog.apply')}</Button>
           </DialogFooter>
         </form>
       </DialogContent>

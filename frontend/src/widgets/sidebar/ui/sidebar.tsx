@@ -8,6 +8,11 @@ import {
   SidebarMenuButton,
   SidebarGroup,
   SidebarGroupLabel,
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
 } from 'entities/components';
 import { Briefcase, BookOpenText, BookDashed } from 'lucide-react';
 import { SidebarViewProvider } from '../model/useSidebarView';
@@ -95,16 +100,16 @@ const AppSidebarContent = () => {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <span>{t('language')}:</span>
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <button onClick={() => handleLanguageChange('en')} disabled={i18n.language === 'en'}>
-              EN
-            </button>
-            <button onClick={() => handleLanguageChange('uk')} disabled={i18n.language === 'uk'}>
-              УКР
-            </button>
-          </div>
+        <div className="p-4">
+          <Select value={i18n.language} onValueChange={handleLanguageChange}>
+            <SelectTrigger className="w-full">
+              <SelectValue>{t('language')}: {i18n.language === 'en' ? 'EN' : 'УКР'}</SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="en">EN</SelectItem>
+              <SelectItem value="uk">УКР</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </SidebarFooter>
     </Sidebar>

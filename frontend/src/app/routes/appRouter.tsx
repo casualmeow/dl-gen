@@ -7,6 +7,7 @@ import { ViewPage } from 'pages/document-view';
 import { TemplatePage } from 'pages/template-use';
 import { ExploreTemplatesPage } from 'pages/templates-explore';
 import { TemplateCreatePage } from 'pages/template-create';
+import { DocumentationPage } from 'pages/documentation';
 
 export const appRouter = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ export const appRouter = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />,
+  },
+  {
+    path: '/docs',
+    element: <DocumentationPage />,
   },
   {
     path: '*',
